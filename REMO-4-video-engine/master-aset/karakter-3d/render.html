@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<title>Render Karakter 3D — bersih</title>
+<style>html,body{margin:0;padding:0;background:transparent;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+const q = new URLSearchParams(location.search);
+const CHAR = q.get('char') || 'male';
+const COSTUME = q.get('costume') || 'diver_m';
+const POSE = q.get('pose') || 'swim';
+
+const scene = new THREE.Scene();
+scene.background = null;
+const camera = new THREE.PerspectiveCamera(40, 800/1000, 0.1, 100);
+camera.position.set(0, 1.25, 5.6);
+camera.lookAt(0, 0.95, 0);
+const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setClearColor(0x000000, 0);
+renderer.setPixelRatio(1);
+renderer.setSize(800, 1000);
+document.body.appendChild(renderer.domElement);
+scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 1.4));
+const key = new THREE.DirectionalLight(0xfff4e6, 2.2); key.position.set(5,8,5); scene.add(key);
+const fill = new THREE.DirectionalLight(0x7fb8ff, 1.4); fill.position.set(-5,3,-5); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffffff, 0.8); rim.position.set(0,4,-6); scene.add(rim);
+
+const MAT = {
+  skin: new THREE.MeshStandardMaterial({color:0xfcdbb4, roughness:0.6}),
+  skinDark: new THREE.MeshStandardMaterial({color:0xe0b88c, roughness:0.6}),
+  eyeWhite: new THREE.MeshStandardMaterial({color:0xffffff, roughness:0.2}),
+  eyeBlack: new THREE.MeshStandardMaterial({color:0x111111, roughness:0.1}),
+  mouth: new THREE.MeshStandardMaterial({color:0xd65d5d, roughness:0.5}),
+};
+function joint(parent,pos){const o=new THREE.Object3D();o.position.set(pos[0],pos[1],pos[2]);parent.add(o);return o;}
+function limb(geoType,params,mat,yOffset=0){let geo;
+  if(geoType==='capsule')geo=new THREE.CapsuleGeometry(params[0],params[1],8,16);
+  if(geoType==='sphere')geo=new THREE.SphereGeometry(params[0],16,16);
+  if(geoType==='box')geo=new THREE.BoxGeometry(params[0],params[1],params[2]);
+  if(geoType==='cylinder')geo=new THREE.CylinderGeometry(params[0],params[1],params[2],16);
+  const m=new THREE.Mesh(geo,mat);m.position.y=yOffset;return m;}
+
+const rig = new THREE.Group(); scene.add(rig);
+let J={}, P={}, mats={}, skirtMesh=null;
+function createCharacter(isMale){
+  const root=new THREE.Group(); rig.add(root);
+  const cSkin=MAT.skin.clone();
+  const cShirt=new THREE.MeshStandardMaterial({color:isMale?0x4a90e2:0xff6b8b,roughness:0.7});
+  const cPants=new THREE.MeshStandardMaterial({color:isMale?0x2c3e50:0x9b59b6,roughness:0.8});
+  const cShoe=new THREE.MeshStandardMaterial({color:isMale?0x333333:0xe74c3c,roughness:0.9});
+  const cHair=new THREE.MeshStandardMaterial({color:isMale?0x4a3320:0xf1c40f,roughness:0.8});
+  mats={shirt:cShirt,pants:cPants,shoe:cShoe,hair:cHair,skin:cSkin};
+  const add=(n,parent,pos)=>{J[n]=joint(parent,pos);P[n]={x:0,y:0,z:0};return J[n];};
+  const pelvis=add('pelvis',root,[0,0.9,0]);
+  const pm=limb('box',[0.32,0.15,0.2],cShirt,0);pm.position.y=0.02;pelvis.add(pm);
+  const spine=add('spine',pelvis,[0,0.1,0]);spine.add(limb('capsule',[0.13,0.3],cShirt,0.15));
+  const chest=add('chest',spine,[0,0.3,0]);const cm=limb('capsule',[0.16,0.15],cShirt,0.1);if(isMale)cm.scale.set(1.1,1,0.9);else cm.scale.set(0.95,1,0.95);chest.add(cm);
+  const neck=add('neck',chest,[0,0.15,0]);neck.add(limb('cylinder',[0.045,0.045,0.08],cSkin,0.04));
+  const head=add('head',neck,[0,0.08,0]);const hm=limb('sphere',[0.18],cSkin,0.15);if(!isMale)hm.scale.set(0.95,1.05,0.95);head.add(hm);
+  if(isMale){const h=limb('sphere',[0.185],cHair,0.17);h.scale.set(1,0.8,1);h.position.z=-0.02;head.add(h);}
+  else{const hb=limb('capsule',[0.17,0.25],cHair,0.1);hb.position.z=-0.05;hb.scale.set(1.05,1,0.8);head.add(hb);
+    const hf=limb('sphere',[0.19],cHair,0.22);hf.scale.set(1,0.6,1);hf.position.z=-0.02;head.add(hf);
+    const pt=limb('capsule',[0.06,0.25],cHair,0);pt.position.set(0,0.05,-0.18);pt.rotation.x=-0.4;head.add(pt);}
+  const fg=new THREE.Group();fg.position.set(0,0.16,0.16);head.add(fg);
+  [-1,1].forEach(s=>{const eg=new THREE.Group();eg.position.set(0.06*s,0,0);fg.add(eg);
+    const w=limb('sphere',[0.035],MAT.eyeWhite);w.scale.set(0.8,1.2,0.5);eg.add(w);
+    const pu=limb('sphere',[0.015],MAT.eyeBlack);pu.position.set(0,-0.005,0.03);eg.add(pu);});
+  const nose=limb('sphere',[0.015],MAT.skinDark);nose.position.set(0,-0.03,0.05);fg.add(nose);
+  const mouth=limb('box',[0.05,0.01,0.01],MAT.mouth);mouth.position.set(0,-0.06,0.04);fg.add(mouth);
+  ['L','R'].forEach(side=>{const s=side==='L'?1:-1;const sx=isMale?0.25:0.22;
+    const sh=add('shoulder'+side,chest,[sx*s,0.12,0]);sh.add(limb('capsule',[0.05,0.2],cShirt,-0.1));
+    const el=add('elbow'+side,sh,[0,-0.22,0]);el.add(limb('capsule',[0.04,0.2],cSkin,-0.1));
+    const wr=add('wrist'+side,el,[0,-0.22,0]);const hd=limb('sphere',[0.05],cSkin);hd.scale.set(0.8,1,0.8);hd.position.y=-0.04;wr.add(hd);});
+  ['L','R'].forEach(side=>{const s=side==='L'?1:-1;const hx=isMale?0.1:0.09;
+    const hip=add('hip'+side,pelvis,[hx*s,-0.05,0]);
+    const ul=limb('capsule',[0.06,0.25],isMale?cPants:cSkin,-0.125);hip.add(ul);
+    if(!isMale&&side==='L'){const sk=limb('cylinder',[0.18,0.35,0.25],cPants,-0.15);pelvis.add(sk);skirtMesh=sk;}
+    const kn=add('knee'+side,hip,[0,-0.3,0]);kn.add(limb('capsule',[0.05,0.25],isMale?cPants:cSkin,-0.125));
+    const an=add('ankle'+side,kn,[0,-0.3,0]);const sh2=limb('box',[0.1,0.08,0.2],cShoe);sh2.position.set(0,-0.04,0.05);an.add(sh2);});
+  return root;
+}
+const isMale = CHAR==='male';
+const root = createCharacter(isMale);
+
+// ---- kostum: ganti warna material + tambah props primitif ----
+function prop(geo,mat,pos,parent,rot){const m=new THREE.Mesh(geo,mat);m.position.set(pos[0],pos[1],pos[2]);if(rot)m.rotation.set(rot[0],rot[1],rot[2]);parent.add(m);return m;}
+const std=(c,r=0.7)=>new THREE.MeshStandardMaterial({color:c,roughness:r});
+function addMask(){
+  const g=new THREE.Group();g.position.set(0,0.16,0.17);J.head.add(g);
+  prop(new THREE.TorusGeometry(0.11,0.022,10,24),std(0x06222e,0.4),[0,0,0],g);
+  const lens=prop(new THREE.BoxGeometry(0.2,0.09,0.02),new THREE.MeshStandardMaterial({color:0x7fe7dc,roughness:0.1,transparent:true,opacity:0.55}),[0,0,-0.01],g);
+  // snorkel di sisi kanan kepala
+  prop(new THREE.CylinderGeometry(0.018,0.018,0.3,10),std(0xfacc15,0.5),[0.17,0.22,-0.02],J.head,[0,0,0.25]);
+  prop(new THREE.CylinderGeometry(0.018,0.018,0.1,10),std(0xfacc15,0.5),[0.2,0.36,0.02],J.head,[0,0,1.2]);
+}
+function addFin(color){
+  ['L','R'].forEach(s=>{const f=prop(new THREE.BoxGeometry(0.13,0.035,0.42),std(color,0.6),[0,-0.05,0.2],J['ankle'+s]);});
+}
+function addCap(color){
+  prop(new THREE.CylinderGeometry(0.19,0.2,0.09,20),std(color,0.7),[0,0.32,0],J.head);
+  prop(new THREE.BoxGeometry(0.26,0.025,0.14),std(color,0.7),[0,0.28,0.2],J.head);
+}
+function addHelmet(){
+  const h=prop(new THREE.SphereGeometry(0.21,20,14,0,Math.PI*2,0,Math.PI/2),std(0xfacc15,0.4),[0,0.3,0],J.head);
+  h.scale.set(1,0.85,1);
+  prop(new THREE.CylinderGeometry(0.03,0.035,0.05,10),std(0xffffff,0.3),[0,0.3,0.19],J.head,[Math.PI/2,0,0]);
+}
+function addVest(color){
+  prop(new THREE.BoxGeometry(0.36,0.3,0.26),std(color,0.7),[0,0.08,0.0],J.chest);
+}
+const C={
+  diver_m(){mats.shirt.color.set(0x0f5e6b);mats.pants.color.set(0x0b3d4a);mats.shoe.color.set(0x0f766e);addMask();addFin(0x14b8a6);},
+  diver_f(){if(skirtMesh)skirtMesh.visible=false;mats.shirt.color.set(0x7c3aed);mats.pants.color.set(0x4c1d95);mats.shoe.color.set(0x7c3aed);addMask();addFin(0x8b5cf6);},
+  swim_teal(){mats.shirt.color.set(0x2ec4b6);mats.pants.color.set(0x0e7490);},
+  swim_orange(){mats.shirt.color.set(0xff8a5c);mats.pants.color.set(0xea580c);},
+  swim_aqua(){mats.shirt.color.set(0x7fe7dc);mats.pants.color.set(0x0e5a6e);},
+  swim_pink(){mats.shirt.color.set(0xff6b8b);mats.pants.color.set(0x9b59b6);},
+  fisherman(){mats.shirt.color.set(0x4a90e2);mats.pants.color.set(0x2c3e50);addVest(0xea580c);addCap(0x1d4ed8);},
+  miner(){mats.shirt.color.set(0xf59e0b);mats.pants.color.set(0x3f3f46);addVest(0xea580c);addHelmet();},
+  land_m(){mats.shirt.color.set(0x8a5a3b);mats.pants.color.set(0x5d4037);mats.shoe.color.set(0x4a3320);},
+  land_f(){mats.shirt.color.set(0xb45309);mats.pants.color.set(0x6b4226);mats.shoe.color.set(0x7c2d12);},
+};
+(C[COSTUME]||C.diver_m)();
+
+// ---- pose ----
+function applyPose(){
+  if(POSE==='swim'){
+    rig.rotation.y=-Math.PI/2; root.rotation.x=-1.5; rig.position.y=0.85; rig.position.x=-0.85;
+    P.shoulderL.x=0.1;P.shoulderR.x=0.1;P.shoulderL.z=0.12;P.shoulderR.z=-0.12;
+    P.elbowL.x=-0.15;P.elbowR.x=-0.15;P.hipL.x=0.05;P.hipR.x=-0.05;P.kneeL.x=0.08;P.kneeR.x=0.08;
+    camera.position.set(0,1.0,7.0);camera.lookAt(0,0.95,0);
+  } else if(POSE==='shrug'){
+    P.shoulderL.z=0.95;P.shoulderR.z=-0.95;P.elbowL.x=-0.9;P.elbowR.x=-0.9;P.head.z=0.12;P.head.x=-0.08;
+    P.shoulderL.x=-0.15;P.shoulderR.x=-0.15;
+  } else if(POSE==='wave'){
+    P.shoulderR.z=-2.2;P.shoulderR.x=-0.2;P.elbowR.x=-0.5;P.head.y=0.2;
+    P.shoulderL.z=0.15;P.elbowL.x=-0.2;
+  } else { // stand / idle
+    P.shoulderL.z=0.15;P.shoulderR.z=-0.15;P.elbowL.x=-0.2;P.elbowR.x=-0.2;
+    P.spine.x=0.02;
+  }
+  for(const k in J) J[k].rotation.set(P[k].x,P[k].y,P[k].z);
+}
+applyPose();
+renderer.render(scene,camera);
+window.__ready=true;
+</script>
+</body></html>

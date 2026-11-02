@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Ensiklopedia & Anatomi 50+ Fauna Nusantara & Dunia</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col overflow-hidden">
+
+  <!-- TOP HEADER -->
+  <header class="h-14 border-b border-slate-800 bg-slate-900/90 backdrop-blur px-4 flex items-center justify-between shrink-0 z-20">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-amber-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black text-lg">
+        🐾
+      </div>
+      <div>
+        <h1 class="font-bold text-sm sm:text-base leading-tight tracking-tight flex items-center gap-2">
+          Studio Anatomi Fauna 52+
+          <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-semibold px-2 py-0.5 rounded-full border border-emerald-500/30">Nusantara & Global</span>
+        </h1>
+        <p class="text-xs text-slate-400 hidden sm:block">Ensiklopedia Biologi Komparatif • Vektor Rigging & Skala Nyata</p>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-2">
+      <button id="btnExportSvg" title="Ekspor Aset SVG Vektor" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition active:scale-95">
+        <i data-lucide="file-code" class="w-4 h-4 text-emerald-400"></i>
+        <span class="hidden sm:inline">Unduh SVG</span>
+      </button>
+      <button id="btnExportPng" title="Ekspor PNG Resolusi Tinggi (2x)" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 transition shadow-md shadow-emerald-500/20 active:scale-95">
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>Unduh PNG</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 border border-emerald-500/40 text-slate-200 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs translate-y-16 opacity-0 pointer-events-none transition-all duration-300">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg">Tindakan berhasil!</span>
+  </div>
+
+  <!-- WORKSPACE -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- LEFT PANEL: Filterable 52+ Fauna Library -->
+    <aside class="w-72 lg:w-80 border-r border-slate-800 bg-slate-900/50 flex flex-col shrink-0 overflow-hidden">
+      
+      <!-- Search & Filters -->
+      <div class="p-3 border-b border-slate-800 space-y-2.5">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-500"></i>
+          <input type="text" id="searchInput" placeholder="Cari hewan (cth: harimau, semut, elang)..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <!-- Class Filter Chips -->
+        <div class="flex gap-1 overflow-x-auto pb-1" id="classTabs">
+          <button data-class="all" class="class-tab active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 shrink-0 transition">Semua (52)</button>
+          <button data-class="mamalia" class="class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition">Mamalia</button>
+          <button data-class="aves" class="class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition">Burung (Aves)</button>
+          <button data-class="reptil" class="class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition">Reptil & Amfibi</button>
+          <button data-class="pisces" class="class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition">Ikan & Laut</button>
+          <button data-class="serangga" class="class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition">Serangga & Artropoda</button>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px]">
+          <label class="flex items-center gap-1.5 cursor-pointer text-slate-400 hover:text-emerald-400">
+            <input type="checkbox" id="chkEndemic" class="rounded accent-emerald-500 bg-slate-950">
+            <span>Hanya Endemik Nusantara 🇮🇩</span>
+          </label>
+          <span id="assetCountBadge" class="text-emerald-400 font-mono font-bold">52 Aset</span>
+        </div>
+      </div>
+
+      <!-- Animal List Grid -->
+      <div class="flex-1 overflow-y-auto p-2 space-y-1" id="animalList">
+        <!-- Injected via JavaScript -->
+      </div>
+    </aside>
+
+    <!-- CENTER VIEWPORT -->
+    <main class="flex-1 flex flex-col relative bg-slate-950 overflow-hidden">
+
+      <!-- Viewport Floating Controls Header -->
+      <div class="absolute top-3 left-3 right-3 z-10 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+        
+        <!-- Render Modes -->
+        <div class="flex items-center gap-1 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <button id="btnModeVisual" class="view-mode-btn active px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+            <span>Visual Asli</span>
+          </button>
+          <button id="btnModeSkeleton" class="view-mode-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+            <i data-lucide="bone" class="w-3.5 h-3.5"></i>
+            <span>Rangka & Sendi</span>
+          </button>
+          <button id="btnModeOrgans" class="view-mode-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5">
+            <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+            <span>Organ Vital</span>
+          </button>
+        </div>
+
+        <!-- Scale Comparison & Flip & Pose Mode -->
+        <div class="flex items-center gap-1 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <button id="btnToggleHumanScale" title="Bandingkan skala dengan siluet manusia (170 cm)" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-amber-300 hover:bg-slate-800 transition">
+            <i data-lucide="user" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Skala Manusia</span>
+          </button>
+          <div class="w-px h-5 bg-slate-800"></div>
+          <button id="btnFlip" title="Balik Arah (Flip Horizontal)" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition">
+            <i data-lucide="flip-horizontal" class="w-4 h-4"></i>
+          </button>
+          <button id="btnZoomIn" title="Perbesar" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition">
+            <i data-lucide="zoom-in" class="w-4 h-4"></i>
+          </button>
+          <button id="btnZoomOut" title="Perkecil" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition">
+            <i data-lucide="zoom-out" class="w-4 h-4"></i>
+          </button>
+          <button id="btnResetView" title="Reset Pandangan" class="px-2.5 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 flex items-center gap-1 transition">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span class="hidden md:inline">Reset</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pose Controls (Bottom-left Float) -->
+      <div class="absolute bottom-4 left-4 z-10 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-2xl shadow-xl">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2">Pose:</span>
+        <button data-pose="idle" class="pose-btn active px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition">Santai</button>
+        <button data-pose="action" class="pose-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Gerak/Lari</button>
+        <button data-pose="alert" class="pose-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Siaga/Serang</button>
+        <button data-pose="rest" class="pose-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">Tidur</button>
+      </div>
+
+      <!-- SVG Drawing Canvas -->
+      <div id="canvasContainer" class="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing overflow-hidden flex items-center justify-center">
+        <svg id="faunaSvg" viewBox="0 0 1000 850" class="w-full h-full max-h-screen drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Pattern & Gradients -->
+            <radialGradient id="organGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ef4444"/>
+              <stop offset="70%" stop-color="#b91c1c"/>
+              <stop offset="100%" stop-color="#7f1d1d"/>
+            </radialGradient>
+            
+            <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+
+            <pattern id="labGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <rect width="40" height="40" fill="none" stroke="#0f766e" stroke-width="0.8" opacity="0.25"/>
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#14b8a6" stroke-width="1.2" opacity="0.35"/>
+            </pattern>
+          </defs>
+
+          <!-- Dynamic World Group with Pan & Zoom -->
+          <g id="viewportWorld">
+            
+            <!-- Habitat Scenery Background -->
+            <g id="habitatLayer">
+              <!-- Rendered dynamically based on selected habitat -->
+            </g>
+
+            <!-- Ground Shadow -->
+            <ellipse id="groundShadow" cx="500" cy="720" rx="220" ry="24" fill="#020617" opacity="0.5" filter="blur(10px)"/>
+
+            <!-- Human Comparative Scale Siluet (170cm) -->
+            <g id="humanScaleLayer" class="hidden transition-opacity duration-300">
+              <!-- Rendered dynamically with precise height scale -->
+            </g>
+
+            <!-- ANIMAL ASSET VECTOR ROOT -->
+            <g id="animalLayer" class="transition-all duration-300">
+              <!-- Vector Animal Artwork -->
+            </g>
+
+            <!-- SKELETAL RIG OVERLAY -->
+            <g id="skeletonLayer" class="hidden transition-opacity duration-300">
+              <!-- Bone segments & joint pins -->
+            </g>
+
+            <!-- VITAL ORGANS / ANATOMY PINS OVERLAY -->
+            <g id="organsLayer" class="hidden transition-opacity duration-300">
+              <!-- Anatomy pins & tags -->
+            </g>
+
+          </g>
+        </svg>
+
+        <!-- Dynamic Organ/Anatomy Tooltip Hover -->
+        <div id="anatomyTooltip" class="absolute bottom-4 right-4 bg-slate-900/90 backdrop-blur border border-emerald-500/40 px-3.5 py-2 rounded-xl text-xs text-slate-300 shadow-2xl pointer-events-none transition opacity-0">
+          <div class="font-bold text-emerald-400" id="ttTitle">Struktur Anatomi</div>
+          <div class="text-[11px] text-slate-400" id="ttDesc">Deskripsi organ...</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT PANEL: Inspector & Scientific Specs -->
+    <aside class="w-80 lg:w-88 border-l border-slate-800 bg-slate-900/50 flex flex-col shrink-0 overflow-y-auto">
+      <div class="p-4 space-y-5">
+        
+        <!-- Header Info -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span id="badgeClass" class="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">MAMALIA</span>
+            <span id="badgeIucn" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">CR: Kritis</span>
+          </div>
+          <h2 id="infoName" class="text-xl font-extrabold text-white">Harimau Sumatera</h2>
+          <p id="infoScientific" class="text-xs font-serif italic text-emerald-400">Panthera tigris sumatrae</p>
+        </div>
+
+        <!-- Habitat Selector -->
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Latar Ekosistem Asli</label>
+          <select id="habitatSelect" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="rainforest">🌲 Hutan Hujan Tropis Nusantara</option>
+            <option value="ocean">🌊 Terumbu Karang & Palung Laut</option>
+            <option value="savanna">🌾 Savana Baluran & Padang Rumput</option>
+            <option value="micro">🍃 Dunia Mikro Daun & Ranting</option>
+            <option value="mountain">🏔️ Pegunungan Kabut & Angkasa</option>
+            <option value="lab">📐 Grid Laboratorium Anatomi</option>
+          </select>
+        </div>
+
+        <!-- Quick Biological Metrics -->
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Panjang / Tinggi</div>
+            <div id="statLength" class="font-bold text-slate-200 font-mono mt-0.5">2.2 – 2.5 m</div>
+          </div>
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Bobot Rata-rata</div>
+            <div id="statWeight" class="font-bold text-slate-200 font-mono mt-0.5">100 – 140 kg</div>
+          </div>
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Tipe Pakan</div>
+            <div id="statDiet" class="font-bold text-emerald-400 mt-0.5">Karnivora Murni</div>
+          </div>
+          <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800/80">
+            <div class="text-[10px] text-slate-400 uppercase tracking-wider">Sebaran Utama</div>
+            <div id="statRange" class="font-bold text-slate-200 mt-0.5">Sumatera, ID</div>
+          </div>
+        </div>
+
+        <!-- Anatomical Highlights -->
+        <div class="space-y-2">
+          <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="dna" class="w-4 h-4 text-emerald-400"></i>
+            Kunci Adaptasi Anatomi
+          </h3>
+          <div id="anatomyFeatures" class="space-y-2">
+            <!-- Dynamic features -->
+          </div>
+        </div>
+
+        <!-- Biological Description -->
+        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed space-y-1.5">
+          <div class="font-bold text-emerald-400 flex items-center gap-1.5">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Profil Ekologi
+          </div>
+          <p id="infoDescription">
+            Subspesies harimau terkecil yang masih bertahan di dunia, dengan pola loreng lebih rapat dan selaput di sela jemari untuk berenang lincah di rawa hutan Sumatera.
+          </p>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MAIN ENGINE SCRIPT -->
+  <script>
+    // Lucide initialization — REMO 4 fix: dibungkus try/catch supaya satu CDN
+    // gagal tidak mematikan seluruh aplikasi (dulu: lucide is not defined -> mati total).
+    function safeCreateIcons() {
+      try {
+        if (window.lucide && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (err) {
+        console.warn('Lucide tidak tersedia, ikon dilewati:', err);
+      }
+    }
+    safeCreateIcons();
+
+    // =========================================================================
+    // DATABASE: 52+ FAUNA ASSETS ACROSS 5 CORE TAXONOMICAL CLASSES
+    // =========================================================================
+    const FAUNA_DATABASE = [
+      // 1. MAMALIA (14 Species)
+      {
+        id: 'harimau_sumatera',
+        name: 'Harimau Sumatera',
+        scientific: 'Panthera tigris sumatrae',
+        class: 'mamalia',
+        icon: '🐅',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '2.2 – 2.5 m',
+        weight: '100 – 140 kg',
+        diet: 'Karnivora',
+        range: 'Hutan Hujan Sumatera',
+        habitatDefault: 'rainforest',
+        scaleRatio: 1.1, // Scale multiplier compared to canvas center
+        desc: 'Subspesies harimau terkecil di dunia dengan adaptasi loreng rapat untuk kamuflase sempurna di hutan lebat Sumatera.',
+        features: [
+          'Kuku Retraktil: Cakar dapat ditarik masuk agar melangkah tanpa suara.',
+          'Lapisan Tapetum Lucidum: Penglihatan malam 6x lebih tajam dari manusia.',
+          'Selaput Renang: Jemari berselaput tipis memungkinkan berburu di sungai luas.'
+        ],
+        svgType: 'feline',
+        colors: { body: '#ea580c', belly: '#fef08a', stripe: '#18181b', eye: '#facc15' },
+        organs: [
+          { name: 'Tengkorak & Taring 7cm', desc: 'Gigi taring kuat dengan daya gigit hingga 1.050 psi.', x: 740, y: 390 },
+          { name: 'Jantung 4 Ruang Kuat', desc: 'Memompa darah cepat untuk ledakan akselerasi 65 km/jam.', x: 580, y: 440 },
+          { name: 'Tulang Belakang Fleksibel', desc: 'Kolom vertebra lentur menghasilkan langkah lari panjang.', x: 440, y: 380 }
+        ]
+      },
+      {
+        id: 'badak_jawa',
+        name: 'Badak Jawa Cula Satu',
+        scientific: 'Rhinoceros sondaicus',
+        class: 'mamalia',
+        icon: '🦏',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '3.1 – 3.2 m',
+        weight: '900 – 2.300 kg',
+        diet: 'Herbivora',
+        range: 'Taman Nasional Ujung Kulon',
+        habitatDefault: 'rainforest',
+        scaleRatio: 1.4,
+        desc: 'Salah satu mamalia paling langka di bumi bercula satu dengan lipatan kulit menyerupai baju zirah baja.',
+        features: ['Cula Keratin Tunggal (20-25cm)', 'Kulit Mosaik Tebal 3 cm', 'Bibir Atas Prehensil untuk Memetik Ranting'],
+        svgType: 'rhino',
+        colors: { body: '#64748b', belly: '#475569', stripe: '#334155', eye: '#0f172a' }
+      },
+      {
+        id: 'orangutan_kalimantan',
+        name: 'Orangutan Kalimantan',
+        scientific: 'Pongo pygmaeus',
+        class: 'mamalia',
+        icon: '🦧',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '1.2 – 1.4 m',
+        weight: '50 – 100 kg',
+        diet: 'Frugivora (Buah-buahan)',
+        range: 'Kalimantan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.95,
+        desc: 'Kera besar arboreal paling cerdas di Asia dengan bentang lengan melebihi 2 meter.',
+        features: ['Bentangan Tangan 2.2 Meter', 'Bantalan Pipi Flensa (Jantan Dominan)', 'Ibu Jari Kaki Menentang untuk Menggenggam'],
+        svgType: 'primate',
+        colors: { body: '#c2410c', belly: '#9a3412', stripe: '#7c2d12', eye: '#451a03' }
+      },
+      {
+        id: 'gajah_asia',
+        name: 'Gajah Sumatera / Asia',
+        scientific: 'Elephas maximus sumatranus',
+        class: 'mamalia',
+        icon: '🐘',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '5.5 – 6.5 m',
+        weight: '2.000 – 4.000 kg',
+        diet: 'Herbivora',
+        range: 'Sumatera & Asia Tenggara',
+        habitatDefault: 'rainforest',
+        scaleRatio: 1.8,
+        desc: 'Insinyur ekosistem pembuka jalur penjelajah hutan dengan belalai berotot lebih dari 40.000 fasikulus otot.',
+        features: ['Belalai Multifungsi (Bernapas, Minum & Mengangkat)', 'Gading Modifikasi Gigi Seri', 'Bantalan Telapak Kaki Peredam Getar'],
+        svgType: 'elephant',
+        colors: { body: '#64748b', belly: '#475569', stripe: '#f8fafc', eye: '#1e293b' }
+      },
+      {
+        id: 'singa_afrika',
+        name: 'Singa Afrika',
+        scientific: 'Panthera leo',
+        class: 'mamalia',
+        icon: '🦁',
+        endemic: false,
+        iucn: 'VU (Rentan)',
+        length: '2.4 – 3.0 m',
+        weight: '150 – 250 kg',
+        diet: 'Karnivora',
+        range: 'Afrika Sub-Sahara',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.25,
+        desc: 'Raja sabana yang hidup berkelompok (pride) dengan surai lebat pelindung leher dari cengkeraman rival.',
+        features: ['Suri Hitam-Emas Pelindung Leher', 'Auman Terdengar Hingga Radius 8 km', 'Otot Bahu Kuat untuk Menjatuhkan Mangsa'],
+        svgType: 'lion',
+        colors: { body: '#d97706', belly: '#fef3c7', stripe: '#78350f', eye: '#b45309' }
+      },
+      {
+        id: 'bekantan',
+        name: 'Bekantan Hidung Panjang',
+        scientific: 'Nasalis larvatus',
+        class: 'mamalia',
+        icon: '🐒',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '65 – 76 cm',
+        weight: '12 – 24 kg',
+        diet: 'Folivora (Daun Mangrove)',
+        range: 'Hutan Bakau Kalimantan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.75,
+        desc: 'Primata endemik Borneo berhidung gantung besar yang berfungsi sebagai resonator suara panggilan kelompok.',
+        features: ['Hidung Besar Berongga Resonansi', 'Lambung Fermentasi Kompleks', 'Kaki Berselaput untuk Berenang di Rawa Bakau'],
+        svgType: 'monkey',
+        colors: { body: '#ea580c', belly: '#fed7aa', stripe: '#c2410c', eye: '#431407' }
+      },
+      {
+        id: 'anoa_pegunungan',
+        name: 'Anoa Pegunungan',
+        scientific: 'Bubalus quarlesi',
+        class: 'mamalia',
+        icon: '🐂',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '1.2 – 1.5 m',
+        weight: '150 – 300 kg',
+        diet: 'Herbivora',
+        range: 'Hutan Hujan Sulawesi',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.9,
+        desc: 'Kerbau kerdil terkecil di dunia endemik Pulau Sulawesi yang hidup soliter di pedalaman hutan primer.',
+        features: ['Tanduk Runcing Lurus Penusuk', 'Ukuran Tubuh Kompak untuk Melibas Semak Rapat', 'Penciuman Sangat Peka'],
+        svgType: 'quadruped',
+        colors: { body: '#1c1917', belly: '#292524', stripe: '#f8fafc', eye: '#44403c' }
+      },
+      {
+        id: 'beruang_madu',
+        name: 'Beruang Madu Malaya',
+        scientific: 'Helarctos malayanus',
+        class: 'mamalia',
+        icon: '🐻',
+        endemic: true,
+        iucn: 'VU (Rentan)',
+        length: '1.1 – 1.4 m',
+        weight: '35 – 70 kg',
+        diet: 'Omnivora',
+        range: 'Sumatera & Kalimantan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.85,
+        desc: 'Beruang terkecil di bumi dengan lidah mencapai 25 cm untuk menjilat madu dan serangga dari rongga kayu.',
+        features: ['Lidah Panjang 25 cm', 'Kuku Melengkung Tajam Pemanjat Pohon', 'Tanda Dada Khas Huruf U Warna Jingga'],
+        svgType: 'bear',
+        colors: { body: '#09090b', belly: '#fdba74', stripe: '#f97316', eye: '#27272a' }
+      },
+      {
+        id: 'rusa_bawean',
+        name: 'Rusa Bawean',
+        scientific: 'Axis kuhlii',
+        class: 'mamalia',
+        icon: '🦌',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '1.4 m',
+        weight: '50 – 60 kg',
+        diet: 'Herbivora',
+        range: 'Pulau Bawean, Jatim',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.8,
+        desc: 'Rusa langka nokturnal penghuni pulau kecil Bawean dengan tanduk bercabang tiga yang simetris.',
+        features: ['Tanduk Ramping Bertaring Tiga', 'Kaki Ramping Lincah Melompat Bebatuan', 'Aktivitas Nokturnal Penghindar Predator'],
+        svgType: 'deer',
+        colors: { body: '#854d0e', belly: '#fef08a', stripe: '#713f12', eye: '#451a03' }
+      },
+      {
+        id: 'jerapah',
+        name: 'Jerapah Afrika',
+        scientific: 'Giraffa camelopardalis',
+        class: 'mamalia',
+        icon: '🦒',
+        endemic: false,
+        iucn: 'VU (Rentan)',
+        length: '4.5 – 5.8 m',
+        weight: '800 – 1.200 kg',
+        diet: 'Herbivora',
+        range: 'Sabana Afrika',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.9,
+        desc: 'Mamalia darat tertinggi dengan jantung bertekanan ganda untuk memompa darah hingga puncak kepala.',
+        features: ['Leher 2 Meter dengan 7 Ruas Servikal Khusus', 'Lidah Hitam 45 cm Tahan Duri Akasia', 'Katup Pembuluh Darah Otak Anti Pusing'],
+        svgType: 'giraffe',
+        colors: { body: '#eab308', belly: '#fef08a', stripe: '#78350f', eye: '#1e293b' }
+      },
+      {
+        id: 'zebra_dataran',
+        name: 'Zebra Dataran',
+        scientific: 'Equus quagga',
+        class: 'mamalia',
+        icon: '🦓',
+        endemic: false,
+        iucn: 'NT (Hampir Terancam)',
+        length: '2.1 – 2.5 m',
+        weight: '250 – 350 kg',
+        diet: 'Herbivora',
+        range: 'Afrika Timur & Selatan',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.1,
+        desc: 'Solusi optik alam: garis hitam-putih membiaskan penglihatan lalat tsetse dan membingungkan pemangsa.',
+        features: ['Pola Belang Unik Seperti Sidik Jari', 'Tendangan Kaki Belakang Mampu Mematahkan Rahang Singa', 'Gigi Geraham Tahan Gesekan Rumput Keras'],
+        svgType: 'zebra',
+        colors: { body: '#ffffff', belly: '#f8fafc', stripe: '#09090b', eye: '#18181b' }
+      },
+      {
+        id: 'serigala_abu',
+        name: 'Serigala Abu-Abu',
+        scientific: 'Canis lupus',
+        class: 'mamalia',
+        icon: '🐺',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '1.3 – 1.6 m',
+        weight: '35 – 65 kg',
+        diet: 'Karnivora',
+        range: 'Eurasia & Amerika Utara',
+        habitatDefault: 'mountain',
+        scaleRatio: 0.95,
+        desc: 'Predator puncak dengan stamina jelajah luar biasa hingga 50 km per hari dalam perburuan kawanan terorganisir.',
+        features: ['Daya Tahan Lari Tanpa Henti', 'Penciuman 100x Lebih Kuat dari Manusia', 'Struktur Sosial Hirarki Alpha-Beta'],
+        svgType: 'canine',
+        colors: { body: '#64748b', belly: '#e2e8f0', stripe: '#334155', eye: '#f59e0b' }
+      },
+      {
+        id: 'paus_biru',
+        name: 'Paus Biru Raksasa',
+        scientific: 'Balaenoptera musculus',
+        class: 'mamalia',
+        icon: '🐋',
+        endemic: false,
+        iucn: 'EN (Terancam)',
+        length: '24 – 30 m',
+        weight: '100.000 – 150.000 kg',
+        diet: 'Karnivora Filter (Krill)',
+        range: 'Samudra Dunia & Laut Dalam Nusantara',
+        habitatDefault: 'ocean',
+        scaleRatio: 2.3,
+        desc: 'Hewan terbesar yang pernah hidup di bumi, jantungnya seukuran mobil kecil dengan aorta selebar pipa manusia.',
+        features: ['Pelat Balin Penyaring 4 Ton Krill Harian', 'Suara Infrasonik Terdengar Ratusan Mil', 'Lubang Sembur Ganda Melontarkan Air 9m'],
+        svgType: 'whale',
+        colors: { body: '#0284c7', belly: '#bae6fd', stripe: '#0369a1', eye: '#082f49' }
+      },
+      {
+        id: 'paus_orca',
+        name: 'Paus Pembunuh (Orca)',
+        scientific: 'Orcinus orca',
+        class: 'mamalia',
+        icon: '🐬',
+        endemic: false,
+        iucn: 'DD (Data Kurang)',
+        length: '6.0 – 8.0 m',
+        weight: '3.000 – 6.000 kg',
+        diet: 'Karnivora Puncak',
+        range: 'Samudra Global & Laut Banda',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.6,
+        desc: 'Lumba-lumba terbesar dengan kecerdasan strategi berburu tak tertandingi dan komunikasi dialek kelompok.',
+        features: ['Sirip Punggung Tegak 1.8 Meter', 'Ekolokasi Presisi Pemindai Rintangan', 'Lapisan Lemak Blubber Tebal 10 cm'],
+        svgType: 'whale',
+        colors: { body: '#09090b', belly: '#f8fafc', stripe: '#ffffff', eye: '#ffffff' }
+      },
+
+      // 2. AVES / BURUNG (10 Species)
+      {
+        id: 'cendrawasih_kuning',
+        name: 'Cendrawasih Kuning Besar',
+        scientific: 'Paradisaea apoda',
+        class: 'aves',
+        icon: '🦜',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '43 cm',
+        weight: '170 – 220 g',
+        diet: 'Frugivora & Insekta',
+        range: 'Hutan Hujan Papua',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.7,
+        desc: 'Burung surga berbulu dekoratif spektakuler yang digunakan jantan untuk tarian ritual memikat betina di tajuk pohon.',
+        features: ['Bulu Sayap Emas Menjuntai Lebat', 'Paruh Kuat Pemecah Biji Buah Rimba', 'Kaki Kokoh Bertengger di Dahan Miring'],
+        svgType: 'bird',
+        colors: { body: '#78350f', belly: '#eab308', stripe: '#16a34a', eye: '#facc15' }
+      },
+      {
+        id: 'elang_jawa',
+        name: 'Elang Jawa (Garuda)',
+        scientific: 'Nisaetus bartelsi',
+        class: 'aves',
+        icon: '🦅',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '60 – 70 cm',
+        weight: '1.2 – 1.8 kg',
+        diet: 'Karnivora',
+        range: 'Hutan Pegunungan Jawa',
+        habitatDefault: 'mountain',
+        scaleRatio: 0.85,
+        desc: 'Inspirasi lambang negara Indonesia dengan jambul tegak khas 12 cm di kepala dan rentang sayap kokoh.',
+        features: ['Jambul Kepala Khas 12 cm', 'Cengkeraman Kuku Predator 400 psi', 'Penglihatan Teleskopik Pembidik Mangsa'],
+        svgType: 'eagle',
+        colors: { body: '#451a03', belly: '#fef3c7', stripe: '#78350f', eye: '#ea580c' }
+      },
+      {
+        id: 'jalak_bali',
+        name: 'Jalak Bali',
+        scientific: 'Leucopsar rothschildi',
+        class: 'aves',
+        icon: '🕊️',
+        endemic: true,
+        iucn: 'CR (Kritis)',
+        length: '25 cm',
+        weight: '100 g',
+        diet: 'Omnivora',
+        range: 'Taman Nasional Bali Barat',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.5,
+        desc: 'Burung pesolek berbulu putih salju bersih dengan topeng kulit biru terang di sekeliling matanya.',
+        features: ['Topeng Biru Kobalt Tanpa Bulu di Mata', 'Jambul Halus Mengembang', 'Ujung Bulu Sayap & Ekor Bergaris Hitam Pekat'],
+        svgType: 'bird',
+        colors: { body: '#ffffff', belly: '#f8fafc', stripe: '#0284c7', eye: '#09090b' }
+      },
+      {
+        id: 'merak_hijau',
+        name: 'Merak Hijau Jawa',
+        scientific: 'Pavo muticus',
+        class: 'aves',
+        icon: '🦚',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '1.8 – 3.0 m (Termasuk ekor)',
+        weight: '4.0 – 5.0 kg',
+        diet: 'Omnivora',
+        range: 'Taman Nasional Baluran & Alas Purwo',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.2,
+        desc: 'Burung megah dengan kipas ekor bertabur pola mata ocelli warna zamrud dan tembaga kemilau.',
+        features: ['Ekor Kipas Bertabur Kristal Fotonik', 'Jambul Tegak Menyerupai Mahkota Kerajaan', 'Taji Tajam Pertarungan Wilayah'],
+        svgType: 'bird',
+        colors: { body: '#047857', belly: '#0d9488', stripe: '#ca8a04', eye: '#1e293b' }
+      },
+      {
+        id: 'burung_hantu',
+        name: 'Burung Hantu Celepuk',
+        scientific: 'Otus lempiji',
+        class: 'aves',
+        icon: '🦉',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '20 – 25 cm',
+        weight: '120 – 170 g',
+        diet: 'Karnivora (Insekta & Tikus)',
+        range: 'Jawa, Sumatera, Kalimantan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.55,
+        desc: 'Pemburu malam senyap dengan bulu bertepi gerigi yang meredam desis turbulensi udara hingga 100%.',
+        features: ['Piringan Wajah Pemantul Suara', 'Leher Mampu Berputar 270 Derajat', 'Kepakan Sayap Akustik Nyaris Senyap'],
+        svgType: 'owl',
+        colors: { body: '#78350f', belly: '#fed7aa', stripe: '#451a03', eye: '#f59e0b' }
+      },
+      {
+        id: 'toucan_toco',
+        name: 'Burung Toucan Toco',
+        scientific: 'Ramphastos toco',
+        class: 'aves',
+        icon: '🦜',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '55 – 65 cm',
+        weight: '500 – 850 g',
+        diet: 'Frugivora',
+        range: 'Amerika Selatan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.7,
+        desc: 'Pemilik paruh terbesar proporsional yang berpori heksagonal ringan dan berfungsi sebagai radiator suhu tubuh.',
+        features: ['Paruh Keratin Berongga Ultra-Ringan', 'Sistem Pengatur Termoregulasi Darah', 'Lidah Panjang Berambut Kasar'],
+        svgType: 'bird',
+        colors: { body: '#09090b', belly: '#ffffff', stripe: '#f97316', eye: '#0284c7' }
+      },
+      {
+        id: 'flamingo_karibia',
+        name: 'Flamingo Merah Jambu',
+        scientific: 'Phoenicopterus ruber',
+        class: 'aves',
+        icon: '🦩',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '1.2 – 1.4 m',
+        weight: '2.0 – 4.0 kg',
+        diet: 'Filter Laut (Alga & Udang)',
+        range: 'Pesisir Rawa Garam Tropis',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.1,
+        desc: 'Warna merah muda berasal dari zat karotenoid udang kecil yang disaring menggunakan paruh melengkung terbalik.',
+        features: ['Kaki Jenjang Peredam Panas Air Asin', 'Paruh Pompa Filter Lamela', 'Keseimbangan Statis Berdiri Satu Kaki'],
+        svgType: 'bird',
+        colors: { body: '#f43f5e', belly: '#fb7185', stripe: '#fda4af', eye: '#09090b' }
+      },
+      {
+        id: 'penguin_kaisar',
+        name: 'Penguin Kaisar',
+        scientific: 'Aptenodytes forsteri',
+        class: 'aves',
+        icon: '🐧',
+        endemic: false,
+        iucn: 'NT (Hampir Terancam)',
+        length: '1.1 – 1.3 m',
+        weight: '25 – 45 kg',
+        diet: 'Karnivora (Ikan & Cumi)',
+        range: 'Antarktika',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.9,
+        desc: 'Burung penyelam kutub yang mampu menyelam hingga kedalaman 500 meter dalam suhu air di bawah nol derajat.',
+        features: ['Lapisan Bulu Berlapis Lemak 3 cm', 'Sayap Termodifikasi Jadi Dayung Luncur', 'Tulang Padat Berat Penyeimbang Selam'],
+        svgType: 'bird',
+        colors: { body: '#09090b', belly: '#ffffff', stripe: '#f59e0b', eye: '#09090b' }
+      },
+      {
+        id: 'kolibri_zamrud',
+        name: 'Burung Kolibri Tropis',
+        scientific: 'Trochilidae',
+        class: 'aves',
+        icon: '🐦',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '7 – 12 cm',
+        weight: '3 – 6 g',
+        diet: 'Nektar Bunga',
+        range: 'Hutan Tropis Amerika',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.35,
+        desc: 'Satu-satunya burung yang mampu terbang mundur dan melayang statis dengan detak sayap hingga 80 kepakan per detik.',
+        features: ['Sendi Bahu Rotasi 180 Derajat', 'Detak Jantung 1.200 Kali Per Menit', 'Lidah Garpu Tabung Penghisap Nektar'],
+        svgType: 'bird',
+        colors: { body: '#10b981', belly: '#06b6d4', stripe: '#6366f1', eye: '#09090b' }
+      },
+      {
+        id: 'rajawali_emas',
+        name: 'Rajawali Emas Perkasa',
+        scientific: 'Aquila chrysaetos',
+        class: 'aves',
+        icon: '🦅',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '70 – 90 cm',
+        weight: '3.5 – 6.5 kg',
+        diet: 'Karnivora',
+        range: 'Pegunungan Holartik',
+        habitatDefault: 'mountain',
+        scaleRatio: 1.1,
+        desc: 'Raja angkasa dengan kecepatan menukik tajam mencapai 320 km/jam untuk menyambar kambing gunung dan kelinci.',
+        features: ['Sayap Bentang 2.3 Meter', 'Bulu Tengkuk Emas Berpendar', 'Penglihatan Resolusi 8x Manusia'],
+        svgType: 'eagle',
+        colors: { body: '#451a03', belly: '#78350f', stripe: '#ca8a04', eye: '#f59e0b' }
+      },
+
+      // 3. REPTIL & AMFIBI (9 Species)
+      {
+        id: 'komodo_dragon',
+        name: 'Komodo Dragon (Varanus)',
+        scientific: 'Varanus komodoensis',
+        class: 'reptil',
+        icon: '🦎',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '2.5 – 3.1 m',
+        weight: '70 – 130 kg',
+        diet: 'Karnivora',
+        range: 'Taman Nasional Komodo (NTT)',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.3,
+        desc: 'Kadal terbesar di dunia peninggalan era purba dengan kelenjar bisa hemotoksik dan lidah kuning bercabang.',
+        features: ['Kelenjar Bisa Hemotoksik Perontok Tensi', 'Lidah Jacobson Detektor Bangkai 9 km', 'Kulit Bertulang Osteoderm Seperti Rantai Baja'],
+        svgType: 'lizard',
+        colors: { body: '#57534e', belly: '#78716c', stripe: '#44403c', eye: '#f59e0b' }
+      },
+      {
+        id: 'buaya_muara',
+        name: 'Buaya Muara Air Asin',
+        scientific: 'Crocodylus porosus',
+        class: 'reptil',
+        icon: '🐊',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '5.0 – 6.3 m',
+        weight: '500 – 1.000 kg',
+        diet: 'Karnivora Puncak',
+        range: 'Muara Sungai Nusantara & Pasifik',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.7,
+        desc: 'Reptil hidup terbesar di dunia dengan kekuatan gigitan terkuat di kerajaan hewan mencapai 3.700 psi.',
+        features: ['Sensor Tekanan Kubah Kulit (DPRs)', 'Klep Tenggorokan Penahan Air Saat Menyelam', 'Batu Gastrolit Penstabil Kedalaman'],
+        svgType: 'crocodile',
+        colors: { body: '#3f3f46', belly: '#a1a1aa', stripe: '#27272a', eye: '#eab308' }
+      },
+      {
+        id: 'kobra_raja',
+        name: 'Ular Kobra Raja (King Cobra)',
+        scientific: 'Ophiophagus hannah',
+        class: 'reptil',
+        icon: '🐍',
+        endemic: true,
+        iucn: 'VU (Rentan)',
+        length: '3.5 – 5.5 m',
+        weight: '6 – 10 kg',
+        diet: 'Ofiofagus (Pemakan Ular Lain)',
+        range: 'Hutan Tropis Nusantara',
+        habitatDefault: 'rainforest',
+        scaleRatio: 1.15,
+        desc: 'Ular berbisa terpanjang di dunia dengan tudung leher mengembang megah dan racun neurotoksik pelumpuh saraf.',
+        features: ['Tudung Leher Mengembang Saat Siaga', 'Taring Suntik Bisa 1.5 cm', 'Kemampuan Mengangkat Sepertiga Panjang Badan'],
+        svgType: 'snake',
+        colors: { body: '#713f12', belly: '#fef08a', stripe: '#ca8a04', eye: '#18181b' }
+      },
+      {
+        id: 'kura_galapagos',
+        name: 'Kura-kura Raksasa Galapagos',
+        scientific: 'Chelonoidis niger',
+        class: 'reptil',
+        icon: '🐢',
+        endemic: false,
+        iucn: 'VU (Rentan)',
+        length: '1.2 – 1.8 m',
+        weight: '200 – 400 kg',
+        diet: 'Herbivora',
+        range: 'Kepulauan Galápagos',
+        habitatDefault: 'savanna',
+        scaleRatio: 1.1,
+        desc: 'Simbol umur panjang yang mampu hidup lebih dari 150 tahun dengan tempurung pelindung berkubah tulang keras.',
+        features: ['Karapas Tulang Tebal Anti Gigitan', 'Penyimpan Cadangan Air 1 Tahun', 'Metabolisme Super Lambat'],
+        svgType: 'turtle',
+        colors: { body: '#44403c', belly: '#78716c', stripe: '#292524', eye: '#0c0a09' }
+      },
+      {
+        id: 'katak_beracun',
+        name: 'Katak Pohon Biru Beracun',
+        scientific: 'Dendrobates tinctorius azureus',
+        class: 'reptil',
+        icon: '🐸',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '3 – 4.5 cm',
+        weight: '8 g',
+        diet: 'Insektivora',
+        range: 'Hutan Hujan Amerika Selatan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.35,
+        desc: 'Warna biru terang aposematik adalah peringatan racun batrachotoxin di kulit yang cukup melumpuhkan predator.',
+        features: ['Warna Peringatan Aposematik', 'Sekresi Racun Kulit Batrachotoxin', 'Bantalan Hisap Ujung Jari Pemanjat Licin'],
+        svgType: 'frog',
+        colors: { body: '#2563eb', belly: '#60a5fa', stripe: '#1e1b4b', eye: '#0284c7' }
+      },
+      {
+        id: 'bunglon_madagaskar',
+        name: 'Bunglon Panter Madagaskar',
+        scientific: 'Furcifer pardalis',
+        class: 'reptil',
+        icon: '🦎',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '35 – 50 cm',
+        weight: '150 – 250 g',
+        diet: 'Insektivora',
+        range: 'Madagaskar',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.6,
+        desc: 'Ahli ilusi optik dengan sel kromatofora yang mampu mengubah warna kulit dalam hitungan detik untuk ekspresi emosi.',
+        features: ['Mata Merdeka Memutar 360 Derajat', 'Lidah Pegas Meluncur 2x Panjang Tubuh', 'Kaki Capit Zygodactylous'],
+        svgType: 'lizard',
+        colors: { body: '#10b981', belly: '#f59e0b', stripe: '#ec4899', eye: '#06b6d4' }
+      },
+      {
+        id: 'tokek_hutan',
+        name: 'Tokek Rumah Bertutul',
+        scientific: 'Gekko gecko',
+        class: 'reptil',
+        icon: '🦎',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '28 – 35 cm',
+        weight: '150 – 300 g',
+        diet: 'Insektivora',
+        range: 'Seluruh Nusantara & Asia',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.5,
+        desc: 'Reptil dinding dengan jutaan rambut mikroskopis setae di telapak kaki yang memanfaatkan gaya tarik van der Waals.',
+        features: ['Bantalan Kaki Nanoteknologi van der Waals', 'Ekor Ototomi Memutus Diri Saat Terancam', 'Suara Panggilan Khas Berfrekuensi Rendah'],
+        svgType: 'lizard',
+        colors: { body: '#60a5fa', belly: '#f8fafc', stripe: '#ef4444', eye: '#fbbf24' }
+      },
+      {
+        id: 'penyu_hijau',
+        name: 'Penyu Hijau Samudra',
+        scientific: 'Chelonia mydas',
+        class: 'reptil',
+        icon: '🐢',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '1.0 – 1.2 m',
+        weight: '150 – 200 kg',
+        diet: 'Herbivora (Lamun Laut)',
+        range: 'Pesisir Derawan & Seluruh Samudra ID',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.0,
+        desc: 'Penjelajah samudra ribuan mil yang selalu pulang ke pantai kelahirannya berbekal navigasi medan magnetik bumi.',
+        features: ['Sirip Renang Hidrodinamis', 'Kelenjar Garam Pengeluar Natrium Air Laut', 'Sensor Kompas Medan Geomagnetik Bumi'],
+        svgType: 'turtle',
+        colors: { body: '#059669', belly: '#fef08a', stripe: '#047857', eye: '#064e3b' }
+      },
+      {
+        id: 'salamander_api',
+        name: 'Salamander Api Tutul Emas',
+        scientific: 'Salamandra salamandra',
+        class: 'reptil',
+        icon: '🦎',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '15 – 25 cm',
+        weight: '40 g',
+        diet: 'Karnivora Cacing & Siput',
+        range: 'Hutan Eropa Tengah',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.45,
+        desc: 'Amfibi darat berwana hitam mengkilap dengan bercak emas terang yang mengeluarkan racun samandarin dari kelenjar telinga.',
+        features: ['Kelenjar Parotoid Pemancar Racun', 'Kemampuan Regenerasi Tungkai yang Putus', 'Kulit Lembap Bernapas Kutan'],
+        svgType: 'lizard',
+        colors: { body: '#18181b', belly: '#27272a', stripe: '#facc15', eye: '#09090b' }
+      },
+
+      // 4. IKAN & BIOTA LAUT / PISCES (10 Species)
+      {
+        id: 'arwana_super_red',
+        name: 'Ikan Arwana Super Red',
+        scientific: 'Scleropages formosus',
+        class: 'pisces',
+        icon: '🐟',
+        endemic: true,
+        iucn: 'EN (Terancam)',
+        length: '70 – 90 cm',
+        weight: '4 – 7 kg',
+        diet: 'Karnivora',
+        range: 'Sungai Kapuas & Danau Sentarum (Kalbar)',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.85,
+        desc: 'Ikan purba bernilai pusaka tinggi dengan sisik berkilau merah darah dan sepasang sungut sensor di dagunya.',
+        features: ['Sisik Keras Reflektif Guanin Merah', 'Kumis Sungut Sensor Getar Air', 'Lompatan Vertikal 1.5 Meter Menyambar Mangsa'],
+        svgType: 'fish',
+        colors: { body: '#dc2626', belly: '#f87171', stripe: '#facc15', eye: '#7f1d1d' }
+      },
+      {
+        id: 'ikan_badut',
+        name: 'Ikan Badut (Clownfish)',
+        scientific: 'Amphiprion ocellaris',
+        class: 'pisces',
+        icon: '🐠',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '10 – 15 cm',
+        weight: '50 g',
+        diet: 'Omnivora',
+        range: 'Terumbu Karang Nusantara',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.4,
+        desc: 'Ikan karang ceria yang kebal sengatan mematikan tentakel anemon laut berkat lapisan lendir berbasis gula khusus.',
+        features: ['Lapisan Lendir Kebal Sengat Anemon', 'Kemampuan Hermaprodit Protandri', 'Pola Tiga Pita Belang Putih Kontras'],
+        svgType: 'fish',
+        colors: { body: '#f97316', belly: '#fb923c', stripe: '#ffffff', eye: '#18181b' }
+      },
+      {
+        id: 'hiu_putih',
+        name: 'Hiu Putih Besar (Great White)',
+        scientific: 'Carcharodon carcharias',
+        class: 'pisces',
+        icon: '🦈',
+        endemic: false,
+        iucn: 'VU (Rentan)',
+        length: '4.5 – 6.0 m',
+        weight: '1.000 – 2.000 kg',
+        diet: 'Karnivora Puncak',
+        range: 'Perairan Samudra Dingin & Sedang',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.65,
+        desc: 'Apex predator samudra dengan deretan 300 gigi segitiga bergerigi dan organ ampullae penyadap medan bioelektrik mangsa.',
+        features: ['Ampullae of Lorenzini Detektor Listrik Detak Jantung', 'Rangka Tulang Rawan Lentur Super Ringan', 'Gigi Bergerigi Selalu Berganti Seumur Hidup'],
+        svgType: 'shark',
+        colors: { body: '#475569', belly: '#f8fafc', stripe: '#1e293b', eye: '#09090b' }
+      },
+      {
+        id: 'pari_manta',
+        name: 'Pari Manta Karang',
+        scientific: 'Mobula alfredi',
+        class: 'pisces',
+        icon: '🐟',
+        endemic: true,
+        iucn: 'VU (Rentan)',
+        length: '4.0 – 5.5 m (Bentang Sayap)',
+        weight: '800 – 1.400 kg',
+        diet: 'Filter Feeder (Plankton)',
+        range: 'Raja Ampat & Nusa Penida',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.5,
+        desc: 'Raksasa samudra anggun tak berbisa dengan rasio otak-ke-tubuh terbesar di antara semua jenis ikan laut.',
+        features: ['Sirip Sefalik Pengarah Makanan ke Mulut', 'Kulit Berpola Bintik Hitam Sidik Jari Unik', 'Berenang Luncur Bebas Hambatan Turbulensi'],
+        svgType: 'manta',
+        colors: { body: '#0f172a', belly: '#f8fafc', stripe: '#38bdf8', eye: '#e2e8f0' }
+      },
+      {
+        id: 'kuda_laut_kerdil',
+        name: 'Kuda Laut Kerdil Pygmy',
+        scientific: 'Hippocampus bargibanti',
+        class: 'pisces',
+        icon: '🐡',
+        endemic: true,
+        iucn: 'DD (Data Kurang)',
+        length: '1.5 – 2.5 cm',
+        weight: '2 g',
+        diet: 'Karnivora Mikro (Krustasea)',
+        range: 'Karang Kipas Gorgonia Raja Ampat',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.35,
+        desc: 'Kuda laut master kamuflase seukuran kuku yang menyerupai tonjolan polip karang kipas tempatnya bersarang.',
+        features: ['Ekor Prehensil Pengait Ranting Karang', 'Jantan yang Mengandung dan Melahirkan Telur', 'Mata Bebas Melirik Tanpa Menggerakkan Badan'],
+        svgType: 'seahorse',
+        colors: { body: '#f43f5e', belly: '#fb7185', stripe: '#ffe4e6', eye: '#09090b' }
+      },
+      {
+        id: 'ikan_cupang',
+        name: 'Ikan Cupang Hias (Betta)',
+        scientific: 'Betta splendens',
+        class: 'pisces',
+        icon: '🐟',
+        endemic: true,
+        iucn: 'VU (Rentan)',
+        length: '6 – 8 cm',
+        weight: '5 g',
+        diet: 'Karnivora (Jentik Nyamuk)',
+        range: 'Perairan Rawa Nusantara & Asia Tenggara',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.45,
+        desc: 'Ikan petarung berparas flamboyan dengan sirip menjuntai bak gaun sutra dan organ labirin untuk menghirup udara bebas.',
+        features: ['Organ Labirin Pernapas Udara Luar', 'Sirip Ekor Rumbai Spektakuler', 'Perilaku Mengembang Saat Siaga Teritorial'],
+        svgType: 'fish',
+        colors: { body: '#4f46e5', belly: '#ec4899', stripe: '#06b6d4', eye: '#ffffff' }
+      },
+      {
+        id: 'gurita_pasifik',
+        name: 'Gurita Raksasa Pasifik',
+        scientific: 'Enteroctopus dofleini',
+        class: 'pisces',
+        icon: '🐙',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '3 – 5 m',
+        weight: '30 – 50 kg',
+        diet: 'Karnivora (Kepiting & Ikan)',
+        range: 'Laut Utara & Pasifik',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.35,
+        desc: 'Invertebrata tercerdas dengan tiga jantung, darah biru tembaga, dan sembilan otak mini di tiap pangkal lengannya.',
+        features: ['Tiga Jantung & Darah Berbasis Hemosianin Biru', 'Ribuan Mangkuk Hisap Pengecap Kimia', 'Kantong Tinta Hitam Pengabur Pandangan'],
+        svgType: 'octopus',
+        colors: { body: '#991b1b', belly: '#dc2626', stripe: '#fca5a5', eye: '#fef08a' }
+      },
+      {
+        id: 'ubur_ubur_kotak',
+        name: 'Ubur-Ubur Kotak Berbisa',
+        scientific: 'Chironex fleckeri',
+        class: 'pisces',
+        icon: '🪼',
+        endemic: true,
+        iucn: 'DD (Data Kurang)',
+        length: '2 – 3 m (Termasuk Tentakel)',
+        weight: '2 kg',
+        diet: 'Karnivora Ikan Kecil',
+        range: 'Perairan Tropis Indo-Pasifik',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.0,
+        desc: 'Makhluk transparan dengan sengatan nematokis tercepat dan paling mematikan yang mampu menghentikan jantung manusia dalam 3 menit.',
+        features: ['24 Mata Lengkap dengan Lensa dan Kornea', 'Jutaan Kapsul Jarum Sengat Nematokis', 'Tubuh Gelatinous 95% Air'],
+        svgType: 'jellyfish',
+        colors: { body: '#38bdf8', belly: '#bae6fd', stripe: '#e0f2fe', eye: '#0284c7' }
+      },
+      {
+        id: 'ikan_mas_koki',
+        name: 'Ikan Mas Koki Ryukin',
+        scientific: 'Carassius auratus',
+        class: 'pisces',
+        icon: '🐠',
+        endemic: false,
+        iucn: 'LC (Domestikasi)',
+        length: '18 – 22 cm',
+        weight: '250 g',
+        diet: 'Omnivora',
+        range: 'Kolam Domestik Global',
+        habitatDefault: 'ocean',
+        scaleRatio: 0.5,
+        desc: 'Ikan hias bertubuh bulat anggun dengan punggung melengkung punuk tajam dan sirip ekor melambai lembut.',
+        features: ['Punuk Punggung Karakteristik Tinggi', 'Sirip Ekor Ganda Tipis Bersayap Empat', 'Garis Lateral Sensori Tekanan Air'],
+        svgType: 'fish',
+        colors: { body: '#ea580c', belly: '#ffffff', stripe: '#facc15', eye: '#18181b' }
+      },
+      {
+        id: 'cumi_raksasa',
+        name: 'Cumi-Cumi Raksasa Palung Laut',
+        scientific: 'Architeuthis dux',
+        class: 'pisces',
+        icon: '🦑',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '10 – 13 m',
+        weight: '200 – 450 kg',
+        diet: 'Karnivora Palung Dalam',
+        range: 'Palung Abisal Kedalaman 1.000m',
+        habitatDefault: 'ocean',
+        scaleRatio: 1.9,
+        desc: 'Monster laut dalam dengan mata sebesar bola basket (27 cm) yang dirancang untuk menangkap kilau foton bioluminesensi sekecil apa pun.',
+        features: ['Mata Terbesar di Bumi Berdiameter 27 cm', 'Tentakel Pengait Bergerigi Tajam Putar', 'Paruh Karbon Kuat Pemecah Cangkang'],
+        svgType: 'squid',
+        colors: { body: '#b91c1c', belly: '#f87171', stripe: '#fef08a', eye: '#0284c7' }
+      },
+
+      // 5. SERANGGA & ARTROPODA (9 Species)
+      {
+        id: 'semut_peluru',
+        name: 'Semut Peluru Raksasa',
+        scientific: 'Paraponera clavata',
+        class: 'serangga',
+        icon: '🐜',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '2.5 – 3.2 cm',
+        weight: '0.1 g',
+        diet: 'Nektar & Insekta',
+        range: 'Lantai Hutan Tropis',
+        habitatDefault: 'micro',
+        scaleRatio: 0.45,
+        desc: 'Pemilik sengatan terakit rasa sakit terparah menurut Indeks Schmidt, sensasinya setara ditembus peluru timah panas selama 24 jam.',
+        features: ['Sengat Poneratoxin Neurotoksik Pelumpuh', 'Mandibula Rahang Pemotong Kayu', 'Eksoskeleton Kitin Berduri Keras'],
+        svgType: 'insect',
+        colors: { body: '#18181b', belly: '#7f1d1d', stripe: '#dc2626', eye: '#000000' }
+      },
+      {
+        id: 'belalang_sembah',
+        name: 'Belalang Sembah (Praying Mantis)',
+        scientific: 'Hierodula venosa',
+        class: 'serangga',
+        icon: '🦗',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '8 – 11 cm',
+        weight: '5 g',
+        diet: 'Karnivora Predator',
+        range: 'Kebun & Hutan Nusantara',
+        habitatDefault: 'micro',
+        scaleRatio: 0.6,
+        desc: 'Predator penyergap kilat dengan tungkai depan berduri tajam yang mampu menangkap lalat dalam tempo 50 milidetik.',
+        features: ['Tungkai Rapat Rapik Berduri Kunci', 'Kepala Segitiga Berputar 180 Derajat', 'Telinga Tunggal Ultrasonik Penghindar Kelelawar'],
+        svgType: 'mantis',
+        colors: { body: '#65a30d', belly: '#84cc16', stripe: '#365314', eye: '#15803d' }
+      },
+      {
+        id: 'kupu_sayap_burung',
+        name: 'Kupu-Kupu Sayap Burung Priamus',
+        scientific: 'Ornithoptera priamus',
+        class: 'serangga',
+        icon: '🦋',
+        endemic: true,
+        iucn: 'LC (Dilindungi CITES)',
+        length: '18 – 22 cm (Bentang Sayap)',
+        weight: '4 g',
+        diet: 'Nektar',
+        range: 'Maluku & Papua',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.85,
+        desc: 'Kupu-kupu terbesar dan termegah di Indonesia timur dengan pendaran hijau zamrud dan beludru hitam yang tak tertandingi.',
+        features: ['Struktur Kisi Fotonik Sayap Hijau Zamrud', 'Probosis Belalai Spiral Penghisap Madu', 'Organ Sensor Rasa di Telapak Kaki'],
+        svgType: 'butterfly',
+        colors: { body: '#09090b', belly: '#15803d', stripe: '#22c55e', eye: '#facc15' }
+      },
+      {
+        id: 'kumbang_badak',
+        name: 'Kumbang Tanduk Badak / Hercules',
+        scientific: 'Chalcosoma atlas',
+        class: 'serangga',
+        icon: '🪲',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '9 – 13 cm',
+        weight: '30 g',
+        diet: 'Getah Pohon & Buah Busuk',
+        range: 'Hutan Sumatera, Jawa, Kalimantan',
+        habitatDefault: 'micro',
+        scaleRatio: 0.7,
+        desc: 'Hercules dunia serangga yang mampu mengangkat beban hingga 850 kali bobot tubuhnya sendiri dengan tiga tanduk baja.',
+        features: ['Tiga Cula Tanduk Kuat Pembalik Rival', 'Sayap Pelindung Elitra Tebal Mengkilat', 'Kait Kuku Kokoh Pencengkeram Batang Pohon'],
+        svgType: 'beetle',
+        colors: { body: '#0f172a', belly: '#1e293b', stripe: '#38bdf8', eye: '#f59e0b' }
+      },
+      {
+        id: 'kalajengking_hutan',
+        name: 'Kalajengking Hutan Jawa',
+        scientific: 'Heterometrus cyaneus',
+        class: 'serangga',
+        icon: '🦂',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '12 – 16 cm',
+        weight: '35 g',
+        diet: 'Karnivora',
+        range: 'Lantai Hutan Jawa & Bali',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.75,
+        desc: 'Arachnida hitam legam pemegang capit raksasa yang menyala biru toska cerah bila terpapar sinar ultraviolet di malam hari.',
+        features: ['Eksoskeleton Berpendar Fluoresen Bawah Lampu UV', 'Sepasang Pedipalpus Capit Penghancur Cangkang', 'Telson Sengat Melengkung di Ujung Ekor'],
+        svgType: 'scorpion',
+        colors: { body: '#09090b', belly: '#18181b', stripe: '#06b6d4', eye: '#38bdf8' }
+      },
+      {
+        id: 'lebah_madu_hutan',
+        name: 'Lebah Madu Raksasa Sialang',
+        scientific: 'Apis dorsata',
+        class: 'serangga',
+        icon: '🐝',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '1.8 – 2.2 cm',
+        weight: '0.15 g',
+        diet: 'Nektar & Serbuk Sari',
+        range: 'Pohon Sialang Riau & Kalimantan',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.45,
+        desc: 'Lebah madu pekerja keras tak terdomestikasi pembuat sarang gantung raksasa hingga 2 meter di pucuk pohon sialang.',
+        features: ['Keranjang Polen Corbicula di Kaki Belakang', 'Gerak Tarian Goyang Penunjuk Koordinat Bunga', 'Sengat Pertahanan Koloni Berantai'],
+        svgType: 'bee',
+        colors: { body: '#d97706', belly: '#fef3c7', stripe: '#09090b', eye: '#18181b' }
+      },
+      {
+        id: 'capung_jarum',
+        name: 'Capung Sambar Merah',
+        scientific: 'Neurothemis terminata',
+        class: 'serangga',
+        icon: '🦗',
+        endemic: true,
+        iucn: 'LC (Risiko Rendah)',
+        length: '4 – 5 cm',
+        weight: '1 g',
+        diet: 'Karnivora (Nyamuk & Lalat)',
+        range: 'Danau & Rawa Air Tawar Nusantara',
+        habitatDefault: 'micro',
+        scaleRatio: 0.5,
+        desc: 'Penerbang akrobatik paling sukses dengan tingkat keberhasilan menyambar mangsa di udara mencapai 95%.',
+        features: ['Empat Sayap Bergerak Bebas Independen', 'Mata Majemuk 30.000 Lensa Ommatidia', 'Keranjang Tungkai Penangkap Nyamuk Terbang'],
+        svgType: 'dragonfly',
+        colors: { body: '#dc2626', belly: '#ef4444', stripe: '#fca5a5', eye: '#7f1d1d' }
+      },
+      {
+        id: 'tarantula_biru',
+        name: 'Laba-Laba Tarantula Biru',
+        scientific: 'Cyriopagopus lividus',
+        class: 'serangga',
+        icon: '🕷️',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '13 – 16 cm (Rentang Kaki)',
+        weight: '25 g',
+        diet: 'Karnivora Insekta & Katak',
+        range: 'Hutan Hujan Asia Tropis',
+        habitatDefault: 'rainforest',
+        scaleRatio: 0.7,
+        desc: 'Penghuni liang bawah tanah dengan warna biru kobalt memukau yang tidak menggunakan jaring gantung melainkan jebakan getar sutra.',
+        features: ['Warna Biru Kobalt Non-Pigmen Reflektif Fotonik', 'Sepasang Chelicerae Taring Suntik Berbisa', 'Rambut Sensori Getaran Rambut Urtikaria'],
+        svgType: 'spider',
+        colors: { body: '#1d4ed8', belly: '#1e40af', stripe: '#172554', eye: '#60a5fa' }
+      },
+      {
+        id: 'kepik_emas',
+        name: 'Kepik Kubah Emas (Tortoise Beetle)',
+        scientific: 'Charidotella sexpunctata',
+        class: 'serangga',
+        icon: '🐞',
+        endemic: false,
+        iucn: 'LC (Risiko Rendah)',
+        length: '5 – 7 mm',
+        weight: '0.02 g',
+        diet: 'Herbivora Daun Ubi',
+        range: 'Kebun Tanaman Tropis',
+        habitatDefault: 'micro',
+        scaleRatio: 0.35,
+        desc: 'Permata hidup dengan kutikula transparan yang mampu mengubah kilau emasnya menjadi merah tembaga saat stres melalui cairan pori mikronya.',
+        features: ['Kubah Elitra Transparan Mirip Kaca', 'Manipulasi Refleksi Optik Melalui Cairan Limfa', 'Kemampuan Bersembunyi Rapat di Bawah Permukaan Daun'],
+        svgType: 'beetle',
+        colors: { body: '#facc15', belly: '#fef08a', stripe: '#ca8a04', eye: '#09090b' }
+      }
+    ];
+
+    // =========================================================================
+    // APPLICATION STATE
+    // =========================================================================
+    const state = {
+      selectedAnimalId: 'harimau_sumatera',
+      viewMode: 'visual', // 'visual' | 'skeleton' | 'organs'
+      pose: 'idle', // 'idle' | 'action' | 'alert' | 'rest'
+      habitat: 'rainforest',
+      showHumanScale: false,
+      isFlipped: false,
+      zoom: 1,
+      pan: { x: 0, y: 0 },
+      isPanning: false,
+      panStart: { x: 0, y: 0 },
+      searchQuery: '',
+      classFilter: 'all',
+      onlyEndemic: false
+    };
+
+    // DOM Elements
+    const faunaSvg = document.getElementById('faunaSvg');
+    const viewportWorld = document.getElementById('viewportWorld');
+    const habitatLayer = document.getElementById('habitatLayer');
+    const groundShadow = document.getElementById('groundShadow');
+    const humanScaleLayer = document.getElementById('humanScaleLayer');
+    const animalLayer = document.getElementById('animalLayer');
+    const skeletonLayer = document.getElementById('skeletonLayer');
+    const organsLayer = document.getElementById('organsLayer');
+    const animalList = document.getElementById('animalList');
+    const searchInput = document.getElementById('searchInput');
+    const assetCountBadge = document.getElementById('assetCountBadge');
+    const chkEndemic = document.getElementById('chkEndemic');
+    const habitatSelect = document.getElementById('habitatSelect');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const anatomyTooltip = document.getElementById('anatomyTooltip');
+    const ttTitle = document.getElementById('ttTitle');
+    const ttDesc = document.getElementById('ttDesc');
+
+    // Inspector fields
+    const badgeClass = document.getElementById('badgeClass');
+    const badgeIucn = document.getElementById('badgeIucn');
+    const infoName = document.getElementById('infoName');
+    const infoScientific = document.getElementById('infoScientific');
+    const statLength = document.getElementById('statLength');
+    const statWeight = document.getElementById('statWeight');
+    const statDiet = document.getElementById('statDiet');
+    const statRange = document.getElementById('statRange');
+    const anatomyFeatures = document.getElementById('anatomyFeatures');
+    const infoDescription = document.getElementById('infoDescription');
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
+    function init() {
+      renderAnimalList();
+      selectAnimal(state.selectedAnimalId);
+      setupEventListeners();
+      updateTransform();
+    }
+
+    // =========================================================================
+    // FAUNA LIST & FILTERING
+    // =========================================================================
+    function renderAnimalList() {
+      const filtered = FAUNA_DATABASE.filter(item => {
+        const matchQuery = item.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+                           item.scientific.toLowerCase().includes(state.searchQuery.toLowerCase());
+        const matchClass = state.classFilter === 'all' || item.class === state.classFilter;
+        const matchEndemic = !state.onlyEndemic || item.endemic;
+        return matchQuery && matchClass && matchEndemic;
+      });
+
+      assetCountBadge.textContent = `${filtered.length} Aset`;
+
+      animalList.innerHTML = filtered.map(item => {
+        const isSelected = item.id === state.selectedAnimalId;
+        return `
+          <button data-id="${item.id}" class="animal-card w-full text-left p-2 rounded-xl border ${isSelected ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-800/80 bg-slate-950/80'} hover:border-slate-700 transition flex items-center justify-between group">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="text-xl shrink-0 p-1 rounded-lg bg-slate-900 border border-slate-800">${item.icon}</span>
+              <div class="min-w-0">
+                <div class="text-xs font-bold ${isSelected ? 'text-emerald-300' : 'text-slate-200 group-hover:text-white'} truncate flex items-center gap-1.5">
+                  ${item.name}
+                  ${item.endemic ? '<span class="text-[9px] text-amber-400">🇮🇩</span>' : ''}
+                </div>
+                <div class="text-[10px] font-serif italic text-slate-500 truncate">${item.scientific}</div>
+              </div>
+            </div>
+            <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 uppercase shrink-0">${item.class.substring(0, 3)}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Click card listeners
+      document.querySelectorAll('.animal-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          selectAnimal(id);
+        });
+      });
+    }
+
+    function selectAnimal(id) {
+      const animal = FAUNA_DATABASE.find(a => a.id === id);
+      if (!animal) return;
+
+      state.selectedAnimalId = id;
+      state.habitat = animal.habitatDefault || 'rainforest';
+      habitatSelect.value = state.habitat;
+
+      // Update Inspector Sidebar
+      badgeClass.textContent = animal.class.toUpperCase();
+      badgeIucn.textContent = animal.iucn;
+      infoName.textContent = animal.name;
+      infoScientific.textContent = animal.scientific;
+      statLength.textContent = animal.length;
+      statWeight.textContent = animal.weight;
+      statDiet.textContent = animal.diet;
+      statRange.textContent = animal.range;
+      infoDescription.textContent = animal.desc;
+
+      // Anatomical points
+      anatomyFeatures.innerHTML = animal.features.map(f => {
+        const [title, desc] = f.split(':');
+        return `
+          <div class="p-2 rounded-lg bg-slate-950 border border-slate-800 text-[11px]">
+            <div class="font-bold text-emerald-400">${title}${desc ? ':' : ''}</div>
+            <div class="text-slate-400 mt-0.5">${desc || ''}</div>
+          </div>
+        `;
+      }).join('');
+
+      // Refresh Left selection highlight
+      document.querySelectorAll('.animal-card').forEach(btn => {
+        const cardId = btn.getAttribute('data-id');
+        if (cardId === id) {
+          btn.className = 'animal-card w-full text-left p-2 rounded-xl border border-emerald-500 bg-emerald-500/10 transition flex items-center justify-between group';
+          btn.querySelector('.text-xs').className = 'text-xs font-bold text-emerald-300 truncate flex items-center gap-1.5';
+        } else {
+          btn.className = 'animal-card w-full text-left p-2 rounded-xl border border-slate-800/80 bg-slate-950/80 hover:border-slate-700 transition flex items-center justify-between group';
+          const title = btn.querySelector('.text-xs');
+          if (title) title.className = 'text-xs font-bold text-slate-200 group-hover:text-white truncate flex items-center gap-1.5';
+        }
+      });
+
+      // Render Stage
+      renderHabitat();
+      renderAnimalGraphics(animal);
+      renderHumanScale(animal);
+    }
+
+    // =========================================================================
+    // PROCEDURAL HABITAT RENDERING
+    // =========================================================================
+    function renderHabitat() {
+      const hab = state.habitat;
+      let html = '';
+
+      if (hab === 'rainforest') {
+        html = `
+          <!-- Hutan Hujan Tropis Nusantara -->
+          <defs>
+            <linearGradient id="rfSky" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#064e3b"/>
+              <stop offset="50%" stop-color="#022c22"/>
+              <stop offset="100%" stop-color="#0f172a"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#rfSky)"/>
+          <!-- Tajuk Pohon Tropis & Kabut Pagi -->
+          <ellipse cx="200" cy="200" rx="260" ry="120" fill="#047857" opacity="0.35"/>
+          <ellipse cx="800" cy="180" rx="300" ry="130" fill="#065f46" opacity="0.3"/>
+          <path d="M 0 550 Q 250 420 500 520 Q 750 400 1000 540 L 1000 850 L 0 850 Z" fill="#064e3b" opacity="0.7"/>
+          <path d="M 0 620 Q 300 540 600 610 Q 800 550 1000 630 L 1000 850 L 0 850 Z" fill="#022c22"/>
+          <!-- Batang Pohon & Sulur Liana Kiri -->
+          <path d="M 80 850 Q 120 450 70 0" stroke="#1c1917" stroke-width="28" fill="none"/>
+          <path d="M 920 850 Q 880 400 940 0" stroke="#1c1917" stroke-width="32" fill="none"/>
+          <!-- Daun Pakis Bawah -->
+          <path d="M 0 760 Q 120 700 220 750" stroke="#10b981" stroke-width="4" fill="none"/>
+          <path d="M 800 780 Q 900 720 1000 750" stroke="#10b981" stroke-width="4" fill="none"/>
+        `;
+      } else if (hab === 'ocean') {
+        html = `
+          <!-- Terumbu Karang & Palung Laut Dalam -->
+          <defs>
+            <linearGradient id="oceanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0284c7"/>
+              <stop offset="40%" stop-color="#0369a1"/>
+              <stop offset="85%" stop-color="#082f49"/>
+              <stop offset="100%" stop-color="#020617"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#oceanGrad)"/>
+          <!-- Sinar Matahari Tembus Air (Caustics) -->
+          <polygon points="120,0 220,0 350,850 180,850" fill="#38bdf8" opacity="0.08"/>
+          <polygon points="450,0 580,0 720,850 540,850" fill="#38bdf8" opacity="0.07"/>
+          <polygon points="780,0 860,0 950,850 820,850" fill="#38bdf8" opacity="0.08"/>
+          <!-- Gelembung Udara -->
+          <circle cx="220" cy="500" r="8" fill="#ffffff" opacity="0.25"/>
+          <circle cx="230" cy="420" r="5" fill="#ffffff" opacity="0.3"/>
+          <circle cx="760" cy="580" r="10" fill="#ffffff" opacity="0.2"/>
+          <circle cx="770" cy="490" r="6" fill="#ffffff" opacity="0.25"/>
+          <!-- Dasar Karang Bawah -->
+          <path d="M 0 760 Q 250 710 500 750 Q 750 700 1000 770 L 1000 850 L 0 850 Z" fill="#0f172a"/>
+          <!-- Karang Kipas & Anemon Siluet -->
+          <ellipse cx="140" cy="740" rx="40" ry="50" fill="#f43f5e" opacity="0.6"/>
+          <ellipse cx="860" cy="730" rx="55" ry="60" fill="#0d9488" opacity="0.6"/>
+        `;
+      } else if (hab === 'savanna') {
+        html = `
+          <!-- Savana Baluran & Padang Rumput -->
+          <defs>
+            <linearGradient id="savSky" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ea580c"/>
+              <stop offset="55%" stop-color="#f59e0b"/>
+              <stop offset="100%" stop-color="#fef08a"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#savSky)"/>
+          <!-- Matahari Senja -->
+          <circle cx="500" cy="380" r="70" fill="#fffbeb" opacity="0.85" filter="url(#softGlow)"/>
+          <!-- Siluet Gunung Baluran di Jauh -->
+          <polygon points="120,540 380,420 620,540" fill="#78350f" opacity="0.6"/>
+          <!-- Pohon Akasia Khas Sabana Kanan -->
+          <path d="M 850 680 Q 860 520 840 430" stroke="#292524" stroke-width="14" fill="none"/>
+          <ellipse cx="830" cy="420" rx="100" ry="25" fill="#1c1917"/>
+          <ellipse cx="880" cy="400" rx="70" ry="18" fill="#1c1917"/>
+          <!-- Padang Rumput Kering -->
+          <rect x="0" y="680" width="1000" height="170" fill="#713f12"/>
+          <line x1="0" y1="680" x2="1000" y2="680" stroke="#ca8a04" stroke-width="3"/>
+        `;
+      } else if (hab === 'micro') {
+        html = `
+          <!-- Dunia Mikro Daun & Ranting -->
+          <defs>
+            <radialGradient id="leafGrad" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#4d7c0f"/>
+              <stop offset="60%" stop-color="#14532d"/>
+              <stop offset="100%" stop-color="#052e16"/>
+            </radialGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#leafGrad)"/>
+          <!-- Tulang Daun Raksasa Mikroskopik -->
+          <path d="M 0 450 Q 500 400 1000 480" stroke="#84cc16" stroke-width="18" opacity="0.5" fill="none"/>
+          <path d="M 250 430 Q 350 200 450 80" stroke="#84cc16" stroke-width="8" opacity="0.4" fill="none"/>
+          <path d="M 450 420 Q 600 240 750 100" stroke="#84cc16" stroke-width="8" opacity="0.4" fill="none"/>
+          <path d="M 300 440 Q 200 650 150 800" stroke="#84cc16" stroke-width="8" opacity="0.4" fill="none"/>
+          <path d="M 550 430 Q 500 680 480 820" stroke="#84cc16" stroke-width="8" opacity="0.4" fill="none"/>
+          <!-- Butir Embun Berkilau -->
+          <ellipse cx="680" cy="340" rx="45" ry="32" fill="#ffffff" opacity="0.25"/>
+          <circle cx="670" cy="330" r="10" fill="#ffffff" opacity="0.6"/>
+        `;
+      } else if (hab === 'mountain') {
+        html = `
+          <!-- Pegunungan Kabut & Angkasa -->
+          <defs>
+            <linearGradient id="mtnSky" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0f172a"/>
+              <stop offset="50%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#334155"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#mtnSky)"/>
+          <!-- Puncak Karang Terjal -->
+          <polygon points="80,720 280,380 480,720" fill="#1e293b"/>
+          <polygon points="280,380 320,440 240,440" fill="#f8fafc" opacity="0.6"/>
+          <polygon points="400,720 620,320 840,720" fill="#0f172a"/>
+          <polygon points="620,320 660,390 580,390" fill="#f8fafc" opacity="0.75"/>
+          <!-- Kabut Awan Mengambang -->
+          <ellipse cx="300" cy="620" rx="350" ry="50" fill="#e2e8f0" opacity="0.2"/>
+          <ellipse cx="700" cy="650" rx="380" ry="60" fill="#e2e8f0" opacity="0.25"/>
+          <rect x="0" y="710" width="1000" height="140" fill="#020617"/>
+        `;
+      } else {
+        // lab grid
+        html = `
+          <rect x="0" y="0" width="1000" height="850" fill="#042f2e"/>
+          <rect x="0" y="0" width="1000" height="850" fill="url(#labGrid)"/>
+          <!-- Radius Lingkaran Komparatif -->
+          <circle cx="500" cy="450" r="320" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="6,6" opacity="0.4"/>
+          <circle cx="500" cy="450" r="180" fill="none" stroke="#2dd4bf" stroke-width="1" stroke-dasharray="4,4" opacity="0.3"/>
+          <text x="50" y="70" fill="#5eead4" font-family="monospace" font-size="12" font-weight="bold">LABORATORIUM ANATOMI FAUNA // GRID 40MM</text>
+        `;
+      }
+
+      habitatLayer.innerHTML = html;
+    }
+
+    // =========================================================================
+    // COMPARATIVE HUMAN SCALE (170 CM)
+    // =========================================================================
+    function renderHumanScale(animal) {
+      if (!state.showHumanScale) {
+        humanScaleLayer.classList.add('hidden');
+        return;
+      }
+      humanScaleLayer.classList.remove('hidden');
+
+      // Human standard height = 170 cm. Placed at left side (x: 180, bottom: 700)
+      humanScaleLayer.innerHTML = `
+        <g id="humanSilhouette" opacity="0.75" class="transition-transform duration-300">
+          <!-- Head -->
+          <circle cx="180" cy="440" r="18" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/>
+          <!-- Torso -->
+          <rect x="168" y="460" width="24" height="110" rx="8" fill="#f59e0b"/>
+          <!-- Arms -->
+          <line x1="168" y1="475" x2="150" y2="560" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+          <line x1="192" y1="475" x2="210" y2="560" stroke="#f59e0b" stroke-width="8" stroke-linecap="round"/>
+          <!-- Legs -->
+          <line x1="174" y1="570" x2="170" y2="700" stroke="#f59e0b" stroke-width="9" stroke-linecap="round"/>
+          <line x1="186" y1="570" x2="190" y2="700" stroke="#f59e0b" stroke-width="9" stroke-linecap="round"/>
+          <!-- Label -->
+          <rect x="125" y="405" width="110" height="20" rx="4" fill="#090d16" stroke="#f59e0b" stroke-width="1"/>
+          <text x="135" y="419" fill="#facc15" font-family="monospace" font-size="10" font-weight="bold">Manusia 1.70 m</text>
+          <!-- Height reference dashed line -->
+          <line x1="180" y1="422" x2="850" y2="422" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4,4" opacity="0.5"/>
+        </g>
+      `;
+    }
+
+    // =========================================================================
+    // DYNAMIC ANIMAL VECTOR RENDERER (ALL SHAPES & TAXA)
+    // =========================================================================
+    function renderAnimalGraphics(animal) {
+      const type = animal.svgType || 'feline';
+      const c = animal.colors;
+      const pose = state.pose;
+      const scale = animal.scaleRatio || 1.0;
+
+      // Flip & scale transform
+      const flipX = state.isFlipped ? -1 : 1;
+      const transformBase = `translate(500, 480) scale(${scale * flipX}, ${scale})`;
+
+      let visualSvg = `<g transform="${transformBase}">`;
+      let skeletonSvg = `<g transform="${transformBase}">`;
+      let organsSvg = `<g transform="${transformBase}">`;
+
+      // Pose offsets
+      let headRot = 0;
+      let legOffset1 = 0;
+      let legOffset2 = 0;
+      let tailRot = 0;
+
+      if (pose === 'action') {
+        headRot = -10;
+        legOffset1 = 28;
+        legOffset2 = -32;
+        tailRot = 20;
+      } else if (pose === 'alert') {
+        headRot = -18;
+        tailRot = -30;
+      } else if (pose === 'rest') {
+        headRot = 20;
+        legOffset1 = -15;
+        tailRot = -40;
+      }
+
+      // 1. GENERATE ANATOMICAL MESH BY TAXONOMY TYPE
+      if (type === 'feline' || type === 'lion' || type === 'canine') {
+        // Big Cats / Canines (Harimau, Singa, Serigala)
+        visualSvg += `
+          <!-- Tail -->
+          <path d="M -140 -20 Q -220 ${-80 + tailRot} -200 ${-140 + tailRot}" stroke="${c.body}" stroke-width="22" stroke-linecap="round" fill="none"/>
+          <path d="M -180 ${-110 + tailRot} L -200 ${-140 + tailRot}" stroke="${c.stripe}" stroke-width="24" stroke-linecap="round"/>
+
+          <!-- Back Leg Far -->
+          <path d="M -120 0 L ${-150 + legOffset2} 120 L ${-160 + legOffset2} 210" stroke="${c.stripe}" stroke-width="26" stroke-linecap="round" fill="none"/>
+
+          <!-- Front Leg Far -->
+          <path d="M 100 0 L ${130 - legOffset1} 110 L ${140 - legOffset1} 210" stroke="${c.stripe}" stroke-width="24" stroke-linecap="round" fill="none"/>
+
+          <!-- Main Torso Body -->
+          <ellipse cx="-20" cy="10" rx="140" ry="70" fill="${c.body}"/>
+          <path d="M -100 35 Q -20 75 80 40 Q -10 20 -100 35 Z" fill="${c.belly}"/>
+
+          <!-- Stripes if tiger -->
+          ${type === 'feline' ? `
+            <path d="M -80 -40 L -70 20 M -40 -45 L -30 25 M 0 -45 L 5 20 M 40 -40 L 45 15" stroke="${c.stripe}" stroke-width="8" stroke-linecap="round"/>
+          ` : ''}
+
+          <!-- Lion Mane if lion -->
+          ${type === 'lion' ? `
+            <circle cx="130" cy="-60" r="85" fill="${c.stripe}"/>
+          ` : ''}
+
+          <!-- Back Leg Near -->
+          <path d="M -90 10 L ${-110 - legOffset1} 120 L ${-115 - legOffset1} 220" stroke="${c.body}" stroke-width="32" stroke-linecap="round" fill="none"/>
+          <!-- Front Leg Near -->
+          <path d="M 70 10 L ${90 + legOffset2} 120 L ${95 + legOffset2} 220" stroke="${c.body}" stroke-width="30" stroke-linecap="round" fill="none"/>
+
+          <!-- Paws -->
+          <ellipse cx="${-115 - legOffset1}" cy="225" rx="20" ry="10" fill="${c.belly}"/>
+          <ellipse cx="${95 + legOffset2}" cy="225" rx="20" ry="10" fill="${c.belly}"/>
+
+          <!-- Neck & Head -->
+          <g transform="translate(130, -50) rotate(${headRot})">
+            <!-- Ears -->
+            <polygon points="-20,-50 -5,-90 15,-50" fill="${c.stripe}"/>
+            <polygon points="10,-50 25,-85 45,-50" fill="${c.stripe}"/>
+            <!-- Head Oval -->
+            <circle cx="20" cy="-20" r="55" fill="${c.body}"/>
+            <ellipse cx="60" cy="-5" rx="35" ry="25" fill="${c.belly}"/>
+            <!-- Snout / Nose -->
+            <polygon points="70,-15 85,-15 78,-5" fill="#e11d48"/>
+            <!-- Whiskers -->
+            <line x1="65" y1="0" x2="110" y2="-10" stroke="#ffffff" stroke-width="2"/>
+            <line x1="65" y1="5" x2="115" y2="10" stroke="#ffffff" stroke-width="2"/>
+            <!-- Eye -->
+            <circle cx="35" cy="-30" r="7" fill="${c.eye}"/>
+            <circle cx="37" cy="-30" r="3" fill="#09090b"/>
+          </g>
+        `;
+
+        // Skeleton Overlay
+        skeletonSvg += `
+          <!-- Spine & Pelvis -->
+          <line x1="-130" y1="10" x2="120" y2="-40" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+          <!-- Ribcage -->
+          <ellipse cx="-10" cy="15" rx="60" ry="45" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="6,4"/>
+          <!-- Leg Bones -->
+          <line x1="-100" y1="10" x2="${-110 - legOffset1}" y2="120" stroke="#38bdf8" stroke-width="4"/>
+          <line x1="${-110 - legOffset1}" y1="120" x2="${-115 - legOffset1}" y2="220" stroke="#38bdf8" stroke-width="4"/>
+          <line x1="80" y1="-10" x2="${90 + legOffset2}" y2="120" stroke="#38bdf8" stroke-width="4"/>
+          <line x1="${90 + legOffset2}" y1="120" x2="${95 + legOffset2}" y2="220" stroke="#38bdf8" stroke-width="4"/>
+          <!-- Skull -->
+          <circle cx="150" cy="-60" r="35" fill="none" stroke="#38bdf8" stroke-width="4"/>
+        `;
+      } else if (type === 'bird' || type === 'eagle' || type === 'owl') {
+        // Birds / Aves (Cendrawasih, Elang, Jalak, Merak)
+        visualSvg += `
+          <!-- Tail Feathers -->
+          <path d="M -90 40 L -240 ${80 + tailRot} L -110 80 Z" fill="${c.stripe}"/>
+          <path d="M -90 40 L -210 ${110 + tailRot} L -100 90 Z" fill="${c.belly}"/>
+
+          <!-- Legs & Claws -->
+          <line x1="-30" y1="80" x2="-40" y2="160" stroke="#78350f" stroke-width="7" stroke-linecap="round"/>
+          <line x1="20" y1="80" x2="10" y2="160" stroke="#78350f" stroke-width="7" stroke-linecap="round"/>
+          <!-- Branch Perch -->
+          <line x1="-120" y1="165" x2="120" y2="165" stroke="#3f3f46" stroke-width="12" stroke-linecap="round"/>
+
+          <!-- Bird Body -->
+          <ellipse cx="-10" cy="30" rx="90" ry="60" fill="${c.body}"/>
+          <ellipse cx="15" cy="45" rx="55" ry="40" fill="${c.belly}"/>
+
+          <!-- Big Wings Folded/Spread -->
+          <path d="M -70 10 Q 0 ${pose === 'action' ? -120 : -30} 80 40 Q 0 80 -70 10 Z" fill="${c.stripe}" stroke="${c.body}" stroke-width="3"/>
+
+          <!-- Head & Beak -->
+          <g transform="translate(70, -20) rotate(${headRot})">
+            <!-- Crest / Jambul -->
+            <path d="M -10 -40 Q 0 -90 20 -60" stroke="${c.stripe}" stroke-width="8" stroke-linecap="round" fill="none"/>
+            <circle cx="0" cy="-20" r="38" fill="${c.body}"/>
+            <!-- Sharp Beak -->
+            <polygon points="25,-30 85,-10 25,0" fill="#f59e0b"/>
+            <!-- Eye -->
+            <circle cx="10" cy="-25" r="7" fill="${c.eye}"/>
+            <circle cx="12" cy="-25" r="3" fill="#09090b"/>
+          </g>
+        `;
+
+        // Skeleton
+        skeletonSvg += `
+          <line x1="-80" y1="40" x2="60" y2="-10" stroke="#38bdf8" stroke-width="5"/>
+          <ellipse cx="-10" cy="30" rx="50" ry="35" fill="none" stroke="#38bdf8" stroke-width="3"/>
+          <circle cx="70" cy="-30" r="25" fill="none" stroke="#38bdf8" stroke-width="4"/>
+          <line x1="-10" y1="0" x2="60" y2="-80" stroke="#38bdf8" stroke-width="4"/>
+        `;
+      } else if (type === 'fish' || type === 'shark' || type === 'whale') {
+        // Aquatic / Pisces (Arwana, Hiu, Badak, Orca, Paus)
+        visualSvg += `
+          <!-- Caudal Fin (Tail) -->
+          <g transform="translate(-170, 0) rotate(${tailRot * 0.8})">
+            <polygon points="0,0 -80,-70 -50,0 -90,70" fill="${c.stripe}"/>
+          </g>
+
+          <!-- Dorsal Fin (Top) -->
+          <polygon points="-40,-50 10,-120 40,-50" fill="${c.stripe}"/>
+
+          <!-- Main Streamlined Body -->
+          <ellipse cx="0" cy="0" rx="170" ry="75" fill="${c.body}"/>
+          <path d="M -140 20 Q 0 80 140 20 Q 0 40 -140 20 Z" fill="${c.belly}"/>
+
+          <!-- Pectoral Fin (Side) -->
+          <polygon points="20,20 -30,85 40,55" fill="${c.stripe}" opacity="0.9"/>
+
+          <!-- Gills & Eye -->
+          <path d="M 70 -35 Q 90 0 70 35" stroke="${c.stripe}" stroke-width="5" fill="none"/>
+          <circle cx="110" cy="-20" r="10" fill="${c.eye}"/>
+          <circle cx="112" cy="-20" r="4" fill="#09090b"/>
+
+          ${type === 'fish' ? `
+            <!-- Arwana Barbels (Sungut) -->
+            <path d="M 160 5 Q 185 10 190 25" stroke="${c.stripe}" stroke-width="3" fill="none"/>
+          ` : ''}
+        `;
+
+        // Skeleton
+        skeletonSvg += `
+          <!-- Vertebral Column -->
+          <line x1="-160" y1="0" x2="140" y2="0" stroke="#38bdf8" stroke-width="5"/>
+          <!-- Fish Ribs / Durian -->
+          <path d="M -100 -30 L -90 30 M -60 -40 L -50 40 M -20 -45 L -10 45 M 20 -40 L 30 40 M 60 -30 L 70 30" stroke="#38bdf8" stroke-width="2.5"/>
+          <circle cx="120" cy="-10" r="28" fill="none" stroke="#38bdf8" stroke-width="3"/>
+        `;
+      } else if (type === 'insect' || type === 'mantis' || type === 'beetle') {
+        // Insecta (Semut, Belalang, Kumbang)
+        visualSvg += `
+          <!-- 6 Articulated Legs -->
+          <!-- Left 3 -->
+          <path d="M -40 10 L -90 70 L -120 140" stroke="${c.body}" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M 0 15 L -20 80 L -30 150" stroke="${c.body}" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <path d="M 40 10 L 70 70 L 90 140" stroke="${c.body}" stroke-width="8" stroke-linecap="round" fill="none"/>
+
+          <!-- Abdomen (Gaster) -->
+          <ellipse cx="-110" cy="-10" rx="75" ry="55" fill="${c.body}" stroke="${c.stripe}" stroke-width="4"/>
+
+          <!-- Petiole (Pinggang ramping) -->
+          <rect x="-35" y="-12" width="25" height="18" rx="6" fill="${c.stripe}"/>
+
+          <!-- Thorax (Dada) -->
+          <ellipse cx="10" cy="-10" rx="45" ry="38" fill="${c.body}"/>
+
+          ${type === 'beetle' ? `
+            <!-- Horns -->
+            <path d="M 50 -20 Q 120 -80 140 -40" stroke="${c.stripe}" stroke-width="14" stroke-linecap="round" fill="none"/>
+          ` : ''}
+
+          <!-- Head & Mandibles -->
+          <g transform="translate(65, -10) rotate(${headRot})">
+            <circle cx="0" cy="0" r="32" fill="${c.body}"/>
+            <!-- Big Compound Eyes -->
+            <ellipse cx="10" cy="-18" rx="10" ry="14" fill="${c.eye}"/>
+            <!-- Antennae -->
+            <path d="M 10 -25 Q 40 -80 70 -60" stroke="${c.stripe}" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <!-- Mandibles (Taring pemotong) -->
+            <path d="M 20 10 Q 45 20 40 5" stroke="${c.stripe}" stroke-width="6" fill="none"/>
+            <path d="M 20 -5 Q 45 -15 40 0" stroke="${c.stripe}" stroke-width="6" fill="none"/>
+          </g>
+        `;
+
+        // Skeleton / Exoskeleton segments
+        skeletonSvg += `
+          <ellipse cx="-110" cy="-10" rx="65" ry="45" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="4,4"/>
+          <ellipse cx="10" cy="-10" rx="35" ry="28" fill="none" stroke="#38bdf8" stroke-width="3"/>
+          <circle cx="65" cy="-10" r="22" fill="none" stroke="#38bdf8" stroke-width="3"/>
+        `;
+      } else {
+        // General Reptile / Lizard / Turtle (Komodo, Buaya, Bunglon)
+        visualSvg += `
+          <!-- Long Tail -->
+          <path d="M -130 10 Q -240 ${30 + tailRot} -320 ${90 + tailRot}" stroke="${c.body}" stroke-width="35" stroke-linecap="round" fill="none"/>
+
+          <!-- Back Leg -->
+          <path d="M -90 20 L -120 90 L -150 140" stroke="${c.body}" stroke-width="26" stroke-linecap="round" fill="none"/>
+          <!-- Front Leg -->
+          <path d="M 80 20 L 100 90 L 120 140" stroke="${c.body}" stroke-width="26" stroke-linecap="round" fill="none"/>
+
+          <!-- Long Heavy Body -->
+          <ellipse cx="-10" cy="15" rx="150" ry="60" fill="${c.body}"/>
+          <ellipse cx="-5" cy="30" rx="120" ry="40" fill="${c.belly}"/>
+
+          <!-- Heavy Neck & Head -->
+          <g transform="translate(140, 0) rotate(${headRot})">
+            <ellipse cx="40" cy="5" rx="60" ry="32" fill="${c.body}"/>
+            <circle cx="50" cy="-8" r="7" fill="${c.eye}"/>
+            <!-- Forked Tongue for Komodo/Snake -->
+            <path d="M 100 15 L 140 15 L 155 5 M 140 15 L 155 25" stroke="#f43f5e" stroke-width="3.5" fill="none"/>
+          </g>
+        `;
+
+        skeletonSvg += `
+          <path d="M -260 50 Q -100 20 160 5" stroke="#38bdf8" stroke-width="5" fill="none"/>
+          <ellipse cx="-10" cy="15" rx="90" ry="40" fill="none" stroke="#38bdf8" stroke-width="3"/>
+        `;
+      }
+
+      // 2. VITAL ORGANS LAYER PINS
+      if (animal.organs && animal.organs.length > 0) {
+        animal.organs.forEach((org, i) => {
+          const ox = (org.x - 500) / scale;
+          const oy = (org.y - 480) / scale;
+          organsSvg += `
+            <g class="organ-pin cursor-pointer group" data-title="${org.name}" data-desc="${org.desc}">
+              <circle cx="${ox}" cy="${oy}" r="14" fill="url(#organGlow)" filter="url(#softGlow)"/>
+              <circle cx="${ox}" cy="${oy}" r="7" fill="#ffffff"/>
+              <text x="${ox + 16}" y="${oy + 5}" fill="#fca5a5" font-family="monospace" font-size="11" font-weight="bold">${org.name}</text>
+            </g>
+          `;
+        });
+      } else {
+        // Default brain, heart, spine pins
+        organsSvg += `
+          <g class="organ-pin cursor-pointer" data-title="Otak & Pusat Saraf" data-desc="Pusat persepsi sensori navigasi dan kontrol motorik.">
+            <circle cx="120" cy="-40" r="10" fill="url(#organGlow)"/>
+            <circle cx="120" cy="-40" r="4" fill="#ffffff"/>
+          </g>
+          <g class="organ-pin cursor-pointer" data-title="Jantung & Sirkulasi Darah" data-desc="Memompa oksigen bertekanan ke seluruh jaringan otot aktif.">
+            <circle cx="20" cy="20" r="12" fill="url(#organGlow)"/>
+            <circle cx="20" cy="20" r="5" fill="#ffffff"/>
+          </g>
+        `;
+      }
+
+      visualSvg += '</g>';
+      skeletonSvg += '</g>';
+      organsSvg += '</g>';
+
+      animalLayer.innerHTML = visualSvg;
+      skeletonLayer.innerHTML = skeletonSvg;
+      organsLayer.innerHTML = organsSvg;
+
+      // Update View Mode Visibility
+      applyViewMode();
+
+      // Setup Organ Tooltip Listeners
+      document.querySelectorAll('.organ-pin').forEach(pin => {
+        pin.addEventListener('mouseenter', (e) => {
+          const t = pin.getAttribute('data-title');
+          const d = pin.getAttribute('data-desc');
+          ttTitle.textContent = t;
+          ttDesc.textContent = d;
+          anatomyTooltip.classList.remove('opacity-0');
+        });
+        pin.addEventListener('mouseleave', () => {
+          anatomyTooltip.classList.add('opacity-0');
+        });
+      });
+    }
+
+    function applyViewMode() {
+      const mode = state.viewMode;
+      if (mode === 'visual') {
+        animalLayer.classList.remove('hidden');
+        skeletonLayer.classList.add('hidden');
+        organsLayer.classList.add('hidden');
+      } else if (mode === 'skeleton') {
+        animalLayer.classList.remove('hidden');
+        animalLayer.setAttribute('opacity', '0.25');
+        skeletonLayer.classList.remove('hidden');
+        organsLayer.classList.add('hidden');
+      } else if (mode === 'organs') {
+        animalLayer.classList.remove('hidden');
+        animalLayer.setAttribute('opacity', '0.45');
+        skeletonLayer.classList.remove('hidden');
+        organsLayer.classList.remove('hidden');
+      }
+      if (mode === 'visual') {
+        animalLayer.removeAttribute('opacity');
+      }
+    }
+
+    // =========================================================================
+    // VIEWPORT NAVIGATION (PAN & ZOOM)
+    // =========================================================================
+    function updateTransform() {
+      viewportWorld.setAttribute('transform', `translate(${state.pan.x}, ${state.pan.y}) scale(${state.zoom})`);
+    }
+
+    const canvasContainer = document.getElementById('canvasContainer');
+
+    canvasContainer.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.organ-pin')) return;
+      state.isPanning = true;
+      state.panStart = { x: e.clientX - state.pan.x, y: e.clientY - state.pan.y };
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!state.isPanning) return;
+      state.pan.x = e.clientX - state.panStart.x;
+      state.pan.y = e.clientY - state.panStart.y;
+      updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      state.isPanning = false;
+    });
+
+    // Mobile touch
+    canvasContainer.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        state.isPanning = true;
+        state.panStart = { x: e.touches[0].clientX - state.pan.x, y: e.touches[0].clientY - state.pan.y };
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (state.isPanning && e.touches.length === 1) {
+        state.pan.x = e.touches[0].clientX - state.panStart.x;
+        state.pan.y = e.touches[0].clientY - state.panStart.y;
+        updateTransform();
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      state.isPanning = false;
+    });
+
+    // =========================================================================
+    // EVENT LISTENERS & UI WIRING
+    // =========================================================================
+    function setupEventListeners() {
+      // Search Input
+      searchInput.addEventListener('input', (e) => {
+        state.searchQuery = e.target.value;
+        renderAnimalList();
+      });
+
+      // Class Tabs
+      document.querySelectorAll('.class-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.class-tab').forEach(t => {
+            t.className = 'class-tab px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-slate-300 hover:text-white shrink-0 transition';
+          });
+          tab.className = 'class-tab active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500 text-slate-950 shrink-0 transition';
+          state.classFilter = tab.getAttribute('data-class');
+          renderAnimalList();
+        });
+      });
+
+      // Endemic filter
+      chkEndemic.addEventListener('change', (e) => {
+        state.onlyEndemic = e.target.checked;
+        renderAnimalList();
+      });
+
+      // View Mode buttons
+      const btnModeVisual = document.getElementById('btnModeVisual');
+      const btnModeSkeleton = document.getElementById('btnModeSkeleton');
+      const btnModeOrgans = document.getElementById('btnModeOrgans');
+
+      [
+        { btn: btnModeVisual, mode: 'visual' },
+        { btn: btnModeSkeleton, mode: 'skeleton' },
+        { btn: btnModeOrgans, mode: 'organs' }
+      ].forEach(({ btn, mode }) => {
+        btn.addEventListener('click', () => {
+          [btnModeVisual, btnModeSkeleton, btnModeOrgans].forEach(b => {
+            b.className = 'view-mode-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition flex items-center gap-1.5';
+          });
+          btn.className = 'view-mode-btn active px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 transition flex items-center gap-1.5';
+          state.viewMode = mode;
+          applyViewMode();
+          showToast(`Mode Tampilan: ${btn.textContent.trim()}`);
+        });
+      });
+
+      // Human Scale Toggle
+      const btnToggleHumanScale = document.getElementById('btnToggleHumanScale');
+      btnToggleHumanScale.addEventListener('click', () => {
+        state.showHumanScale = !state.showHumanScale;
+        btnToggleHumanScale.classList.toggle('text-amber-400', state.showHumanScale);
+        btnToggleHumanScale.classList.toggle('bg-amber-500/10', state.showHumanScale);
+        const curAnimal = FAUNA_DATABASE.find(a => a.id === state.selectedAnimalId);
+        renderHumanScale(curAnimal);
+        showToast(state.showHumanScale ? 'Skala Manusia (1.70m) Diaktifkan' : 'Skala Manusia Disembunyikan');
+      });
+
+      // Flip Horizontal
+      document.getElementById('btnFlip').addEventListener('click', () => {
+        state.isFlipped = !state.isFlipped;
+        const curAnimal = FAUNA_DATABASE.find(a => a.id === state.selectedAnimalId);
+        renderAnimalGraphics(curAnimal);
+      });
+
+      // Pose Selector
+      document.querySelectorAll('.pose-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.pose-btn').forEach(b => {
+            b.className = 'pose-btn px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
+          });
+          btn.className = 'pose-btn active px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500 text-slate-950 transition';
+          state.pose = btn.getAttribute('data-pose');
+          const curAnimal = FAUNA_DATABASE.find(a => a.id === state.selectedAnimalId);
+          renderAnimalGraphics(curAnimal);
+          showToast(`Pose: ${btn.textContent}`);
+        });
+      });
+
+      // Habitat Select
+      habitatSelect.addEventListener('change', (e) => {
+        state.habitat = e.target.value;
+        renderHabitat();
+        showToast(`Ekosistem diubah`);
+      });
+
+      // Zoom & Reset buttons
+      document.getElementById('btnZoomIn').addEventListener('click', () => {
+        state.zoom = Math.min(2.5, state.zoom + 0.2);
+        updateTransform();
+      });
+
+      document.getElementById('btnZoomOut').addEventListener('click', () => {
+        state.zoom = Math.max(0.5, state.zoom - 0.2);
+        updateTransform();
+      });
+
+      document.getElementById('btnResetView').addEventListener('click', () => {
+        state.zoom = 1;
+        state.pan = { x: 0, y: 0 };
+        updateTransform();
+        showToast('Tampilan kamera direset');
+      });
+
+      // Export SVG
+      document.getElementById('btnExportSvg').addEventListener('click', exportSvgFile);
+
+      // Export PNG
+      document.getElementById('btnExportPng').addEventListener('click', exportPngFile);
+    }
+
+    // =========================================================================
+    // EXPORT UTILITIES
+    // =========================================================================
+    function showToast(msg) {
+      toastMsg.textContent = msg;
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 2500);
+    }
+
+    function exportSvgFile() {
+      const svgClone = faunaSvg.cloneNode(true);
+      const serializer = new XMLSerializer();
+      const svgBlob = new Blob([serializer.serializeToString(svgClone)], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `fauna_${state.selectedAnimalId}_${Date.now()}.svg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('Aset vektor SVG berhasil diunduh!');
+    }
+
+    function exportPngFile() {
+      const svgString = new XMLSerializer().serializeToString(faunaSvg);
+      const img = new Image();
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 2000; // 2x High-DPI
+        canvas.height = 1700;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+
+        const pngUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = pngUrl;
+        link.download = `fauna_${state.selectedAnimalId}_2x_${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Gambar PNG resolusi tinggi berhasil diunduh!');
+      };
+      img.src = url;
+    }
+
+    // Launch
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

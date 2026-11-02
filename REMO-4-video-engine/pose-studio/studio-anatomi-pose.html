@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Anatomi & Pose Karakter Indonesia</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    /* Range input styling */
+    input[type=range] {
+      accent-color: #f59e0b;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col overflow-hidden">
+
+  <!-- Header / Navigation Bar -->
+  <header class="h-14 border-b border-slate-800 bg-slate-900/90 backdrop-blur px-4 flex items-center justify-between shrink-0 z-20">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-600 via-rose-600 to-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/20 text-white font-extrabold text-lg">
+        ID
+      </div>
+      <div>
+        <h1 class="font-bold text-sm sm:text-base leading-tight tracking-tight flex items-center gap-2">
+          Nusantara Pose Studio
+          <span class="text-[10px] bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/30">Anatomi 2D</span>
+        </h1>
+        <p class="text-xs text-slate-400 hidden sm:block">Karakter Pria & Wanita Indonesia • Panduan Proporsi 7.5 Kepala</p>
+      </div>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="flex items-center gap-2">
+      <button id="btnCopyJson" title="Salin Data Pose (JSON)" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition active:scale-95">
+        <i data-lucide="code" class="w-4 h-4 text-amber-400"></i>
+        <span class="hidden md:inline">Salin JSON</span>
+      </button>
+      <button id="btnExportSvg" title="Ekspor SVG Vektor" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition active:scale-95">
+        <i data-lucide="file-code" class="w-4 h-4 text-emerald-400"></i>
+        <span>Unduh SVG</span>
+      </button>
+      <button id="btnExportPng" title="Ekspor Gambar PNG" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-950 font-semibold transition shadow-md shadow-amber-500/20 active:scale-95">
+        <i data-lucide="download" class="w-4 h-4"></i>
+        <span>Unduh PNG</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 border border-slate-700 text-slate-200 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2 text-xs translate-y-16 opacity-0 pointer-events-none transition-all duration-300">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg">Tindakan berhasil!</span>
+  </div>
+
+  <!-- Main Workspace -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- LEFT PANEL: Preset Poses & Anatomy Presets -->
+    <aside class="w-72 lg:w-80 border-r border-slate-800 bg-slate-900/50 flex flex-col shrink-0 overflow-y-auto">
+      <div class="p-4 space-y-5">
+
+        <!-- Gender Switcher -->
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Model Karakter</label>
+          <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+            <button id="btnCharMale" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md">
+              <i data-lucide="user" class="w-4 h-4"></i> Pria (Budi)
+            </button>
+            <button id="btnCharFemale" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white">
+              <i data-lucide="user" class="w-4 h-4"></i> Wanita (Siti)
+            </button>
+          </div>
+        </div>
+
+      <!-- MULTI-BACKGROUND ENVIRONMENT SELECTOR -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="image" class="w-3.5 h-3.5 text-amber-400"></i>
+            Latar Belakang Nusantara
+          </label>
+          <span class="text-[10px] bg-amber-500/20 text-amber-300 font-mono px-2 py-0.5 rounded-full">8 Latar</span>
+        </div>
+
+        <!-- Time of Day Tabs -->
+        <div class="grid grid-cols-4 gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800 mb-2.5">
+          <button data-tod="pagi" class="tod-btn text-[10px] py-1 rounded font-semibold text-slate-400 hover:text-white transition">Pagi</button>
+          <button data-tod="siang" class="tod-btn text-[10px] py-1 rounded font-semibold text-slate-400 hover:text-white transition">Siang</button>
+          <button data-tod="senja" class="tod-btn active text-[10px] py-1 rounded font-bold bg-amber-500 text-slate-950 transition">Senja</button>
+          <button data-tod="malam" class="tod-btn text-[10px] py-1 rounded font-semibold text-slate-400 hover:text-white transition">Malam</button>
+        </div>
+
+        <!-- Background Presets Grid -->
+        <div class="grid grid-cols-2 gap-2" id="bgSelectorList">
+          <button data-bg="candi" class="bg-card-btn active group relative overflow-hidden rounded-xl border-2 border-amber-500 p-2 text-left bg-slate-950 transition hover:border-amber-400">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-amber-900 to-rose-700 flex items-center justify-center mb-1.5 text-amber-200">
+              <i data-lucide="landmark" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-amber-300 truncate">Candi Borobudur</p>
+            <p class="text-[9px] text-slate-400">Stupa & Senja Fajar</p>
+          </button>
+
+          <button data-bg="gadang" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-emerald-950 to-teal-800 flex items-center justify-center mb-1.5 text-emerald-300">
+              <i data-lucide="home" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Rumah Gadang</p>
+            <p class="text-[9px] text-slate-400">Minangkabau</p>
+          </button>
+
+          <button data-bg="sawah" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-emerald-900 to-lime-700 flex items-center justify-center mb-1.5 text-lime-300">
+              <i data-lucide="trees" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Terasering Ubud</p>
+            <p class="text-[9px] text-slate-400">Sawah & Nyiur</p>
+          </button>
+
+          <button data-bg="pantai" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-cyan-900 to-blue-700 flex items-center justify-center mb-1.5 text-cyan-200">
+              <i data-lucide="waves" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Pantai Raja Ampat</p>
+            <p class="text-[9px] text-slate-400">Karst & Laut Toska</p>
+          </button>
+
+          <button data-bg="jakarta" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-indigo-950 to-purple-800 flex items-center justify-center mb-1.5 text-indigo-300">
+              <i data-lucide="building-2" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Metropolis Jakarta</p>
+            <p class="text-[9px] text-slate-400">Skyline Sudirman</p>
+          </button>
+
+          <button data-bg="blueprint" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-sky-950 to-blue-900 flex items-center justify-center mb-1.5 text-sky-300">
+              <i data-lucide="grid" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Grid Blueprint</p>
+            <p class="text-[9px] text-slate-400">Teknis Seni Lukis</p>
+          </button>
+
+          <button data-bg="cyclorama" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-gradient-to-tr from-slate-900 to-slate-700 flex items-center justify-center mb-1.5 text-slate-300">
+              <i data-lucide="focus" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Studio Cyclorama</p>
+            <p class="text-[9px] text-slate-400">Softbox Spotlight</p>
+          </button>
+
+          <button data-bg="transparan" class="bg-card-btn group relative overflow-hidden rounded-xl border border-slate-800 p-2 text-left bg-slate-950 transition hover:border-slate-700">
+            <div class="h-10 w-full rounded-lg bg-[radial-gradient(#475569_1px,transparent_1px)] [background-size:8px_8px] bg-slate-900 flex items-center justify-center mb-1.5 text-slate-400">
+              <i data-lucide="file-box" class="w-5 h-5"></i>
+            </div>
+            <p class="text-[11px] font-bold text-slate-300 truncate">Transparan (Alpha)</p>
+            <p class="text-[9px] text-slate-400">Aset Tanpa Latar</p>
+          </button>
+        </div>
+
+        <!-- Blur / Depth of Field Toggle -->
+        <div class="flex items-center justify-between mt-2.5 px-3 py-2 bg-slate-950 rounded-xl border border-slate-800/80">
+          <span class="text-xs text-slate-300 flex items-center gap-1.5">
+            <i data-lucide="eye" class="w-3.5 h-3.5 text-amber-400"></i> Kabur Latar (Bokeh / DOF)
+          </span>
+          <button id="btnToggleDof" class="text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-400 transition hover:text-white">
+            Nonaktif
+          </button>
+        </div>
+      </div>
+
+        <!-- Tone & Culture Palette (Indonesian Skin Tones) -->
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Warna Kulit Nusantara</label>
+          <div class="grid grid-cols-3 gap-2">
+            <button data-skintone="sawo" class="skintone-btn ring-2 ring-amber-500 flex flex-col items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+              <span class="w-7 h-7 rounded-full bg-[#af7447] border-2 border-white/20 shadow-inner"></span>
+              <span class="text-[11px] font-medium text-slate-300">Sawo Matang</span>
+            </button>
+            <button data-skintone="langsat" class="skintone-btn flex flex-col items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+              <span class="w-7 h-7 rounded-full bg-[#d69e6b] border-2 border-white/20 shadow-inner"></span>
+              <span class="text-[11px] font-medium text-slate-300">Kuning Langsat</span>
+            </button>
+            <button data-skintone="cerah" class="skintone-btn flex flex-col items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 transition">
+              <span class="w-7 h-7 rounded-full bg-[#e8bc92] border-2 border-white/20 shadow-inner"></span>
+              <span class="text-[11px] font-medium text-slate-300">Cerah Tropis</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Outfits (Pakaian Tradisional vs Modern) -->
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Busana & Gaya</label>
+          <div class="space-y-1.5">
+            <button data-outfit="batik" class="outfit-btn w-full text-left px-3 py-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-300 text-xs font-semibold flex items-center justify-between transition">
+              <span class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i>
+                <span id="labelOutfitTrad">Batik Parang Modern</span>
+              </span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-md">Tradisional</span>
+            </button>
+            <button data-outfit="casual" class="outfit-btn w-full text-left px-3 py-2.5 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 text-slate-300 text-xs font-semibold flex items-center justify-between transition">
+              <span class="flex items-center gap-2">
+                <i data-lucide="shirt" class="w-4 h-4 text-sky-400"></i>
+                <span>Kaos Santai / Streetwear</span>
+              </span>
+              <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md">Kasual</span>
+            </button>
+            <button data-outfit="anatomy" class="outfit-btn w-full text-left px-3 py-2.5 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 text-slate-300 text-xs font-semibold flex items-center justify-between transition">
+              <span class="flex items-center gap-2">
+                <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
+                <span>Studi Anatomi Otot (Ecorche)</span>
+              </span>
+              <span class="text-[10px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-md">Medis/Seni</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Expression Preset -->
+        <div>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Ekspresi Wajah</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button data-expression="senyum" class="expr-btn ring-1 ring-amber-500/50 bg-amber-500/10 text-amber-300 px-2.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2 justify-center transition">
+              <i data-lucide="smile" class="w-4 h-4 text-amber-400"></i> Senyum Ramah
+            </button>
+            <button data-expression="santun" class="expr-btn bg-slate-950 border border-slate-800 text-slate-300 px-2.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2 justify-center transition hover:border-slate-700">
+              <i data-lucide="meh" class="w-4 h-4 text-emerald-400"></i> Teduh / Santun
+            </button>
+            <button data-expression="semangat" class="expr-btn bg-slate-950 border border-slate-800 text-slate-300 px-2.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2 justify-center transition hover:border-slate-700">
+              <i data-lucide="flame" class="w-4 h-4 text-rose-400"></i> Semangat
+            </button>
+            <button data-expression="berpikir" class="expr-btn bg-slate-950 border border-slate-800 text-slate-300 px-2.5 py-2 rounded-lg text-xs font-medium flex items-center gap-2 justify-center transition hover:border-slate-700">
+              <i data-lucide="brain" class="w-4 h-4 text-violet-400"></i> Berpikir
+            </button>
+          </div>
+        </div>
+
+        <!-- Pose Presets Nusantara -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Preset Pose Gerak</label>
+            <span class="text-[10px] text-amber-400 font-mono">7 Gaya</span>
+          </div>
+          <div class="space-y-1.5" id="poseList">
+            <!-- Dynamic button presets -->
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- CENTER: Viewport / Interactive Canvas -->
+    <main class="flex-1 flex flex-col relative bg-slate-950 overflow-hidden">
+
+      <!-- Viewport Floating Toolbar (Layers & Guides) -->
+      <div class="absolute top-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
+        
+        <!-- Layer Toggles -->
+        <div class="flex items-center gap-1.5 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <button id="toggleProportions" title="Tampilkan Panduan Proporsi 7.5 Kepala" class="layer-toggle active flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-amber-300 bg-amber-500/20 border border-amber-500/30 transition">
+            <i data-lucide="ruler" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Canon 7.5 Kepala</span>
+          </button>
+          <button id="toggleSkeleton" title="Tampilkan Tulang & Sendi (Skeleton)" class="layer-toggle active flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-sky-300 bg-sky-500/20 border border-sky-500/30 transition">
+            <i data-lucide="bone" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Kerangka Sendi</span>
+          </button>
+          <button id="toggleMuscles" title="Tampilkan Garis Kontur Otot" class="layer-toggle flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Anatomi Otot</span>
+          </button>
+          <button id="toggleGravity" title="Garis Gravitas & Titik Keseimbangan" class="layer-toggle flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition">
+            <i data-lucide="git-commit" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Garis Titik Berat</span>
+          </button>
+        </div>
+
+        <!-- Zoom & View controls -->
+        <div class="flex items-center gap-1 bg-slate-900/90 backdrop-blur border border-slate-800 p-1.5 rounded-2xl shadow-xl pointer-events-auto">
+          <button id="btnZoomIn" title="Perbesar" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition">
+            <i data-lucide="zoom-in" class="w-4 h-4"></i>
+          </button>
+          <button id="btnZoomOut" title="Perkecil" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-200 transition">
+            <i data-lucide="zoom-out" class="w-4 h-4"></i>
+          </button>
+          <button id="btnResetView" title="Reset Pandangan" class="px-2.5 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-300 flex items-center gap-1 transition">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            <span class="hidden md:inline">Reset</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- SVG Rigging & Display Canvas -->
+      <div id="canvasContainer" class="flex-1 w-full h-full relative cursor-grab active:cursor-grabbing overflow-hidden flex items-center justify-center">
+        <!-- SVG Canvas rendered dynamically -->
+        <svg id="stageSvg" viewBox="0 0 900 1000" class="w-full h-full max-h-screen drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Pattern Batik Parang -->
+            <pattern id="batikParang" width="40" height="40" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="40" height="40" fill="#6b3012"/>
+              <path d="M 0,20 Q 10,10 20,20 T 40,20" fill="none" stroke="#d49b53" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="2.5" fill="#e9c285"/>
+              <circle cx="30" cy="30" r="2.5" fill="#e9c285"/>
+              <path d="M 0,0 L 40,40" stroke="#8d401a" stroke-width="1.5" stroke-dasharray="2,2"/>
+            </pattern>
+
+            <!-- Pattern Kebaya Brokat / Floral Emas -->
+            <pattern id="kebayaBrokat" width="30" height="30" patternUnits="userSpaceOnUse">
+              <rect width="30" height="30" fill="#881337"/>
+              <circle cx="15" cy="15" r="7" fill="none" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <circle cx="15" cy="15" r="2.5" fill="#fcd34d"/>
+              <path d="M 0,15 Q 15,0 30,15 Q 15,30 0,15" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.6"/>
+            </pattern>
+
+            <!-- Pattern Sarung Batik Bawahan -->
+            <pattern id="sarungBatik" width="30" height="30" patternUnits="userSpaceOnUse">
+              <rect width="30" height="30" fill="#2d170b"/>
+              <polygon points="15,2 28,15 15,28 2,15" fill="none" stroke="#ca8a04" stroke-width="1.5"/>
+              <circle cx="15" cy="15" r="3" fill="#ca8a04"/>
+            </pattern>
+
+            <!-- Muscle gradient for anatomy mode -->
+            <radialGradient id="muscleGrad" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#dc2626"/>
+              <stop offset="70%" stop-color="#991b1b"/>
+              <stop offset="100%" stop-color="#7f1d1d"/>
+            </radialGradient>
+
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+
+            <!-- Depth of Field Blur Filter for Scenic Backgrounds -->
+            <filter id="dofFilter" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="5" />
+            </filter>
+          </defs>
+
+          <!-- Background Stage Grid -->
+          <g id="viewportWorld">
+            <!-- PROCEDURAL MULTI-BACKGROUND SCENIC LAYER -->
+            <g id="layerBackground">
+              <!-- Dynamically rendered background scenery -->
+            </g>
+
+            <g id="artboardGrid">
+              <!-- Grid lines drawn by JS -->
+            </g>
+
+            <!-- Ground Shadow -->
+            <ellipse id="groundShadow" cx="450" cy="890" rx="140" ry="20" fill="#020617" opacity="0.6" filter="blur(8px)"/>
+
+            <!-- Head Height Proportion Guide (Canon 7.5 Kepala) -->
+            <g id="layerProportions" class="transition-opacity duration-300">
+              <!-- Rendered by JS -->
+            </g>
+
+            <!-- Center of Gravity Line -->
+            <g id="layerGravity" class="hidden transition-opacity duration-300">
+              <line id="cogLine" x1="450" y1="90" x2="450" y2="900" stroke="#f43f5e" stroke-width="1.8" stroke-dasharray="6,4" opacity="0.85"/>
+              <circle id="cogPoint" cx="450" cy="490" r="6" fill="#f43f5e" stroke="#ffffff" stroke-width="2"/>
+              <text id="cogLabel" x="462" y="495" fill="#f43f5e" font-size="11" font-weight="700">Pusat Beban (CoG)</text>
+            </g>
+
+            <!-- CHARACTER BODY CONTAINER -->
+            <g id="characterContainer">
+              <!-- SVG Body Parts dynamically drawn with forward-kinematics transform matrix -->
+            </g>
+
+            <!-- ANATOMY MUSCLE OVERLAY -->
+            <g id="layerMuscles" class="hidden pointer-events-none opacity-85">
+              <!-- Detailed muscle striations -->
+            </g>
+
+            <!-- SKELETAL RIG & PIVOT PINS -->
+            <g id="layerSkeleton" class="transition-opacity duration-300">
+              <!-- Bone lines & joint nodes -->
+            </g>
+          </g>
+        </svg>
+
+        <!-- Anatomy Info Tooltip Hover Banner (Bottom viewport) -->
+        <div id="anatomyTooltip" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur border border-amber-500/30 px-4 py-2 rounded-2xl shadow-xl flex items-center gap-3 text-xs text-slate-300 max-w-xl pointer-events-none">
+          <div class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></div>
+          <div>
+            <span id="tooltipTitle" class="font-bold text-amber-300">Kanon 7.5 Kepala:</span>
+            <span id="tooltipDesc">Standar anatomi ideal seni rupa akademis & karakter Nusantara (Tinggi rata-rata proporsional 165 - 173 cm).</span>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- RIGHT PANEL: Fine Bone Rigging & Angles -->
+    <aside class="w-80 lg:w-88 border-l border-slate-800 bg-slate-900/50 flex flex-col shrink-0 overflow-y-auto">
+      <div class="p-4 space-y-5">
+        
+        <div class="flex items-center justify-between">
+          <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="sliders" class="w-4 h-4 text-amber-400"></i>
+            Kontrol Rigging Manual (FK)
+          </h2>
+          <button id="btnResetJoints" class="text-[11px] text-amber-400 hover:text-amber-300 font-medium transition">Reset Sudut</button>
+        </div>
+
+        <!-- Joint Sliders Sections -->
+        <div class="space-y-4 text-xs">
+
+          <!-- Core & Spine -->
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span> Kepala & Tulang Belakang
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Kemiringan Kepala</span>
+                <span id="val_headAngle" class="text-amber-400 font-mono">0°</span>
+              </div>
+              <input type="range" id="param_headAngle" min="-35" max="35" value="0" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Rotasi Torso / Dada</span>
+                <span id="val_chestAngle" class="text-amber-400 font-mono">0°</span>
+              </div>
+              <input type="range" id="param_chestAngle" min="-25" max="25" value="0" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Kemiringan Pinggul (Pelvis)</span>
+                <span id="val_pelvisAngle" class="text-amber-400 font-mono">0°</span>
+              </div>
+              <input type="range" id="param_pelvisAngle" min="-20" max="20" value="0" class="w-full">
+            </div>
+          </div>
+
+          <!-- Left Arm -->
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+            <div class="font-bold text-slate-200 flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-sky-400"></span> Lengan Kiri (Depan Anda)
+              </span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Bahu Kiri</span>
+                <span id="val_armLAngle" class="text-sky-400 font-mono">15°</span>
+              </div>
+              <input type="range" id="param_armLAngle" min="-120" max="120" value="15" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Siku Kiri</span>
+                <span id="val_forearmLAngle" class="text-sky-400 font-mono">10°</span>
+              </div>
+              <input type="range" id="param_forearmLAngle" min="-140" max="90" value="10" class="w-full">
+            </div>
+          </div>
+
+          <!-- Right Arm -->
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+            <div class="font-bold text-slate-200 flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Lengan Kanan
+              </span>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Bahu Kanan</span>
+                <span id="val_armRAngle" class="text-emerald-400 font-mono">-15°</span>
+              </div>
+              <input type="range" id="param_armRAngle" min="-120" max="120" value="-15" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Siku Kanan</span>
+                <span id="val_forearmRAngle" class="text-emerald-400 font-mono">-10°</span>
+              </div>
+              <input type="range" id="param_forearmRAngle" min="-90" max="140" value="-10" class="w-full">
+            </div>
+          </div>
+
+          <!-- Left Leg -->
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-indigo-400"></span> Kaki Kiri (Tungkai)
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Paha Kiri</span>
+                <span id="val_thighLAngle" class="text-indigo-400 font-mono">5°</span>
+              </div>
+              <input type="range" id="param_thighLAngle" min="-80" max="80" value="5" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Lutut Kiri</span>
+                <span id="val_kneeLAngle" class="text-indigo-400 font-mono">0°</span>
+              </div>
+              <input type="range" id="param_kneeLAngle" min="-10" max="130" value="0" class="w-full">
+            </div>
+          </div>
+
+          <!-- Right Leg -->
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+            <div class="font-bold text-slate-200 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-violet-400"></span> Kaki Kanan (Tungkai)
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Paha Kanan</span>
+                <span id="val_thighRAngle" class="text-violet-400 font-mono">-5°</span>
+              </div>
+              <input type="range" id="param_thighRAngle" min="-80" max="80" value="-5" class="w-full">
+            </div>
+
+            <div>
+              <div class="flex justify-between text-slate-400 mb-1">
+                <span>Lutut Kanan</span>
+                <span id="val_kneeRAngle" class="text-violet-400 font-mono">0°</span>
+              </div>
+              <input type="range" id="param_kneeRAngle" min="-10" max="130" value="0" class="w-full">
+            </div>
+          </div>
+
+          <!-- Anatomical Guide Specs Box -->
+          <div class="p-3.5 rounded-xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-950 border border-amber-500/30 text-slate-300 space-y-2">
+            <h3 class="font-bold text-amber-300 flex items-center gap-1.5 text-xs">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Ringkasan Anatomi Indonesia
+            </h3>
+            <p class="text-[11px] leading-relaxed text-slate-400">
+              Proporsi karakter Indonesia berpegang pada kanon klasik <strong>7.5 panjang kepala</strong>:
+            </p>
+            <ul class="text-[10px] space-y-1 text-slate-300 list-disc list-inside">
+              <li>Kepala 1: Puncak kepala s/d Dagu</li>
+              <li>Kepala 2: Dagu s/d Garis Puting Dada</li>
+              <li>Kepala 3: Dada s/d Pusar (Navel)</li>
+              <li>Kepala 4: Pusar s/d Selangkangan (Pubis)</li>
+              <li>Kepala 5: Pubis s/d Pertengahan Paha</li>
+              <li>Kepala 6: Paha bawah s/d Tempurung Lutut</li>
+              <li>Kepala 7: Bawah lutut s/d Betis bawah</li>
+              <li>+0.5 Kepala: Tumit hingga Telapak Kaki</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- SCRIPT APPLICATION LOGIC -->
+  <script>
+    // Initialize Lucide icons — REMO 4 fix: dibungkus try/catch supaya satu CDN
+    // gagal tidak mematikan seluruh aplikasi (dulu: lucide is not defined -> init() mati).
+    function safeCreateIcons() {
+      try {
+        if (window.lucide && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (err) {
+        console.warn('Lucide tidak tersedia, ikon dilewati:', err);
+      }
+    }
+    safeCreateIcons();
+
+    // ==========================================
+    // STATE MANAGEMENT
+    // ==========================================
+    const state = {
+      gender: 'male', // 'male' | 'female'
+      skinTone: 'sawo', // 'sawo' | 'langsat' | 'cerah'
+      outfit: 'batik', // 'batik' | 'casual' | 'anatomy'
+      expression: 'senyum', // 'senyum' | 'santun' | 'semangat' | 'berpikir'
+      background: 'candi', // 'candi' | 'gadang' | 'sawah' | 'pantai' | 'jakarta' | 'blueprint' | 'cyclorama' | 'transparan'
+      timeOfDay: 'senja', // 'pagi' | 'siang' | 'senja' | 'malam'
+      enableDof: false, // Depth of Field blur
+      layers: {
+        proportions: true,
+        skeleton: true,
+        muscles: false,
+        gravity: false
+      },
+      zoom: 1,
+      pan: { x: 0, y: 0 },
+      isPanning: false,
+      panStart: { x: 0, y: 0 },
+      // Rig Angles (degrees)
+      pose: {
+        headAngle: 0,
+        chestAngle: 0,
+        pelvisAngle: 0,
+        armLAngle: 15,
+        forearmLAngle: 10,
+        armRAngle: -15,
+        forearmRAngle: -10,
+        thighLAngle: 5,
+        kneeLAngle: 0,
+        thighRAngle: -5,
+        kneeRAngle: 0
+      }
+    };
+
+    // Color definitions
+    const SKIN_PALETTES = {
+      sawo: {
+        base: '#a4683f',
+        shadow: '#844c26',
+        highlight: '#bc8054',
+        lips: '#85392d',
+        blush: 'rgba(154, 52, 18, 0.25)'
+      },
+      langsat: {
+        base: '#d69e6b',
+        shadow: '#b37745',
+        highlight: '#e7b585',
+        lips: '#aa4d3d',
+        blush: 'rgba(217, 119, 6, 0.22)'
+      },
+      cerah: {
+        base: '#eec199',
+        shadow: '#cb9a72',
+        highlight: '#f7d3b2',
+        lips: '#c45a52',
+        blush: 'rgba(244, 63, 94, 0.25)'
+      }
+    };
+
+    // Pose Presets Library
+    const POSE_PRESETS = [
+      {
+        id: 'netral',
+        name: 'Berdiri Netral (Model)',
+        desc: 'Pose tegak santai dengan berat badan seimbang di kedua kaki.',
+        angles: {
+          headAngle: 0,
+          chestAngle: 0,
+          pelvisAngle: 0,
+          armLAngle: 14,
+          forearmLAngle: 8,
+          armRAngle: -14,
+          forearmRAngle: -8,
+          thighLAngle: 4,
+          kneeLAngle: 0,
+          thighRAngle: -4,
+          kneeRAngle: 0
+        }
+      },
+      {
+        id: 'salam',
+        name: 'Salam Santun Nusantara',
+        desc: 'Kedua telapak tangan menangkup di depan dada (Sembah / Tabik).',
+        angles: {
+          headAngle: 8,
+          chestAngle: 4,
+          pelvisAngle: 0,
+          // REMO 4 fix: dihitung ulang dari FK — tangan bertemu di tengah dada
+          // (450, ~392). Dulu 48/-82 & -48/82 -> siku terbuang ke samping dan
+          // tangan jatuh di pinggang (y~481).
+          armLAngle: 10,
+          forearmLAngle: -122,
+          armRAngle: -18,
+          forearmRAngle: 122,
+          thighLAngle: 3,
+          kneeLAngle: 0,
+          thighRAngle: -3,
+          kneeRAngle: 0
+        }
+      },
+      {
+        id: 'menyapa',
+        name: 'Menyapa / Melambai',
+        desc: 'Tangan terangkat ramah mengucapkan salam.',
+        angles: {
+          headAngle: -6,
+          chestAngle: -3,
+          pelvisAngle: 2,
+          armLAngle: 13,
+          forearmLAngle: 10,
+          armRAngle: -105,
+          forearmRAngle: -60,
+          thighLAngle: -2,
+          kneeLAngle: 2,
+          thighRAngle: 6,
+          kneeRAngle: 0
+        }
+      },
+      {
+        id: 'berjalan',
+        name: 'Langkah Berjalan (Dynamic Walk)',
+        desc: 'Gerak kontra-posisi antara ayunan lengan dan tungkai kaki.',
+        angles: {
+          headAngle: 2,
+          chestAngle: 5,
+          pelvisAngle: -4,
+          armLAngle: -35,
+          forearmLAngle: 30,
+          armRAngle: 32,
+          forearmRAngle: -20,
+          thighLAngle: 26,
+          kneeLAngle: 22,
+          thighRAngle: -28,
+          kneeRAngle: 12
+        }
+      },
+      {
+        id: 'tolakpinggang',
+        name: 'Bertolak Pinggang (Percaya Diri)',
+        desc: 'Kedua tangan bersandar di panggul, postur heroik dan tegas.',
+        angles: {
+          headAngle: -3,
+          chestAngle: 0,
+          pelvisAngle: 0,
+          // REMO 4 fix: dihitung ulang dari FK — tangan di panggul (396/505, 500),
+          // siku mengangkang ke samping (319/581, 420). Dulu 45/90 & -45/-90 ->
+          // tangan terangkat setinggi bahu seperti shrug, dan sudut di luar
+          // rentang slider sehingga ter-clamp.
+          armLAngle: 23,
+          forearmLAngle: -67,
+          armRAngle: -23,
+          forearmRAngle: 67,
+          thighLAngle: 9,
+          kneeLAngle: 2,
+          thighRAngle: -9,
+          kneeRAngle: 2
+        }
+      },
+      {
+        id: 'berpikir',
+        name: 'Pose Berpikir (Kontemplatif)',
+        desc: 'Satu tangan menyentuh dagu, berat badan bertumpu pada satu sisi.',
+        angles: {
+          headAngle: -10,
+          chestAngle: -4,
+          pelvisAngle: 6,
+          // REMO 4 fix (bonus, di luar daftar wajib): tangan kiri — yang
+          // digambar DI DEPAN torso — yang menyentuh dagu (459, 214). Dulu
+          // tangan kanan yang dipakai, tapi lengan kanan digambar di belakang
+          // torso sehingga tidak bisa menyeberang dada; tangan jatuh di (605, 510).
+          armLAngle: -80,
+          forearmLAngle: -112,
+          armRAngle: -14,
+          forearmRAngle: -8,
+          thighLAngle: 7,
+          kneeLAngle: 12,
+          thighRAngle: -2,
+          kneeRAngle: 0
+        }
+      },
+      {
+        id: 'santai',
+        name: 'Contrapposto Santai',
+        desc: 'Pose klasik seni rupa: pinggul bergeser, satu lutut tertekuk relaks.',
+        angles: {
+          headAngle: 4,
+          chestAngle: -6,
+          pelvisAngle: 9,
+          armLAngle: 18,
+          forearmLAngle: 20,
+          armRAngle: -22,
+          forearmRAngle: 45,
+          thighLAngle: 12,
+          kneeLAngle: 18,
+          thighRAngle: -4,
+          kneeRAngle: 0
+        }
+      }
+    ];
+
+    // ==========================================
+    // DOM ELEMENTS
+    // ==========================================
+    const stageSvg = document.getElementById('stageSvg');
+    const viewportWorld = document.getElementById('viewportWorld');
+    const layerBackground = document.getElementById('layerBackground');
+    const characterContainer = document.getElementById('characterContainer');
+    const layerSkeleton = document.getElementById('layerSkeleton');
+    const layerMuscles = document.getElementById('layerMuscles');
+    const layerProportions = document.getElementById('layerProportions');
+    const layerGravity = document.getElementById('layerGravity');
+    const cogLine = document.getElementById('cogLine');
+    const cogPoint = document.getElementById('cogPoint');
+    const artboardGrid = document.getElementById('artboardGrid');
+    const toast = document.getElementById('toast');
+    const toastMsg = document.getElementById('toastMsg');
+    const poseListContainer = document.getElementById('poseList');
+    const labelOutfitTrad = document.getElementById('labelOutfitTrad');
+
+    // UI Buttons
+    const btnCharMale = document.getElementById('btnCharMale');
+    const btnCharFemale = document.getElementById('btnCharFemale');
+    const btnZoomIn = document.getElementById('btnZoomIn');
+    const btnZoomOut = document.getElementById('btnZoomOut');
+    const btnResetView = document.getElementById('btnResetView');
+    const btnResetJoints = document.getElementById('btnResetJoints');
+    const btnExportSvg = document.getElementById('btnExportSvg');
+    const btnExportPng = document.getElementById('btnExportPng');
+    const btnCopyJson = document.getElementById('btnCopyJson');
+
+    // Layer toggles
+    const toggleProportions = document.getElementById('toggleProportions');
+    const toggleSkeleton = document.getElementById('toggleSkeleton');
+    const toggleMuscles = document.getElementById('toggleMuscles');
+    const toggleGravity = document.getElementById('toggleGravity');
+
+    // Slider inputs mapping
+    const sliders = [
+      'headAngle', 'chestAngle', 'pelvisAngle',
+      'armLAngle', 'forearmLAngle',
+      'armRAngle', 'forearmRAngle',
+      'thighLAngle', 'kneeLAngle',
+      'thighRAngle', 'kneeRAngle'
+    ];
+
+    // ==========================================
+    // INITIALIZATION & SETUP
+    // ==========================================
+    function init() {
+      renderPoseButtons();
+      renderBackground();
+      drawBackgroundGrid();
+      drawCanon75Proportions();
+      setupSliders();
+      setupEvents();
+      renderCharacter();
+      updateTransform();
+    }
+
+    // Grid rendering
+    function drawBackgroundGrid() {
+      let markup = '';
+      for (let x = 100; x <= 800; x += 50) {
+        markup += `<line x1="${x}" y1="50" x2="${x}" y2="950" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>`;
+      }
+      for (let y = 100; y <= 950; y += 50) {
+        markup += `<line x1="50" y1="${y}" x2="850" y2="${y}" stroke="#1e293b" stroke-width="0.8" opacity="0.4"/>`;
+      }
+      artboardGrid.innerHTML = markup;
+    }
+
+    // Canon 7.5 Kepala Guides (Akademis Seni Rupa)
+    function drawCanon75Proportions() {
+      // Standar 7.5 panjang kepala:
+      // Puncak kepala: 110px. Tinggi 1 kepala = 100px.
+      // 0: 110 (Puncak)
+      // 1: 210 (Dagu)
+      // 2: 310 (Dada)
+      // 3: 410 (Pusar)
+      // 4: 510 (Pubis / Panggul)
+      // 5: 610 (Pertengahan Paha)
+      // 6: 710 (Lutut)
+      // 7: 810 (Betis Bawah)
+      // 7.5: 860 (Telapak Kaki / Lantai)
+      const headHeight = 100;
+      const topHeadY = 110;
+      const steps = [
+        { label: '0. Puncak Kepala', desc: 'Vertex' },
+        { label: '1. Dagu (Menton)', desc: 'Panjang 1 Kepala' },
+        { label: '2. Garis Dada (Nipple line)', desc: 'Panjang 2 Kepala' },
+        { label: '3. Pinggang & Pusar (Umbilicus)', desc: 'Panjang 3 Kepala' },
+        { label: '4. Selangkangan (Pubis)', desc: 'Pusat Tubuh (Half body)' },
+        { label: '5. Pertengahan Paha', desc: 'Femur tengah' },
+        { label: '6. Lutut (Patella)', desc: 'Sendi lutut' },
+        { label: '7. Bawah Betis (Soleus)', desc: 'Ujung tulang kering' },
+        { label: '7.5 Lantai / Telapak Kaki', desc: 'Dasar telapak kaki' }
+      ];
+
+      let guideHtml = '';
+      steps.forEach((step, idx) => {
+        const y = idx === 8 ? topHeadY + 7.5 * headHeight : topHeadY + idx * headHeight;
+        guideHtml += `
+          <g class="guide-row opacity-60 hover:opacity-100 transition-opacity">
+            <line x1="120" y1="${y}" x2="780" y2="${y}" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="4,4"/>
+            <rect x="70" y="${y - 10}" width="95" height="18" rx="4" fill="#0f172a" stroke="#f59e0b" stroke-width="0.8"/>
+            <text x="75" y="${y + 3}" fill="#fbbf24" font-size="9" font-weight="bold">${step.label}</text>
+          </g>
+        `;
+      });
+
+      // Side measuring bar
+      guideHtml += `
+        <line x1="785" y1="${topHeadY}" x2="785" y2="${topHeadY + 750}" stroke="#f59e0b" stroke-width="2.5"/>
+        <text x="795" y="490" fill="#f59e0b" font-size="11" font-weight="bold" transform="rotate(90,795,490)">TINGGI IDEAL (7.5 KEPALA)</text>
+      `;
+
+      layerProportions.innerHTML = guideHtml;
+    }
+
+    // Render Preset buttons in left panel
+    function renderPoseButtons() {
+      poseListContainer.innerHTML = POSE_PRESETS.map((preset, i) => `
+        <button data-pose-id="${preset.id}" class="preset-btn w-full text-left p-2.5 rounded-xl border ${i === 0 ? 'border-amber-500/50 bg-amber-500/10' : 'border-slate-800 bg-slate-950'} hover:border-slate-700 transition group">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold ${i === 0 ? 'text-amber-300' : 'text-slate-300 group-hover:text-white'}">${preset.name}</span>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-500 group-hover:translate-x-0.5 transition"></i>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">${preset.desc}</p>
+        </button>
+      `).join('');
+      safeCreateIcons();
+    }
+
+    // Setup FK sliders
+    function setupSliders() {
+      sliders.forEach(key => {
+        const input = document.getElementById(`param_${key}`);
+        const display = document.getElementById(`val_${key}`);
+        if (!input || !display) return;
+
+        input.addEventListener('input', (e) => {
+          const val = parseFloat(e.target.value);
+          state.pose[key] = val;
+          display.textContent = `${val > 0 ? '+' : ''}${val}°`;
+          renderCharacter();
+        });
+      });
+    }
+
+    function updateSliderDisplays() {
+      sliders.forEach(key => {
+        const input = document.getElementById(`param_${key}`);
+        const display = document.getElementById(`val_${key}`);
+        if (input && display) {
+          input.value = state.pose[key];
+          display.textContent = `${state.pose[key] > 0 ? '+' : ''}${state.pose[key]}°`;
+        }
+      });
+    }
+
+    // ==========================================
+    // RIGGING & KINEMATICS ENGINE
+    // ==========================================
+    // PROCEDURAL MULTI-BACKGROUND ENGINE
+    // ==========================================
+    function renderBackground() {
+      const bg = state.background;
+      const tod = state.timeOfDay;
+      const dofClass = state.enableDof ? 'filter="url(#dofFilter)"' : '';
+
+      if (bg === 'transparan') {
+        layerBackground.innerHTML = `
+          <!-- Checkerboard canvas preview (Transparent mode) -->
+          <rect x="0" y="0" width="900" height="1000" fill="#090d16" opacity="0.4"/>
+        `;
+        return;
+      }
+
+      // Time-of-day sky color gradients
+      const skyPalettes = {
+        pagi: {
+          skyTop: '#1e3a8a',
+          skyMid: '#ea580c',
+          skyBot: '#fef08a',
+          ambient: 'rgba(251, 191, 36, 0.15)',
+          sunColor: '#fef08a',
+          sunY: 340,
+          sunR: 45
+        },
+        siang: {
+          skyTop: '#0284c7',
+          skyMid: '#38bdf8',
+          skyBot: '#bae6fd',
+          ambient: 'rgba(255, 255, 255, 0.05)',
+          sunColor: '#fffbeb',
+          sunY: 180,
+          sunR: 50
+        },
+        senja: {
+          skyTop: '#4c0519',
+          skyMid: '#b91c1c',
+          skyBot: '#fb923c',
+          ambient: 'rgba(249, 115, 22, 0.22)',
+          sunColor: '#fbbf24',
+          sunY: 420,
+          sunR: 55
+        },
+        malam: {
+          skyTop: '#020617',
+          skyMid: '#090d16',
+          skyBot: '#1e1b4b',
+          ambient: 'rgba(56, 189, 248, 0.08)',
+          sunColor: '#e2e8f0',
+          sunY: 220,
+          sunR: 35
+        }
+      };
+
+      const pal = skyPalettes[tod];
+      let scene = `<g id="sceneryGroup" ${dofClass}>`;
+
+      // 1. SKY BASE
+      scene += `
+        <defs>
+          <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="${pal.skyTop}"/>
+            <stop offset="65%" stop-color="${pal.skyMid}"/>
+            <stop offset="100%" stop-color="${pal.skyBot}"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="900" height="1000" fill="url(#skyGrad)"/>
+      `;
+
+      // Celestial (Sun / Moon / Stars)
+      if (tod === 'malam') {
+        // Moon & stars
+        scene += `
+          <!-- Bulan Sabit -->
+          <circle cx="700" cy="${pal.sunY}" r="${pal.sunR}" fill="${pal.sunColor}" filter="url(#softGlow)"/>
+          <circle cx="712" cy="${pal.sunY - 5}" r="${pal.sunR * 0.9}" fill="${pal.skyTop}"/>
+          <!-- Bintang-bintang -->
+          <circle cx="120" cy="110" r="1.5" fill="#ffffff" opacity="0.8"/>
+          <circle cx="230" cy="80" r="2" fill="#ffffff" opacity="0.9"/>
+          <circle cx="340" cy="140" r="1.5" fill="#ffffff" opacity="0.7"/>
+          <circle cx="480" cy="90" r="2" fill="#ffffff" opacity="0.9"/>
+          <circle cx="580" cy="130" r="1.5" fill="#ffffff" opacity="0.6"/>
+          <circle cx="780" cy="100" r="2" fill="#ffffff" opacity="0.8"/>
+          <circle cx="820" cy="180" r="1.5" fill="#ffffff" opacity="0.7"/>
+        `;
+      } else {
+        // Sun with glow
+        scene += `
+          <circle cx="680" cy="${pal.sunY}" r="${pal.sunR * 1.5}" fill="${pal.sunColor}" opacity="0.25" filter="url(#softGlow)"/>
+          <circle cx="680" cy="${pal.sunY}" r="${pal.sunR}" fill="${pal.sunColor}" opacity="0.9"/>
+        `;
+      }
+
+      // 2. PROCEDURAL LANDSCAPE SPECIFICS
+      if (bg === 'candi') {
+        // Candi Borobudur / Prambanan with Gunung Merapi in distant background
+        scene += `
+          <!-- Siluet Gunung Merapi / Perbukitan Menoreh -->
+          <path d="M 0 650 Q 240 380 460 620 Q 680 340 900 640 L 900 900 L 0 900 Z" fill="#1e1b2e" opacity="0.6"/>
+          <path d="M 50 680 Q 280 470 520 680 Q 720 440 950 680 L 950 900 L 0 900 Z" fill="#13111c" opacity="0.85"/>
+
+          <!-- Kompleks Candi Siluet & Stupa Khas Borobudur -->
+          <!-- Lapisan Teras Dasar Candi -->
+          <rect x="0" y="700" width="900" height="300" fill="#0b0a10"/>
+          
+          <!-- Stupa Kiri -->
+          <path d="M 60 700 Q 60 640 120 640 Q 180 640 180 700 Z" fill="#1a1824"/>
+          <rect x="115" y="615" width="10" height="26" fill="#1a1824"/>
+          <circle cx="120" cy="610" r="6" fill="#1a1824"/>
+
+          <path d="M 180 700 Q 180 620 250 620 Q 320 620 320 700 Z" fill="#14131d"/>
+          <rect x="245" y="590" width="10" height="32" fill="#14131d"/>
+          <circle cx="250" cy="585" r="7" fill="#14131d"/>
+
+          <!-- Stupa Kanan -->
+          <path d="M 680 700 Q 680 625 750 625 Q 820 625 820 700 Z" fill="#14131d"/>
+          <rect x="745" y="595" width="10" height="32" fill="#14131d"/>
+          <circle cx="750" cy="590" r="7" fill="#14131d"/>
+
+          <path d="M 780 700 Q 780 650 830 650 Q 880 650 880 700 Z" fill="#1a1824"/>
+          <rect x="826" y="625" width="8" height="26" fill="#1a1824"/>
+          <circle cx="830" cy="620" r="5" fill="#1a1824"/>
+
+          <!-- Gerbang / Gapura Paduraksa Prambanan Siluet di Tengah Belakang -->
+          <polygon points="450,490 470,550 490,620 410,620 430,550" fill="#0f0e16" opacity="0.7"/>
+          <polygon points="380,560 400,640 360,640" fill="#0f0e16" opacity="0.6"/>
+          <polygon points="520,560 540,640 500,640" fill="#0f0e16" opacity="0.6"/>
+
+          <!-- Relief & Lantai Pelataran Batu Andesit -->
+          <rect x="0" y="780" width="900" height="220" fill="#08070c"/>
+          <line x1="0" y1="780" x2="900" y2="780" stroke="#f59e0b" stroke-width="1.5" opacity="0.3"/>
+          <line x1="0" y1="840" x2="900" y2="840" stroke="#f59e0b" stroke-width="0.8" opacity="0.2"/>
+        `;
+      } else if (bg === 'gadang') {
+        // Rumah Gadang Minangkabau with iconic curved gonjong roof
+        scene += `
+          <!-- Bukit Barisan di Latar Belakang -->
+          <path d="M 0 620 Q 220 450 460 580 Q 700 430 900 600 L 900 900 L 0 900 Z" fill="#064e3b" opacity="0.6"/>
+          <path d="M 0 660 Q 260 540 520 650 Q 720 520 900 660 L 900 900 L 0 900 Z" fill="#065f46" opacity="0.8"/>
+
+          <!-- Halaman Berumput & Pohon Kelapa -->
+          <rect x="0" y="730" width="900" height="270" fill="#022c22"/>
+
+          <!-- Siluet Pohon Kelapa Kiri & Kanan -->
+          <!-- Kiri -->
+          <path d="M 80 750 Q 110 580 90 420" stroke="#041f17" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M 90 420 Q 40 390 10 430 M 90 420 Q 60 360 40 380 M 90 420 Q 110 350 140 370 M 90 420 Q 150 400 170 440 M 90 420 Q 120 440 100 480" stroke="#041f17" stroke-width="4.5" fill="none"/>
+          
+          <!-- Bangunan Rumah Gadang (Atap Gonjong Bertingkat) -->
+          <!-- Dinding Kayu Ukiran Minang -->
+          <polygon points="180,630 720,630 680,760 220,760" fill="#3b1d11" stroke="#ca8a04" stroke-width="2"/>
+          <!-- Pilar-Pilar Tiang Penyangga Bawah -->
+          <line x1="240" y1="760" x2="240" y2="820" stroke="#23120b" stroke-width="8"/>
+          <line x1="330" y1="760" x2="330" y2="820" stroke="#23120b" stroke-width="8"/>
+          <line x1="450" y1="760" x2="450" y2="820" stroke="#23120b" stroke-width="8"/>
+          <line x1="570" y1="760" x2="570" y2="820" stroke="#23120b" stroke-width="8"/>
+          <line x1="660" y1="760" x2="660" y2="820" stroke="#23120b" stroke-width="8"/>
+          <rect x="160" y="810" width="580" height="20" rx="4" fill="#1b0e08"/>
+
+          <!-- Atap Gonjong Menjulang Khas Tanduk Kerbau -->
+          <!-- Gonjong Kiri Luar -->
+          <path d="M 160 635 Q 210 590 190 430 Q 230 550 290 610 Z" fill="#1f1815" stroke="#92400e" stroke-width="2"/>
+          <!-- Gonjong Kiri Tengah -->
+          <path d="M 270 615 Q 320 570 310 460 Q 350 560 400 600 Z" fill="#2a1e19" stroke="#b45309" stroke-width="2"/>
+          <!-- Gonjong Utama Tengah -->
+          <path d="M 380 600 Q 450 560 450 440 Q 450 560 520 600 Z" fill="#1f1815" stroke="#92400e" stroke-width="2"/>
+          <!-- Gonjong Kanan Tengah -->
+          <path d="M 500 600 Q 550 560 590 460 Q 580 570 630 615 Z" fill="#2a1e19" stroke="#b45309" stroke-width="2"/>
+          <!-- Gonjong Kanan Luar -->
+          <path d="M 610 610 Q 670 550 710 430 Q 690 590 740 635 Z" fill="#1f1815" stroke="#92400e" stroke-width="2"/>
+
+          <!-- Ornamen Ukiran Emas / Pintu Rumah Gadang -->
+          <rect x="420" y="660" width="60" height="85" fill="#78350f" stroke="#f59e0b" stroke-width="2"/>
+          <polygon points="450,645 425,660 475,660" fill="#f59e0b"/>
+          <!-- Tangga Rumah Gadang -->
+          <polygon points="410,810 490,810 510,860 390,860" fill="#92400e"/>
+        `;
+      } else if (bg === 'sawah') {
+        // Terasering Sawah Jatiluwih / Ubud Bali dengan pohon kelapa & pondok
+        scene += `
+          <!-- Perbukitan Tropis Kabut -->
+          <path d="M 0 540 Q 250 420 500 520 Q 750 410 900 500 L 900 900 L 0 900 Z" fill="#14532d" opacity="0.7"/>
+          <path d="M 0 590 Q 220 500 480 570 Q 720 480 900 560 L 900 900 L 0 900 Z" fill="#166534" opacity="0.85"/>
+
+          <!-- Undakan Terasering Sawah (Rice Terraces) -->
+          <path d="M 0 660 Q 280 610 560 650 Q 760 630 900 660 L 900 720 Q 650 690 350 710 L 0 720 Z" fill="#65a30d" stroke="#365314" stroke-width="3"/>
+          <path d="M 0 710 Q 340 680 640 700 Q 790 680 900 710 L 900 780 Q 550 750 250 780 L 0 780 Z" fill="#4d7c0f" stroke="#365314" stroke-width="3"/>
+          <path d="M 0 770 Q 300 740 620 760 Q 800 740 900 770 L 900 850 Q 500 820 180 840 L 0 850 Z" fill="#3f6212" stroke="#1a2e05" stroke-width="3"/>
+          <rect x="0" y="840" width="900" height="160" fill="#1e3a10"/>
+
+          <!-- Pantulan Air di Petak Sawah -->
+          <ellipse cx="220" cy="740" rx="120" ry="12" fill="${pal.sunColor}" opacity="0.25"/>
+          <ellipse cx="700" cy="790" rx="140" ry="14" fill="${pal.sunColor}" opacity="0.2"/>
+
+          <!-- Gubuk Tani / Saung Bambu di Tengah Sawah -->
+          <polygon points="730,680 770,640 810,680" fill="#78350f"/>
+          <rect x="740" y="680" width="60" height="40" fill="#451a03"/>
+          <line x1="745" y1="720" x2="745" y2="740" stroke="#451a03" stroke-width="3"/>
+          <line x1="795" y1="720" x2="795" y2="740" stroke="#451a03" stroke-width="3"/>
+
+          <!-- Pohon Kelapa Eksotis Kanan -->
+          <path d="M 820 780 Q 840 560 790 380" stroke="#27272a" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M 790 380 Q 720 340 680 370 M 790 380 Q 750 310 710 320 M 790 380 Q 820 300 860 330 M 790 380 Q 860 350 890 390 M 790 380 Q 830 410 820 460" stroke="#14532d" stroke-width="4.5" fill="none"/>
+        `;
+      } else if (bg === 'pantai') {
+        // Pantai Tropis & Gugusan Karst Raja Ampat / Bali
+        scene += `
+          <!-- Gugusan Karst Pulau Karang Terjal -->
+          <path d="M 60 630 Q 110 440 160 520 Q 210 430 260 630 Z" fill="#0f172a"/>
+          <path d="M 230 640 Q 280 480 340 640 Z" fill="#1e293b"/>
+          <path d="M 640 640 Q 700 460 760 550 Q 810 470 870 640 Z" fill="#0f172a"/>
+
+          <!-- Tanaman Tropis di Atas Pulau Karst -->
+          <ellipse cx="160" cy="520" rx="35" ry="12" fill="#065f46"/>
+          <ellipse cx="760" cy="540" rx="40" ry="14" fill="#065f46"/>
+
+          <!-- Laut Bergradasi Biru-Toska Indah -->
+          <defs>
+            <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0e7490"/>
+              <stop offset="40%" stop-color="#06b6d4"/>
+              <stop offset="80%" stop-color="#22d3ee"/>
+              <stop offset="100%" stop-color="#fef08a"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="630" width="900" height="230" fill="url(#seaGrad)"/>
+
+          <!-- Garis Buih Ombak Laut Halus -->
+          <path d="M 0 710 Q 220 705 450 715 Q 680 705 900 710" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.6"/>
+          <path d="M 0 760 Q 250 755 500 765 Q 750 755 900 760" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.8"/>
+          <path d="M 0 810 Q 300 805 600 815 Q 800 805 900 810" stroke="#ffffff" stroke-width="3.5" fill="none" opacity="0.9"/>
+
+          <!-- Pantai Pasir Putih Keemasan -->
+          <rect x="0" y="820" width="900" height="180" fill="#eab308" opacity="0.85"/>
+          <rect x="0" y="860" width="900" height="140" fill="#ca8a04"/>
+        `;
+      } else if (bg === 'jakarta') {
+        // Metropolis Sudirman SCBD Jakarta Skyline & Tugu Monas
+        scene += `
+          <!-- Gedung-Gedung Pencakar Langit Lapisan Jauh -->
+          <rect x="40" y="420" width="60" height="400" fill="#1e1b4b" opacity="0.7"/>
+          <rect x="120" y="360" width="75" height="460" fill="#172554" opacity="0.75"/>
+          <rect x="220" y="440" width="65" height="380" fill="#1e1b4b" opacity="0.7"/>
+          <rect x="310" y="320" width="85" height="500" fill="#0f172a" opacity="0.8"/>
+          
+          <!-- Tugu Monas Siluet Ikonik di Latar Tengah -->
+          <polygon points="445,460 455,460 453,300 447,300" fill="#e2e8f0"/>
+          <!-- Lidah Api Kemerdekaan Monas Berkilau Emas -->
+          <polygon points="450,285 455,295 445,295" fill="#facc15" filter="url(#softGlow)"/>
+          <rect x="425" y="460" width="50" height="15" fill="#cbd5e1"/>
+          <polygon points="410,500 490,500 475,475 425,475" fill="#94a3b8"/>
+          <rect x="435" y="500" width="30" height="180" fill="#64748b"/>
+
+          <!-- Gedung-Gedung Pencakar Langit Lapisan Depan (Sudirman SCBD Style) -->
+          <rect x="520" y="340" width="80" height="480" fill="#1e293b"/>
+          <rect x="620" y="290" width="95" height="530" fill="#0f172a"/>
+          <!-- Arsitektur Menara Kaca Diagonal -->
+          <polygon points="620,290 670,240 715,290" fill="#1e293b"/>
+          <rect x="740" y="390" width="70" height="430" fill="#1e293b"/>
+          <rect x="830" y="430" width="60" height="390" fill="#0f172a"/>
+
+          <!-- Jendela-Jendela Gedung Berkilau Cahaya Modern -->
+          <g fill="#fef08a" opacity="0.6">
+            <rect x="135" y="380" width="6" height="4" />
+            <rect x="155" y="380" width="6" height="4" />
+            <rect x="135" y="400" width="6" height="4" />
+            <rect x="170" y="430" width="6" height="4" />
+            <rect x="330" y="350" width="8" height="5" />
+            <rect x="350" y="350" width="8" height="5" />
+            <rect x="370" y="350" width="8" height="5" />
+            <rect x="330" y="380" width="8" height="5" />
+            <rect x="350" y="410" width="8" height="5" />
+            <rect x="540" y="370" width="8" height="6" />
+            <rect x="570" y="370" width="8" height="6" />
+            <rect x="640" y="320" width="10" height="6" />
+            <rect x="670" y="320" width="10" height="6" />
+            <rect x="640" y="350" width="10" height="6" />
+            <rect x="670" y="380" width="10" height="6" />
+            <rect x="760" y="420" width="8" height="5" />
+          </g>
+
+          <!-- Jalan Tol Layang Dalam Kota & Aspal Modern -->
+          <rect x="0" y="740" width="900" height="30" fill="#334155"/>
+          <line x1="0" y1="755" x2="900" y2="755" stroke="#f59e0b" stroke-width="2" stroke-dasharray="25,20"/>
+          <!-- Pilar Jalan Tol -->
+          <rect x="120" y="770" width="30" height="90" fill="#1e293b"/>
+          <rect x="420" y="770" width="30" height="90" fill="#1e293b"/>
+          <rect x="720" y="770" width="30" height="90" fill="#1e293b"/>
+
+          <rect x="0" y="820" width="900" height="180" fill="#090d16"/>
+        `;
+      } else if (bg === 'blueprint') {
+        // Blueprint Teknis Seni Lukis Akademis
+        scene += `
+          <rect x="0" y="0" width="900" height="1000" fill="#042f2e"/>
+          <!-- Blueprint fine millimeter lines -->
+          <defs>
+            <pattern id="bpGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+              <rect width="30" height="30" fill="none" stroke="#0d9488" stroke-width="0.7" opacity="0.35"/>
+              <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#14b8a6" stroke-width="1.2" opacity="0.5"/>
+            </pattern>
+          </defs>
+          <rect x="0" y="0" width="900" height="1000" fill="url(#bpGrid)"/>
+
+          <!-- Vitruvian Man proportion circles and anatomical lines -->
+          <circle cx="450" cy="510" r="380" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-dasharray="8,6" opacity="0.5"/>
+          <circle cx="450" cy="510" r="240" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="4,4" opacity="0.4"/>
+          <rect x="120" y="140" width="660" height="740" fill="none" stroke="#2dd4bf" stroke-width="1.5" stroke-dasharray="6,6" opacity="0.4"/>
+          
+          <text x="140" y="175" fill="#5eead4" font-family="monospace" font-size="13" font-weight="bold">STUDIO ANATOMI NUSANTARA // PROPORSI VITRUVIAN 7.5 KEPALA</text>
+          <text x="140" y="195" fill="#2dd4bf" font-family="monospace" font-size="10">Ketinggian Standar Rata-Rata: Pria 172cm | Wanita 163cm</text>
+        `;
+      } else if (bg === 'cyclorama') {
+        // Clean Minimalist Cyclorama Photo Studio Spotlight
+        scene += `
+          <defs>
+            <radialGradient id="cycSpot" cx="50%" cy="45%" r="65%">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="50%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#020617"/>
+            </radialGradient>
+          </defs>
+          <rect x="0" y="0" width="900" height="850" fill="url(#cycSpot)"/>
+          <!-- Curve Floor Seamless Cyclorama -->
+          <rect x="0" y="850" width="900" height="150" fill="#0f172a"/>
+          <line x1="0" y1="850" x2="900" y2="850" stroke="#475569" stroke-width="1.5" opacity="0.4"/>
+        `;
+      }
+
+      // 3. OVERALL AMBIENT TINT
+      scene += `
+        <!-- Color filter ambiance based on Time of Day -->
+        <rect x="0" y="0" width="900" height="1000" fill="${pal.ambient}" pointer-events="none"/>
+      `;
+
+      scene += '</g>';
+      layerBackground.innerHTML = scene;
+    }
+
+    function renderCharacter() {
+      const isFemale = state.gender === 'female';
+      const skin = SKIN_PALETTES[state.skinTone];
+      const p = state.pose;
+
+      // Base Root Coordinates
+      const rootX = 450;
+      const rootPelvisY = 510;
+
+      // Pelvis Transform
+      const radPelvis = (p.pelvisAngle * Math.PI) / 180;
+      
+      // Chest / Spine calculation
+      // REMO 4 fix (proporsi 7.5 kepala): spineLength 286 supaya dada jatuh di
+      // garis panduan 310 (dulu 150/160 -> dada 398/405, karakter cuma ~5,8 kepala).
+      const spineLength = 286;
+      const radChest = ((p.pelvisAngle + p.chestAngle) * Math.PI) / 180;
+      const chestX = rootX + Math.sin(radChest) * spineLength * 0.4;
+      const chestY = rootPelvisY - Math.cos(radChest) * spineLength * 0.7;
+
+      // Neck & Head calculation
+      // REMO 4 fix: leher 85 + offset kepala 65 supaya pusat kepala di y~160
+      // (puncak ~115, dagu ~220, sesuai panduan 110/210). Dulu 45 + 35.
+      const neckLength = 85;
+      const neckX = chestX + Math.sin(radChest) * neckLength;
+      const neckY = chestY - Math.cos(radChest) * neckLength;
+
+      const radHead = ((p.pelvisAngle + p.chestAngle + p.headAngle) * Math.PI) / 180;
+      const headX = neckX + Math.sin(radHead) * 65;
+      const headY = neckY - Math.cos(radHead) * 65;
+
+      // Shoulders
+      const shoulderWidth = isFemale ? 64 : 84;
+      const shoulderL_X = chestX - Math.cos(radChest) * shoulderWidth;
+      const shoulderL_Y = chestY - Math.sin(radChest) * shoulderWidth;
+      const shoulderR_X = chestX + Math.cos(radChest) * shoulderWidth;
+      const shoulderR_Y = chestY + Math.sin(radChest) * shoulderWidth;
+
+      // Left Arm Forward Kinematics
+      const armLength = 120;
+      const forearmLength = 110;
+      const radArmL = ((p.armLAngle + p.chestAngle) * Math.PI) / 180;
+      const elbowL_X = shoulderL_X - Math.sin(radArmL) * armLength;
+      const elbowL_Y = shoulderL_Y + Math.cos(radArmL) * armLength;
+
+      const radForearmL = radArmL + (p.forearmLAngle * Math.PI) / 180;
+      const handL_X = elbowL_X - Math.sin(radForearmL) * forearmLength;
+      const handL_Y = elbowL_Y + Math.cos(radForearmL) * forearmLength;
+
+      // Right Arm Forward Kinematics
+      const radArmR = ((p.armRAngle + p.chestAngle) * Math.PI) / 180;
+      const elbowR_X = shoulderR_X - Math.sin(radArmR) * armLength;
+      const elbowR_Y = shoulderR_Y + Math.cos(radArmR) * armLength;
+
+      const radForearmR = radArmR + (p.forearmRAngle * Math.PI) / 180;
+      const handR_X = elbowR_X - Math.sin(radForearmR) * forearmLength;
+      const handR_Y = elbowR_Y + Math.cos(radForearmR) * forearmLength;
+
+      // Hips / Pelvis Points
+      const hipWidth = isFemale ? 52 : 44;
+      const hipL_X = rootX - Math.cos(radPelvis) * hipWidth;
+      const hipL_Y = rootPelvisY - Math.sin(radPelvis) * hipWidth * 0.3;
+      const hipR_X = rootX + Math.cos(radPelvis) * hipWidth;
+      const hipR_Y = rootPelvisY + Math.sin(radPelvis) * hipWidth * 0.3;
+
+      // Left Leg Kinematics
+      // REMO 4 fix: paha 200 + betis 150 supaya lutut di garis 710 dan
+      // telapak kaki di 860 (dulu 175 + 175 -> lutut 685, kaki tetap 860).
+      const thighLength = 200;
+      const calfLength = 150;
+      const radThighL = ((p.thighLAngle + p.pelvisAngle) * Math.PI) / 180;
+      const kneeL_X = hipL_X - Math.sin(radThighL) * thighLength;
+      const kneeL_Y = hipL_Y + Math.cos(radThighL) * thighLength;
+
+      const radKneeL = radThighL + (p.kneeLAngle * Math.PI) / 180;
+      const footL_X = kneeL_X - Math.sin(radKneeL) * calfLength;
+      const footL_Y = kneeL_Y + Math.cos(radKneeL) * calfLength;
+
+      // Right Leg Kinematics
+      const radThighR = ((p.thighRAngle + p.pelvisAngle) * Math.PI) / 180;
+      const kneeR_X = hipR_X - Math.sin(radThighR) * thighLength;
+      const kneeR_Y = hipR_Y + Math.cos(radThighR) * thighLength;
+
+      const radKneeR = radThighR + (p.kneeRAngle * Math.PI) / 180;
+      const footR_X = kneeR_X - Math.sin(radKneeR) * calfLength;
+      const footR_Y = kneeR_Y + Math.cos(radKneeR) * calfLength;
+
+      // Center of Gravity tracking
+      // REMO 4 fix: titik CoG harus satu sumbu x dengan garis (dulu titik di
+      // chestX, garis di rata-rata kaki). Label dipindah ke atas garis (y=104)
+      // supaya tidak tertutup badan karakter.
+      const avgFootX = (footL_X + footR_X) / 2;
+      cogLine.setAttribute('x1', avgFootX);
+      cogLine.setAttribute('x2', avgFootX);
+      cogPoint.setAttribute('cx', avgFootX);
+      cogPoint.setAttribute('cy', (chestY + rootPelvisY) / 2);
+      document.getElementById('cogLabel').setAttribute('x', avgFootX + 10);
+      document.getElementById('cogLabel').setAttribute('y', 104);
+
+      // ==========================================
+      // SVG CHARACTER BODY GENERATION
+      // ==========================================
+      let bodySvg = '';
+      const outfitType = state.outfit;
+      const isAnatomy = outfitType === 'anatomy';
+
+      // Outfit Pattern / Color assignments
+      const fabricTorso = isAnatomy ? 'url(#muscleGrad)' : (outfitType === 'batik' ? (isFemale ? 'url(#kebayaBrokat)' : 'url(#batikParang)') : '#1e293b');
+      const fabricPants = isAnatomy ? 'url(#muscleGrad)' : (outfitType === 'batik' ? (isFemale ? 'url(#sarungBatik)' : '#1e1b18') : '#2563eb');
+
+      // Helper function for capsule/limb drawing
+      // REMO 4 fix: ujung kapsul lama memakai busur setengah lingkaran yang
+      // menjorok melewati sendi -> cakram hitam di siku/lutut. Sekarang ujung
+      // rata (flat cap) + lingkaran sendi sewarna di titik distal, jadi sendi
+      // membulat mulus tanpa cakram gelap yang menonjol.
+      function limbPath(x1, y1, x2, y2, r1, r2, fill, stroke) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len = Math.hypot(dx, dy) || 1;
+        const ux = dx / len;
+        const uy = dy / len;
+        const nx = -uy;
+        const ny = ux;
+
+        const p1x = x1 + nx * r1;
+        const p1y = y1 + ny * r1;
+        const p2x = x2 + nx * r2;
+        const p2y = y2 + ny * r2;
+        const p3x = x2 - nx * r2;
+        const p3y = y2 - ny * r2;
+        const p4x = x1 - nx * r1;
+        const p4y = y1 - ny * r1;
+
+        return `
+          <g>
+            <path d="M ${p1x} ${p1y} L ${p2x} ${p2y} L ${p3x} ${p3y} L ${p4x} ${p4y} Z"
+                  fill="${fill}" stroke="${stroke || skin.shadow}" stroke-width="2.5" stroke-linejoin="round"/>
+            <circle cx="${x2}" cy="${y2}" r="${r2}" fill="${fill}" stroke="${stroke || skin.shadow}" stroke-width="2.5"/>
+          </g>
+        `;
+      }
+
+      // 1. BACK LIMBS (Right Leg & Right Arm if rotated behind)
+      // Thigh Right
+      bodySvg += limbPath(hipR_X, hipR_Y, kneeR_X, kneeR_Y, isFemale ? 28 : 34, isFemale ? 20 : 25, fabricPants, skin.shadow);
+      // Calf Right
+      bodySvg += limbPath(kneeR_X, kneeR_Y, footR_X, footR_Y, isFemale ? 20 : 25, isFemale ? 14 : 17, isAnatomy ? 'url(#muscleGrad)' : skin.base, skin.shadow);
+      // Foot Right
+      bodySvg += `
+        <g transform="translate(${footR_X}, ${footR_Y}) rotate(${p.kneeRAngle * 0.3})">
+          <ellipse cx="12" cy="12" rx="26" ry="10" fill="${isAnatomy ? '#991b1b' : (outfitType === 'batik' ? '#451a03' : '#e2e8f0')}" stroke="#0f172a" stroke-width="2"/>
+        </g>
+      `;
+
+      // Arm Right (Back)
+      bodySvg += limbPath(shoulderR_X, shoulderR_Y, elbowR_X, elbowR_Y, isFemale ? 18 : 25, isFemale ? 15 : 20, isAnatomy ? 'url(#muscleGrad)' : (outfitType === 'batik' ? fabricTorso : skin.base), skin.shadow);
+      bodySvg += limbPath(elbowR_X, elbowR_Y, handR_X, handR_Y, isFemale ? 15 : 19, isFemale ? 11 : 14, isAnatomy ? 'url(#muscleGrad)' : skin.base, skin.shadow);
+      // Hand Right (dengan jari sederhana, arah mengikuti lengan bawah)
+      bodySvg += `
+        <g transform="translate(${handR_X}, ${handR_Y}) rotate(${(radForearmR * 180) / Math.PI})">
+          <circle cx="0" cy="0" r="${isFemale ? 14 : 17}" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="2"/>
+          <rect x="-9" y="11" width="6" height="12" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <rect x="-2" y="13" width="6" height="13" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <rect x="5" y="11" width="6" height="12" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <ellipse cx="-14" cy="4" rx="4" ry="7" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5" transform="rotate(-30 -14 4)"/>
+        </g>
+      `;
+
+      // 2. TORSO & PELVIS
+      // Pelvis / Panggul
+      bodySvg += `
+        <g>
+          <path d="M ${hipL_X - 10} ${hipL_Y - 20} 
+                   Q ${rootX} ${rootPelvisY - 15} ${hipR_X + 10} ${hipR_Y - 20} 
+                   L ${hipR_X + 15} ${rootPelvisY + 40} 
+                   Q ${rootX} ${rootPelvisY + 55} ${hipL_X - 15} ${rootPelvisY + 40} Z" 
+                fill="${fabricPants}" stroke="${skin.shadow}" stroke-width="2.5"/>
+        </g>
+      `;
+
+      // Dada / Ribcage & Perut
+      const torsoWTop = isFemale ? 56 : 76;
+      const torsoWBot = isFemale ? 42 : 54;
+      bodySvg += `
+        <g>
+          <!-- Torso Body -->
+          <!-- REMO 4 fix: tepi atas torso dinaikkan ke chestY-68 supaya bertemu
+               pangkal leher (dulu chestY-15, ada celah 40px antara leher dan torso
+               setelah rantai tulang punggung dipanjangkan). -->
+          <path d="M ${chestX - torsoWTop} ${chestY - 68}
+                   Q ${chestX} ${chestY - 78} ${chestX + torsoWTop} ${chestY - 68}
+                   L ${rootX + torsoWBot} ${rootPelvisY - 10}
+                   Q ${rootX} ${rootPelvisY} ${rootX - torsoWBot} ${rootPelvisY - 10} Z" 
+                fill="${fabricTorso}" stroke="${skin.shadow}" stroke-width="2.5"/>
+          
+          <!-- Cultural Attire Details -->
+          ${outfitType === 'batik' ? `
+            <!-- Selendang / Kerah Kartini / Batik collar -->
+            <path d="M ${chestX - 22} ${chestY - 20} L ${chestX} ${chestY + 60} L ${chestX + 22} ${chestY - 20}" 
+                  fill="none" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+            ${isFemale ? `
+              <!-- Kebaya Brokat Stagen / Obi Pinggang Khas Nusantara -->
+              <rect x="${rootX - 44}" y="${rootPelvisY - 35}" width="88" height="25" rx="3" fill="#ca8a04" stroke="#854d0e" stroke-width="1.5"/>
+            ` : `
+              <!-- Kancing Kemeja Batik Modern -->
+              <circle cx="${chestX}" cy="${chestY + 5}" r="3" fill="#ca8a04"/>
+              <circle cx="${chestX}" cy="${chestY + 30}" r="3" fill="#ca8a04"/>
+            `}
+          ` : ''}
+
+          <!-- Muscle striations in Anatomy mode -->
+          ${isAnatomy ? `
+            <!-- Pectoralis Major & Rectus Abdominis -->
+            <path d="M ${chestX - 50} ${chestY - 5} Q ${chestX} ${chestY + 20} ${chestX + 50} ${chestY - 5}" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.5"/>
+            <line x1="${chestX}" y1="${chestY - 10}" x2="${rootX}" y2="${rootPelvisY - 10}" stroke="#ffffff" stroke-width="1.8" opacity="0.6"/>
+            <!-- 6-pack abs lines -->
+            <line x1="${chestX - 25}" y1="${chestY + 30}" x2="${chestX + 25}" y2="${chestY + 30}" stroke="#7f1d1d" stroke-width="2"/>
+            <line x1="${chestX - 25}" y1="${chestY + 55}" x2="${chestX + 25}" y2="${chestY + 55}" stroke="#7f1d1d" stroke-width="2"/>
+          ` : ''}
+        </g>
+      `;
+
+      // 3. FRONT LIMBS (Left Leg & Left Arm)
+      // Thigh Left
+      bodySvg += limbPath(hipL_X, hipL_Y, kneeL_X, kneeL_Y, isFemale ? 29 : 35, isFemale ? 21 : 26, fabricPants, skin.shadow);
+      // Calf Left
+      bodySvg += limbPath(kneeL_X, kneeL_Y, footL_X, footL_Y, isFemale ? 21 : 26, isFemale ? 14 : 17, isAnatomy ? 'url(#muscleGrad)' : skin.base, skin.shadow);
+      // Foot Left
+      bodySvg += `
+        <g transform="translate(${footL_X}, ${footL_Y}) rotate(${p.kneeLAngle * 0.3})">
+          <ellipse cx="12" cy="12" rx="27" ry="10" fill="${isAnatomy ? '#991b1b' : (outfitType === 'batik' ? '#451a03' : '#e2e8f0')}" stroke="#0f172a" stroke-width="2"/>
+        </g>
+      `;
+
+      // Arm Left (Front)
+      bodySvg += limbPath(shoulderL_X, shoulderL_Y, elbowL_X, elbowL_Y, isFemale ? 19 : 26, isFemale ? 15 : 21, isAnatomy ? 'url(#muscleGrad)' : (outfitType === 'batik' ? fabricTorso : skin.base), skin.shadow);
+      bodySvg += limbPath(elbowL_X, elbowL_Y, handL_X, handL_Y, isFemale ? 15 : 20, isFemale ? 11 : 15, isAnatomy ? 'url(#muscleGrad)' : skin.base, skin.shadow);
+      // Hand Left (dengan jari sederhana, arah mengikuti lengan bawah)
+      bodySvg += `
+        <g transform="translate(${handL_X}, ${handL_Y}) rotate(${(radForearmL * 180) / Math.PI})">
+          <circle cx="0" cy="0" r="${isFemale ? 14 : 17}" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="2"/>
+          <rect x="-9" y="11" width="6" height="12" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <rect x="-2" y="13" width="6" height="13" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <rect x="5" y="11" width="6" height="12" rx="3" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <ellipse cx="14" cy="4" rx="4" ry="7" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5" transform="rotate(30 14 4)"/>
+        </g>
+      `;
+
+      // 4. NECK & HEAD
+      // Neck
+      bodySvg += `
+        <g>
+          <path d="M ${neckX - 16} ${neckY + 18} L ${neckX + 16} ${neckY + 18} L ${neckX + 13} ${neckY - 15} L ${neckX - 13} ${neckY - 15} Z" 
+                fill="${skin.base}" stroke="${skin.shadow}" stroke-width="2"/>
+        </g>
+      `;
+
+      // Indonesian Facial Features & Hair
+      const expr = state.expression;
+      bodySvg += `
+        <g transform="translate(${headX}, ${headY}) rotate(${p.headAngle})">
+          
+          <!-- Back Hair for Female (Sanggul modern / Rambut panjang) -->
+          ${isFemale ? `
+            <ellipse cx="0" cy="-20" rx="46" ry="48" fill="#18181b"/>
+            <!-- Sanggul / Bun Tradisional Jawa/Bali -->
+            <ellipse cx="0" cy="-45" rx="28" ry="24" fill="#09090b" stroke="#ca8a04" stroke-width="2"/>
+            <!-- Hiasan Bunga Melati / Cunduk Mentul Emas -->
+            <circle cx="0" cy="-48" r="6" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+            <circle cx="-12" cy="-44" r="4" fill="#fef08a"/>
+            <circle cx="12" cy="-44" r="4" fill="#fef08a"/>
+          ` : `
+            <!-- Hair Male (Potongan Undercut Pompadour Rapi Khas Pria Modern) -->
+            <!-- REMO 4 fix: garis poni depan diturunkan (-30 -> -16) supaya dahi
+                 tidak terlalu tinggi / tampak botak. -->
+            <path d="M -38 -20 Q 0 -68 38 -20 Q 42 10 38 10 Q 30 -42 0 -45 Q -30 -42 -38 10 Z" fill="#09090b"/>
+          `}
+
+          <!-- Head Shape (Lonjong / Oval khas Asia Tenggara) -->
+          <path d="M -34 -15 
+                   C -36 25 -24 55 0 60 
+                   C 24 55 36 25 34 -15 
+                   C 34 -45 -34 -45 -34 -15 Z" 
+                fill="${skin.base}" stroke="${skin.shadow}" stroke-width="2.2"/>
+
+          <!-- Blush on cheeks -->
+          <ellipse cx="-20" cy="18" rx="8" ry="4" fill="${skin.blush}"/>
+          <ellipse cx="20" cy="18" rx="8" ry="4" fill="${skin.blush}"/>
+
+          <!-- Ears -->
+          <ellipse cx="-35" cy="10" rx="6" ry="12" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          <ellipse cx="35" cy="10" rx="6" ry="12" fill="${skin.base}" stroke="${skin.shadow}" stroke-width="1.5"/>
+          ${isFemale ? `
+            <!-- Anting Emas Subeng -->
+            <circle cx="-35" cy="20" r="3.5" fill="#facc15" stroke="#a16207" stroke-width="1"/>
+            <circle cx="35" cy="20" r="3.5" fill="#facc15" stroke="#a16207" stroke-width="1"/>
+          ` : ''}
+
+          <!-- Eyebrows -->
+          <path d="${expr === 'semangat' ? 'M -26 -2 Q -16 -12 -6 -4' : (expr === 'berpikir' ? 'M -26 -8 Q -16 -10 -6 -2' : 'M -26 -4 Q -16 -9 -6 -4')}" 
+                stroke="#18181b" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="${expr === 'semangat' ? 'M 6 -4 Q 16 -12 26 -2' : (expr === 'berpikir' ? 'M 6 -2 Q 16 -4 26 -10' : 'M 6 -4 Q 16 -9 26 -4')}" 
+                stroke="#18181b" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+          <!-- Mata Khas Indonesia (Almond eyes ramah dengan iris coklat gelap) -->
+          <g>
+            <!-- Left Eye -->
+            <ellipse cx="-16" cy="6" rx="9" ry="5.5" fill="#ffffff" stroke="${skin.shadow}" stroke-width="1.2"/>
+            <circle cx="-16" cy="6" r="4.2" fill="#2d1a10"/>
+            <circle cx="-17.5" cy="4.5" r="1.5" fill="#ffffff"/>
+            <!-- Right Eye -->
+            <ellipse cx="16" cy="6" rx="9" ry="5.5" fill="#ffffff" stroke="${skin.shadow}" stroke-width="1.2"/>
+            <circle cx="16" cy="6" r="4.2" fill="#2d1a10"/>
+            <circle cx="14.5" cy="4.5" r="1.5" fill="#ffffff"/>
+          </g>
+
+          <!-- Nose (Hidung Mancung Sedang / Halus Tropis) -->
+          <path d="M 0 0 L -2 18 Q 0 23 4 21" stroke="${skin.shadow}" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+          <!-- Mouth / Senyum -->
+          ${expr === 'senyum' ? `
+            <path d="M -12 34 Q 0 46 12 34" stroke="${skin.lips}" stroke-width="2.5" fill="#ffffff" stroke-linecap="round"/>
+          ` : (expr === 'semangat' ? `
+            <path d="M -13 32 Q 0 50 13 32 Z" fill="#991b1b" stroke="${skin.lips}" stroke-width="2"/>
+            <path d="M -8 34 Q 0 38 8 34" stroke="#ffffff" stroke-width="2" fill="none"/>
+          ` : (expr === 'berpikir' ? `
+            <ellipse cx="4" cy="36" rx="5" ry="4" fill="${skin.lips}"/>
+          ` : `
+            <path d="M -10 35 Q 0 39 10 35" stroke="${skin.lips}" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          `))}
+
+          <!-- Hair Front Bangs -->
+          ${isFemale ? `
+            <path d="M -34 -12 Q -15 -35 0 -22 Q 15 -35 34 -12 Q 25 -42 0 -42 Q -25 -42 -34 -12 Z" fill="#18181b"/>
+          ` : `
+            <path d="M -36 -15 Q 0 -54 36 -15 Q 25 -18 0 -16 Q -25 -18 -36 -15 Z" fill="#18181b"/>
+          `}
+
+        </g>
+      `;
+
+      characterContainer.innerHTML = bodySvg;
+
+      // ==========================================
+      // SKELETON WIREFRAME & JOINTS OVERLAY
+      // ==========================================
+      const bones = [
+        // Spine
+        [headX, headY, neckX, neckY],
+        [neckX, neckY, chestX, chestY],
+        [chestX, chestY, rootX, rootPelvisY],
+        // Left Arm
+        [chestX, chestY, shoulderL_X, shoulderL_Y],
+        [shoulderL_X, shoulderL_Y, elbowL_X, elbowL_Y],
+        [elbowL_X, elbowL_Y, handL_X, handL_Y],
+        // Right Arm
+        [chestX, chestY, shoulderR_X, shoulderR_Y],
+        [shoulderR_X, shoulderR_Y, elbowR_X, elbowR_Y],
+        [elbowR_X, elbowR_Y, handR_X, handR_Y],
+        // Pelvis to Hips
+        [rootX, rootPelvisY, hipL_X, hipL_Y],
+        [rootX, rootPelvisY, hipR_X, hipR_Y],
+        // Left Leg
+        [hipL_X, hipL_Y, kneeL_X, kneeL_Y],
+        [kneeL_X, kneeL_Y, footL_X, footL_Y],
+        // Right Leg
+        [hipR_X, hipR_Y, kneeR_X, kneeR_Y],
+        [kneeR_X, kneeR_Y, footR_X, footR_Y]
+      ];
+
+      const joints = [
+        { x: headX, y: headY, name: 'Kepala (Cranium)', color: '#f59e0b' },
+        { x: chestX, y: chestY, name: 'Dada (Thorax)', color: '#f59e0b' },
+        { x: rootX, y: rootPelvisY, name: 'Panggul (Pelvis)', color: '#f59e0b' },
+        { x: shoulderL_X, y: shoulderL_Y, name: 'Bahu Kiri', color: '#38bdf8' },
+        { x: elbowL_X, y: elbowL_Y, name: 'Siku Kiri', color: '#38bdf8' },
+        { x: handL_X, y: handL_Y, name: 'Pergelangan Kiri', color: '#38bdf8' },
+        { x: shoulderR_X, y: shoulderR_Y, name: 'Bahu Kanan', color: '#34d399' },
+        { x: elbowR_X, y: elbowR_Y, name: 'Siku Kanan', color: '#34d399' },
+        { x: handR_X, y: handR_Y, name: 'Pergelangan Kanan', color: '#34d399' },
+        { x: hipL_X, y: hipL_Y, name: 'Panggul Kiri', color: '#818cf8' },
+        { x: kneeL_X, y: kneeL_Y, name: 'Lutut Kiri', color: '#818cf8' },
+        { x: footL_X, y: footL_Y, name: 'Pergelangan Kaki Kiri', color: '#818cf8' },
+        { x: hipR_X, y: hipR_Y, name: 'Panggul Kanan', color: '#a78bfa' },
+        { x: kneeR_X, y: kneeR_Y, name: 'Lutut Kanan', color: '#a78bfa' },
+        { x: footR_X, y: footR_Y, name: 'Pergelangan Kaki Kanan', color: '#a78bfa' }
+      ];
+
+      let skeletonSvg = '';
+      // Draw Bone Rods
+      bones.forEach(([x1, y1, x2, y2]) => {
+        skeletonSvg += `
+          <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+        `;
+      });
+      // Draw Joint Pivots
+      joints.forEach(j => {
+        skeletonSvg += `
+          <g class="joint-node cursor-pointer group" data-joint-name="${j.name}">
+            <circle cx="${j.x}" cy="${j.y}" r="8" fill="${j.color}" stroke="#0f172a" stroke-width="2.5" class="transition-transform hover:scale-125"/>
+            <circle cx="${j.x}" cy="${j.y}" r="3" fill="#ffffff"/>
+          </g>
+        `;
+      });
+      layerSkeleton.innerHTML = skeletonSvg;
+
+      // Add tooltip interactions for joints
+      document.querySelectorAll('.joint-node').forEach(node => {
+        node.addEventListener('mouseenter', (e) => {
+          const name = node.getAttribute('data-joint-name');
+          document.getElementById('tooltipTitle').textContent = `Sendi Anatomi: ${name}`;
+          document.getElementById('tooltipDesc').textContent = 'Titik pivot kinetik sistem skeletal manusia pada sendi sinovial.';
+        });
+      });
+
+      // ==========================================
+      // MUSCLE STRIATION OVERLAY (REMO 4 fix)
+      // Dulu #layerMuscles selalu kosong (0 children) — toggle hanya mengganti
+      // outfit jadi 'anatomy'. Sekarang lapisan ini diisi garis striasi otot
+      // mengikuti sendi FK, dan tampil/hilang sesuai state.layers.muscles.
+      // ==========================================
+      if (state.layers.muscles) {
+        const muscleSeg = (x1, y1, x2, y2) => {
+          const dx = x2 - x1, dy = y2 - y1;
+          const len = Math.hypot(dx, dy) || 1;
+          const nx = -dy / len, ny = dx / len;
+          let s = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#fca5a5" stroke-width="2" opacity="0.75"/>`;
+          [-0.25, 0, 0.25].forEach(t => {
+            const px = x1 + dx * (0.5 + t), py = y1 + dy * (0.5 + t);
+            s += `<line x1="${px - nx * 7}" y1="${py - ny * 7}" x2="${px + nx * 7}" y2="${py + ny * 7}" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>`;
+          });
+          return s;
+        };
+        layerMuscles.innerHTML = `
+          ${muscleSeg(shoulderL_X, shoulderL_Y, elbowL_X, elbowL_Y)}
+          ${muscleSeg(elbowL_X, elbowL_Y, handL_X, handL_Y)}
+          ${muscleSeg(shoulderR_X, shoulderR_Y, elbowR_X, elbowR_Y)}
+          ${muscleSeg(elbowR_X, elbowR_Y, handR_X, handR_Y)}
+          ${muscleSeg(hipL_X, hipL_Y, kneeL_X, kneeL_Y)}
+          ${muscleSeg(kneeL_X, kneeL_Y, footL_X, footL_Y)}
+          ${muscleSeg(hipR_X, hipR_Y, kneeR_X, kneeR_Y)}
+          ${muscleSeg(kneeR_X, kneeR_Y, footR_X, footR_Y)}
+          ${muscleSeg(neckX, neckY, chestX, chestY)}
+          ${muscleSeg(chestX, chestY, rootX, rootPelvisY)}
+          <path d="M ${chestX - 50} ${chestY - 5} Q ${chestX} ${chestY + 20} ${chestX + 50} ${chestY - 5}" stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.5"/>
+          <line x1="${chestX}" y1="${chestY - 10}" x2="${rootX}" y2="${rootPelvisY - 10}" stroke="#ffffff" stroke-width="1.8" opacity="0.6"/>
+          <line x1="${chestX - 25}" y1="${chestY + 30}" x2="${chestX + 25}" y2="${chestY + 30}" stroke="#fca5a5" stroke-width="2" opacity="0.7"/>
+          <line x1="${chestX - 25}" y1="${chestY + 55}" x2="${chestX + 25}" y2="${chestY + 55}" stroke="#fca5a5" stroke-width="2" opacity="0.7"/>
+        `;
+      } else {
+        layerMuscles.innerHTML = '';
+      }
+    }
+
+    // ==========================================
+    // VIEWPORT NAVIGATION (PAN & ZOOM)
+    // ==========================================
+    function updateTransform() {
+      viewportWorld.setAttribute('transform', `translate(${state.pan.x}, ${state.pan.y}) scale(${state.zoom})`);
+    }
+
+    const canvasContainer = document.getElementById('canvasContainer');
+
+    canvasContainer.addEventListener('mousedown', (e) => {
+      // Only pan if clicking background
+      if (e.target.closest('.joint-node')) return;
+      state.isPanning = true;
+      state.panStart = { x: e.clientX - state.pan.x, y: e.clientY - state.pan.y };
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!state.isPanning) return;
+      state.pan.x = e.clientX - state.panStart.x;
+      state.pan.y = e.clientY - state.panStart.y;
+      updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+      state.isPanning = false;
+    });
+
+    // Touch support for mobile / tablets
+    canvasContainer.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        state.isPanning = true;
+        state.panStart = { x: e.touches[0].clientX - state.pan.x, y: e.touches[0].clientY - state.pan.y };
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (state.isPanning && e.touches.length === 1) {
+        state.pan.x = e.touches[0].clientX - state.panStart.x;
+        state.pan.y = e.touches[0].clientY - state.panStart.y;
+        updateTransform();
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => {
+      state.isPanning = false;
+    });
+
+    // Zoom Buttons
+    btnZoomIn.addEventListener('click', () => {
+      state.zoom = Math.min(2.2, state.zoom + 0.15);
+      updateTransform();
+    });
+
+    btnZoomOut.addEventListener('click', () => {
+      state.zoom = Math.max(0.5, state.zoom - 0.15);
+      updateTransform();
+    });
+
+    btnResetView.addEventListener('click', () => {
+      state.zoom = 1;
+      state.pan = { x: 0, y: 0 };
+      updateTransform();
+      showToast('Posisi pandangan direset ke tengah');
+    });
+
+    // ==========================================
+    // UI INTERACTION EVENTS
+    // ==========================================
+    function setupEvents() {
+      // Gender buttons
+      btnCharMale.addEventListener('click', () => {
+        state.gender = 'male';
+        btnCharMale.className = 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition bg-amber-500 text-slate-950 shadow-md';
+        btnCharFemale.className = 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white';
+        labelOutfitTrad.textContent = 'Batik Parang Pria';
+        renderCharacter();
+        showToast('Karakter Pria (Budi) Aktif');
+      });
+
+      btnCharFemale.addEventListener('click', () => {
+        state.gender = 'female';
+        btnCharFemale.className = 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition bg-rose-500 text-white shadow-md';
+        btnCharMale.className = 'flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-bold transition text-slate-300 hover:text-white';
+        labelOutfitTrad.textContent = 'Kebaya Brokat & Sarung';
+        renderCharacter();
+        showToast('Karakter Wanita (Siti) Aktif');
+      });
+
+      // Skin tones
+      document.querySelectorAll('.skintone-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.skintone-btn').forEach(b => b.classList.remove('ring-2', 'ring-amber-500'));
+          btn.classList.add('ring-2', 'ring-amber-500');
+          state.skinTone = btn.getAttribute('data-skintone');
+          renderCharacter();
+          showToast(`Warna Kulit: ${btn.querySelector('span:last-child').textContent}`);
+        });
+      });
+
+      // Outfits
+      document.querySelectorAll('.outfit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.outfit-btn').forEach(b => {
+            b.classList.remove('border-amber-500/40', 'bg-amber-500/10', 'text-amber-300');
+            b.classList.add('border-slate-800', 'bg-slate-950', 'text-slate-300');
+          });
+          btn.classList.remove('border-slate-800', 'bg-slate-950', 'text-slate-300');
+          btn.classList.add('border-amber-500/40', 'bg-amber-500/10', 'text-amber-300');
+          state.outfit = btn.getAttribute('data-outfit');
+          renderCharacter();
+        });
+      });
+
+      // Expressions
+      document.querySelectorAll('.expr-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.expr-btn').forEach(b => {
+            b.classList.remove('ring-1', 'ring-amber-500/50', 'bg-amber-500/10', 'text-amber-300');
+            b.classList.add('bg-slate-950', 'text-slate-300');
+          });
+          btn.classList.add('ring-1', 'ring-amber-500/50', 'bg-amber-500/10', 'text-amber-300');
+          state.expression = btn.getAttribute('data-expression');
+          renderCharacter();
+        });
+      });
+
+      // Pose Presets click
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const poseId = btn.getAttribute('data-pose-id');
+          const found = POSE_PRESETS.find(p => p.id === poseId);
+          if (found) {
+            applyPreset(found);
+            document.querySelectorAll('.preset-btn').forEach(b => {
+              b.classList.remove('border-amber-500/50', 'bg-amber-500/10');
+              b.classList.add('border-slate-800', 'bg-slate-950');
+              const title = b.querySelector('.text-xs');
+              if (title) title.className = 'text-xs font-bold text-slate-300 group-hover:text-white';
+            });
+            btn.classList.remove('border-slate-800', 'bg-slate-950');
+            btn.classList.add('border-amber-500/50', 'bg-amber-500/10');
+            btn.querySelector('.text-xs').className = 'text-xs font-bold text-amber-300';
+            showToast(`Preset: ${found.name}`);
+          }
+        });
+      });
+
+      // Layer Toggles
+      toggleProportions.addEventListener('click', () => {
+        state.layers.proportions = !state.layers.proportions;
+        layerProportions.classList.toggle('hidden', !state.layers.proportions);
+        updateToggleStyle(toggleProportions, state.layers.proportions, 'amber');
+      });
+
+      toggleSkeleton.addEventListener('click', () => {
+        state.layers.skeleton = !state.layers.skeleton;
+        layerSkeleton.classList.toggle('hidden', !state.layers.skeleton);
+        updateToggleStyle(toggleSkeleton, state.layers.skeleton, 'sky');
+      });
+
+      toggleMuscles.addEventListener('click', () => {
+        // REMO 4 fix: toggle ini HANYA menampilkan/menyembunyikan lapisan
+        // overlay striasi otot (#layerMuscles). Dulu ia menimpa state.outfit
+        // jadi 'anatomy' saat ON dan memaksa kembali ke 'batik' saat OFF,
+        // sehingga pilihan busana pengguna hilang dan highlight tombol outfit
+        // tidak sinkron. Outfit sekarang tidak disentuh di sini.
+        state.layers.muscles = !state.layers.muscles;
+        layerMuscles.classList.toggle('hidden', !state.layers.muscles);
+        updateToggleStyle(toggleMuscles, state.layers.muscles, 'rose');
+        renderCharacter();
+      });
+
+      toggleGravity.addEventListener('click', () => {
+        state.layers.gravity = !state.layers.gravity;
+        layerGravity.classList.toggle('hidden', !state.layers.gravity);
+        updateToggleStyle(toggleGravity, state.layers.gravity, 'rose');
+      });
+
+      // Reset joints
+      btnResetJoints.addEventListener('click', () => {
+        const netral = POSE_PRESETS[0];
+        applyPreset(netral);
+        showToast('Semua sendi dikembalikan ke posisi netral');
+      });
+
+      // Background Selector Buttons
+      document.querySelectorAll('.bg-card-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.bg-card-btn').forEach(b => {
+            b.classList.remove('active', 'border-amber-500', 'border-2');
+            b.classList.add('border-slate-800');
+            const title = b.querySelector('.truncate');
+            if (title) title.className = 'text-[11px] font-bold text-slate-300 truncate';
+          });
+          btn.classList.add('active', 'border-amber-500', 'border-2');
+          btn.classList.remove('border-slate-800');
+          const title = btn.querySelector('.truncate');
+          if (title) title.className = 'text-[11px] font-bold text-amber-300 truncate';
+
+          state.background = btn.getAttribute('data-bg');
+          renderBackground();
+          showToast(`Latar: ${title ? title.textContent : state.background}`);
+        });
+      });
+
+      // Time of Day (Suasana Waktu) Buttons
+      document.querySelectorAll('.tod-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tod-btn').forEach(b => {
+            b.className = 'tod-btn text-[10px] py-1 rounded font-semibold text-slate-400 hover:text-white transition';
+          });
+          btn.className = 'tod-btn active text-[10px] py-1 rounded font-bold bg-amber-500 text-slate-950 transition';
+          state.timeOfDay = btn.getAttribute('data-tod');
+          renderBackground();
+          showToast(`Suasana: Waktu ${btn.textContent}`);
+        });
+      });
+
+      // Depth of Field (Bokeh / Blur) Toggle
+      const btnToggleDof = document.getElementById('btnToggleDof');
+      btnToggleDof.addEventListener('click', () => {
+        state.enableDof = !state.enableDof;
+        if (state.enableDof) {
+          btnToggleDof.className = 'text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-amber-500 bg-amber-500 text-slate-950 transition shadow-sm';
+          btnToggleDof.textContent = 'Aktif';
+          showToast('Efek Kedalaman Latar (DOF Blur) Aktif');
+        } else {
+          btnToggleDof.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full border border-slate-700 bg-slate-900 text-slate-400 transition hover:text-white';
+          btnToggleDof.textContent = 'Nonaktif';
+          showToast('Efek Kedalaman Latar Dinonaktifkan');
+        }
+        renderBackground();
+      });
+
+      // Export SVG
+      btnExportSvg.addEventListener('click', exportSvgFile);
+
+      // Export PNG
+      btnExportPng.addEventListener('click', exportPngFile);
+
+      // Copy JSON
+      btnCopyJson.addEventListener('click', copyPoseJson);
+    }
+
+    function updateToggleStyle(elem, isActive, color) {
+      if (isActive) {
+        elem.className = `layer-toggle flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-${color}-300 bg-${color}-500/20 border border-${color}-500/30 transition`;
+      } else {
+        elem.className = `layer-toggle flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition`;
+      }
+    }
+
+    function applyPreset(preset) {
+      state.pose = { ...preset.angles };
+      updateSliderDisplays();
+      renderCharacter();
+    }
+
+    // ==========================================
+    // EXPORT & CLIPBOARD UTILITIES
+    // ==========================================
+    function showToast(text) {
+      toastMsg.textContent = text;
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 2600);
+    }
+
+    function copyPoseJson() {
+      const data = {
+        character: state.gender,
+        skinTone: state.skinTone,
+        outfit: state.outfit,
+        expression: state.expression,
+        background: state.background,
+        timeOfDay: state.timeOfDay,
+        enableDof: state.enableDof,
+        jointAngles: state.pose,
+        timestamp: new Date().toISOString()
+      };
+      const text = JSON.stringify(data, null, 2);
+
+      // Using document.execCommand fallback as safe iframe clipboard handler
+      const tempTextArea = document.createElement('textarea');
+      tempTextArea.value = text;
+      document.body.appendChild(tempTextArea);
+      tempTextArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('Data konfigurasi pose JSON disalin ke clipboard!');
+      } catch (err) {
+        console.error(err);
+      }
+      document.body.removeChild(tempTextArea);
+    }
+
+    function exportSvgFile() {
+      const svgClone = stageSvg.cloneNode(true);
+      const serializer = new XMLSerializer();
+      const svgBlob = new Blob([serializer.serializeToString(svgClone)], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `karakter_${state.gender}_nusantara_${Date.now()}.svg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('Vektor SVG berhasil diunduh!');
+    }
+
+    function exportPngFile() {
+      const svgString = new XMLSerializer().serializeToString(stageSvg);
+      const img = new Image();
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1800; // High resolution 2x
+        canvas.height = 2000;
+        const ctx = canvas.getContext('2d');
+        // Render rich dark studio background
+        ctx.fillStyle = '#020617';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+
+        const pngUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = pngUrl;
+        link.download = `pose_${state.gender}_${state.background}_${state.timeOfDay}_${Date.now()}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('Gambar PNG resolusi tinggi berhasil diunduh!');
+      };
+      img.src = url;
+    }
+
+    // Launch App
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

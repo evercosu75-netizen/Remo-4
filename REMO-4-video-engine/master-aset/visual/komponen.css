@@ -1,0 +1,75 @@
+/* komponen.css — potongan CSS reusable dari animatic.html v3 (gabungan).
+   Disalin dari ~/workspace/bernafas-air-combined/template/animatic.html.
+   Catatan: ukuran di sini untuk stage template 540x960; render.py
+   meng-upscale ke 1080x1920. Jangan pakai file ini mentah-mentah sebagai
+   animatic baru — salin potongan yang dibutuhkan ke animatic proyek baru.
+   Palet lengkap: lihat ../brand/palet.md */
+
+:root{
+  --ink:#06222E; --abyss:#041E2B; --deep:#0A3D54; --mid:#0E5A6E;
+  --aqua:#2EC4B6; --aqua2:#7FE7DC; --foam:#EAF6F6; --coral:#FF8A5C;
+  --sun:#FFD166; --danger:#FF6B5E; --dead:#E8E8E8;
+  --land:#8A5A3B; --land2:#C98A4B;
+}
+#stage{position:relative;width:540px;height:960px;overflow:hidden;
+  font-family:'Jakarta',sans-serif;color:var(--ink)}
+.scene{position:absolute;inset:0;overflow:hidden;will-change:transform}
+.cam{position:absolute;inset:0;transform-origin:50% 45%}
+.abs{position:absolute}
+.anton{font-family:'Anton',sans-serif;text-transform:uppercase;
+  letter-spacing:.01em;line-height:.95}
+.hand{font-family:'Caveat',cursive;font-weight:700}
+
+/* Label adegan gaya Hari: // 01 · hook */
+.lbl{position:absolute;left:28px;top:26px;font-family:'DejaVu Sans Mono',monospace;
+  font-size:21px;letter-spacing:.05em;color:var(--foam);opacity:.95;
+  text-shadow:0 2px 0 rgba(0,0,0,.35);z-index:20}
+
+/* Caption bakar kata-per-kata */
+#cap{position:absolute;left:24px;right:24px;top:796px;text-align:center;
+  font-weight:800;font-size:30px;line-height:1.15;color:#fff;word-spacing:.14em;
+  -webkit-text-stroke:7px var(--ink);paint-order:stroke fill;
+  text-shadow:0 5px 0 rgba(0,0,0,.28);z-index:50}
+#cap b{color:var(--aqua2)}
+
+/* Kartu umum + stempel + chip */
+.card{background:var(--foam);border:2.5px solid var(--ink);border-radius:10px;
+  box-shadow:5px 5px 0 rgba(6,34,46,.9)}
+.stamp{border:4px solid var(--foam);color:var(--foam);font-family:'Anton';
+  text-transform:uppercase;padding:6px 16px;border-radius:8px;letter-spacing:.04em}
+.chip{display:inline-block;background:var(--danger);color:var(--foam);
+  font-weight:800;font-size:15px;letter-spacing:.03em;padding:8px 12px;border-radius:6px}
+
+/* Popup INFO TAMBAHAN */
+.popup{position:absolute;left:28px;top:672px;width:484px;background:#FFFDF8;
+  border:2.5px solid var(--ink);border-radius:10px;
+  box-shadow:5px 5px 0 rgba(6,34,46,.9);padding:8px 12px;z-index:45}
+.pophead{font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--danger)}
+.popbody{font-size:16px;font-weight:700;line-height:1.32;color:var(--ink);margin-top:4px}
+.popsrc{font-size:12px;font-weight:700;color:#5A6B70;margin-top:5px}
+
+/* Latar: gelembung, sinar matahari, permukaan air, bubble teks */
+.bub{position:absolute;border-radius:50%;border:2.5px solid rgba(234,246,246,.85);
+  background:rgba(127,231,220,.25)}
+.ray{position:absolute;top:-40px;width:56px;height:520px;
+  background:linear-gradient(180deg,rgba(234,246,246,.34),rgba(234,246,246,0));
+  transform:rotate(14deg)}
+.wave{position:absolute;left:0;right:0;top:0;height:44px;
+  background:linear-gradient(180deg,rgba(234,246,246,.45),rgba(234,246,246,0))}
+.bubble{background:#fff;border:2.5px solid var(--ink);border-radius:14px;
+  box-shadow:4px 4px 0 rgba(0,0,0,.35);padding:10px 14px;
+  font-weight:800;font-size:21px;line-height:1.2}
+
+/* Latar gradien laut (kelas scene) */
+.deep{background-color:var(--deep);
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(127,231,220,.28),transparent 55%),
+  radial-gradient(ellipse at 85% 95%,rgba(0,0,0,.4),transparent 55%)}
+.mid{background-color:var(--mid);
+  background-image:radial-gradient(ellipse at 20% 0%,rgba(127,231,220,.3),transparent 50%),
+  radial-gradient(ellipse at 85% 95%,rgba(4,30,43,.45),transparent 55%)}
+.abyss{background-color:var(--abyss);
+  background-image:radial-gradient(ellipse at 50% 100%,rgba(46,196,182,.18),transparent 55%),
+  radial-gradient(ellipse at 15% 0%,rgba(0,0,0,.4),transparent 55%)}
+.seabed{background-color:#0B3247;
+  background-image:radial-gradient(ellipse at 50% 100%,rgba(255,138,92,.14),transparent 55%),
+  radial-gradient(ellipse at 85% 0%,rgba(4,30,43,.5),transparent 55%)}

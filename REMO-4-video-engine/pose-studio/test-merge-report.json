@@ -1,0 +1,354 @@
+{
+  "console": [
+    "warning: cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation"
+  ],
+  "pageerrors": [],
+  "failed_requests": [],
+  "requests": [],
+  "bg_ui": {
+    "bgCards": 8,
+    "bgIds": [
+      "candi",
+      "gadang",
+      "sawah",
+      "pantai",
+      "jakarta",
+      "blueprint",
+      "cyclorama",
+      "transparan"
+    ],
+    "todBtns": 4,
+    "dofBtn": true,
+    "layerBackground": true,
+    "dofFilter": true,
+    "bgState": "candi",
+    "todState": "senja",
+    "dofState": false,
+    "bgChars": 3053,
+    "charGroups": 16,
+    "skeletonJoints": 15
+  },
+  "head_vs_canon_merged": {
+    "headTop": -45,
+    "headBottom": 60,
+    "charTop": 114.8,
+    "charBottom": 880.7,
+    "joints": {
+      "Kepala (Cranium)": [
+        450,
+        159.8
+      ],
+      "Dada (Thorax)": [
+        450,
+        309.8
+      ],
+      "Panggul (Pelvis)": [
+        450,
+        510
+      ],
+      "Bahu Kiri": [
+        366,
+        309.8
+      ],
+      "Siku Kiri": [
+        334.9417145876975,
+        425.7110991546882
+      ],
+      "Pergelangan Kiri": [
+        288.45370579622056,
+        525.4049557287198
+      ],
+      "Bahu Kanan": [
+        534,
+        309.8
+      ],
+      "Siku Kanan": [
+        565.0582854123024,
+        425.7110991546882
+      ],
+      "Pergelangan Kanan": [
+        611.5462942037793,
+        525.4049557287198
+      ],
+      "Panggul Kiri": [
+        406,
+        510
+      ],
+      "Lutut Kiri": [
+        388.56885145046834,
+        709.2389396183491
+      ],
+      "Pergelangan Kaki Kiri": [
+        375.49549003831964,
+        858.668144332111
+      ],
+      "Panggul Kanan": [
+        494,
+        510
+      ],
+      "Lutut Kanan": [
+        511.43114854953166,
+        709.2389396183491
+      ],
+      "Pergelangan Kaki Kanan": [
+        524.5045099616804,
+        858.668144332111
+      ]
+    }
+  },
+  "background_cycle": {
+    "candi": {
+      "stateBg": "candi",
+      "chars": 3053,
+      "charGroups": 16
+    },
+    "gadang": {
+      "stateBg": "gadang",
+      "chars": 3756,
+      "charGroups": 16
+    },
+    "sawah": {
+      "stateBg": "sawah",
+      "chars": 2748,
+      "charGroups": 16
+    },
+    "pantai": {
+      "stateBg": "pantai",
+      "chars": 2529,
+      "charGroups": 16
+    },
+    "jakarta": {
+      "stateBg": "jakarta",
+      "chars": 4085,
+      "charGroups": 16
+    },
+    "blueprint": {
+      "stateBg": "blueprint",
+      "chars": 2227,
+      "charGroups": 16
+    },
+    "cyclorama": {
+      "stateBg": "cyclorama",
+      "chars": 1453,
+      "charGroups": 16
+    },
+    "transparan": {
+      "stateBg": "transparan",
+      "chars": 166,
+      "charGroups": 16
+    }
+  },
+  "tod_cycle": {
+    "pagi": {
+      "stateTod": "pagi",
+      "chars": 166
+    },
+    "siang": {
+      "stateTod": "siang",
+      "chars": 166
+    },
+    "senja": {
+      "stateTod": "senja",
+      "chars": 166
+    },
+    "malam": {
+      "stateTod": "malam",
+      "chars": 166
+    }
+  },
+  "dof_sawah": {
+    "before": {
+      "hasSceneryGroup": true,
+      "filter": null,
+      "dofState": false
+    },
+    "after": {
+      "hasSceneryGroup": true,
+      "filter": "url(#dofFilter)",
+      "dofState": true,
+      "btnText": "Aktif"
+    }
+  },
+  "salam_on_background": {
+    "statePose": {
+      "headAngle": 8,
+      "chestAngle": 4,
+      "pelvisAngle": 0,
+      "armLAngle": 10,
+      "forearmLAngle": -122,
+      "armRAngle": -18,
+      "forearmRAngle": 122,
+      "thighLAngle": 3,
+      "kneeLAngle": 0,
+      "thighRAngle": -3,
+      "kneeRAngle": 0
+    },
+    "sliders": {
+      "headAngle": 8,
+      "chestAngle": 4,
+      "pelvisAngle": 0,
+      "armLAngle": 10,
+      "forearmLAngle": -122,
+      "armRAngle": -18,
+      "forearmRAngle": 122,
+      "thighLAngle": 3,
+      "kneeLAngle": 0,
+      "thighRAngle": -3,
+      "kneeRAngle": 0
+    },
+    "joints": {
+      "Kepala (Cranium)": [
+        477.42370076773295,
+        161.91513881820083
+      ],
+      "Dada (Thorax)": [
+        457.98014059632794,
+        310.2876771379832
+      ],
+      "Panggul (Pelvis)": [
+        450,
+        510
+      ],
+      "Bahu Kiri": [
+        374.18476037450273,
+        304.4281333434767
+      ],
+      "Siku Kiri": [
+        345.1541329025426,
+        420.8636204965963
+      ],
+      "Pergelangan Kiri": [
+        449.7703496950095,
+        386.8717511153521
+      ],
+      "Bahu Kanan": [
+        541.7755208181532,
+        316.14722093248974
+      ],
+      "Siku Kanan": [
+        570.8061482901132,
+        432.58270808560934
+      ],
+      "Pergelangan Kanan": [
+        466.18993149764634,
+        398.5908387043651
+      ],
+      "Panggul Kiri": [
+        406,
+        510
+      ],
+      "Lutut Kiri": [
+        395.5328087514112,
+        709.7259069509148
+      ],
+      "Pergelangan Kaki Kiri": [
+        387.68241531496966,
+        859.5203371641009
+      ],
+      "Panggul Kanan": [
+        494,
+        510
+      ],
+      "Lutut Kanan": [
+        504.4671912485888,
+        709.7259069509148
+      ],
+      "Pergelangan Kaki Kanan": [
+        512.3175846850304,
+        859.5203371641009
+      ]
+    },
+    "clamped": []
+  },
+  "tolakpinggang_on_background": {
+    "statePose": {
+      "headAngle": -3,
+      "chestAngle": 0,
+      "pelvisAngle": 0,
+      "armLAngle": 23,
+      "forearmLAngle": -67,
+      "armRAngle": -23,
+      "forearmRAngle": 67,
+      "thighLAngle": 9,
+      "kneeLAngle": 2,
+      "thighRAngle": -9,
+      "kneeRAngle": 2
+    },
+    "sliders": {
+      "headAngle": -3,
+      "chestAngle": 0,
+      "pelvisAngle": 0,
+      "armLAngle": 23,
+      "forearmLAngle": -67,
+      "armRAngle": -23,
+      "forearmRAngle": 67,
+      "thighLAngle": 9,
+      "kneeLAngle": 2,
+      "thighRAngle": -9,
+      "kneeRAngle": 2
+    },
+    "joints": {
+      "Kepala (Cranium)": [
+        446.5981628442087,
+        159.8890802409527
+      ],
+      "Dada (Thorax)": [
+        450,
+        309.8
+      ],
+      "Panggul (Pelvis)": [
+        450,
+        510
+      ],
+      "Bahu Kiri": [
+        366,
+        309.8
+      ],
+      "Siku Kiri": [
+        319.11226458128715,
+        420.26058241429286
+      ],
+      "Pergelangan Kiri": [
+        395.5246853317768,
+        499.3879604515445
+      ],
+      "Bahu Kanan": [
+        534,
+        309.8
+      ],
+      "Siku Kanan": [
+        580.8877354187129,
+        420.26058241429286
+      ],
+      "Pergelangan Kanan": [
+        504.4753146682232,
+        499.3879604515445
+      ],
+      "Panggul Kiri": [
+        406,
+        510
+      ],
+      "Lutut Kiri": [
+        374.71310699195385,
+        707.5376681190276
+      ],
+      "Pergelangan Kaki Kiri": [
+        346.09175768547215,
+        854.7817456361772
+      ],
+      "Panggul Kanan": [
+        494,
+        510
+      ],
+      "Lutut Kanan": [
+        525.2868930080461,
+        707.5376681190276
+      ],
+      "Pergelangan Kaki Kanan": [
+        543.5672945188182,
+        856.4195908652258
+      ]
+    },
+    "clamped": []
+  }
+}
