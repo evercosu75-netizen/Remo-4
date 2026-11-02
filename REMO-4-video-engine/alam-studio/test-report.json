@@ -1,0 +1,70 @@
+{
+  "console": [],
+  "pageerrors": [],
+  "failed_requests": [],
+  "requests": [],
+  "initial": {
+    "cards": 135,
+    "countText": "Menampilkan 135 dari 135 aset",
+    "chips": [
+      "Semua (135)",
+      "Bumi & Daratan (18)",
+      "Gunung & Vulkanik (12)",
+      "Laut & Samudra (28)",
+      "Sungai & Danau (19)",
+      "Hutan & Flora (18)",
+      "Langit & Cuaca (15)",
+      "Fauna (15)",
+      "Elemen Alam (10)"
+    ],
+    "hasModal": true,
+    "fenceLeak": "SINGLE HTML · 135 ASET · SIAP "
+  },
+  "filter_laut": {
+    "cards": 28,
+    "countText": "Menampilkan 28 dari 135 aset"
+  },
+  "search_gunung": {
+    "cards": 12,
+    "countText": "Menampilkan 12 dari 135 aset",
+    "names": [
+      "#019\n      ⛰️\n      Gunung\n      Gunung ",
+      "#020\n      🌋\n      Gunung Berapi\n      ",
+      "#021\n      🏔️\n      Pegunungan\n      Gu",
+      "#022\n      🗻\n      Puncak\n      Gunung ",
+      "#023\n      🏔️\n      Lereng\n      Gunung",
+      "#024\n      🌋\n      Kawah\n      Gunung &",
+      "#025\n      🔥\n      Lava\n      Gunung & ",
+      "#026\n      🌫️\n      Abu Vulkanik\n      "
+    ]
+  },
+  "search_empty": {
+    "cards": 1
+  },
+  "modal": {
+    "modalOn": true,
+    "nama": "Bumi",
+    "kat": "Bumi & Daratan"
+  },
+  "export_json": {
+    "file": "export-aset-alam.json",
+    "size": 14563,
+    "topKeys": [
+      "total",
+      "kategori",
+      "aset"
+    ],
+    "asetCount": 135
+  },
+  "export_node": {
+    "file": "export-aset-alam.js",
+    "size": 14000,
+    "hasModuleExports": true,
+    "hasRequireExample": true,
+    "nodeCheckOk": true,
+    "nodeCheckErr": ""
+  },
+  "copy": {
+    "toast": "Tersalin ✓"
+  }
+}

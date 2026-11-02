@@ -867,6 +867,8 @@ ekspresi), bukan tokoh yang sama sekali berbeda.
 | Audio | `master-aset/audio/sfx.py` | SFX sintetis bebas hak cipta + `contoh.srt` (format SRT yang benar) + `CATATAN.md` (aturan audio, patokan loudness) |
 | Studio pose 2D | `remo-4/pose-studio/studio-anatomi-pose.html` | Studio Anatomi & Pose Karakter Indonesia (Budi/Siti) — SUDAH DIPERBAIKI untuk REMO 4: proporsi 7,5 kepala terverifikasi, preset Salam/Tolak Pinggang/Berpikir benar, ekspor SVG/PNG/JSON. Kini BERLATAR: 8 latar Nusantara (Candi Borobudur, Rumah Gadang, Terasering Ubud, Pantai Raja Ampat, Metropolis Jakarta, Grid Blueprint, Studio Cyclorama, Transparan) + 4 waktu (Pagi/Siang/Senja/Malam) + toggle DoF (latar blur, karakter tetap tajam). Merge diuji ulang 3 Nov 2026 ~01:00 WIB: 0 pageerror, proporsi + preset tetap benar. Lihat `remo-4/pose-studio/TEST-REPORT.md` |
 | Studio fauna | `remo-4/fauna-studio/aset_50_hewan.html` | Ensiklopedia 52 hewan Nusantara & dunia (mamalia 14, aves 10, reptil 9, pisces 10, serangga 9) + search/filter per kelas + panel fakta + ekspor SVG/PNG. Gambar SVG sederhana per tipe (ilustrasi kecil/ikon, BUKAN hero). Lihat `remo-4/fauna-studio/CATATAN.md` |
+| Katalog alam | `remo-4/alam-studio/aset_alam.html` | Katalog 135 entri alam (Laut & Samudra 28, Sungai & Danau 19, Bumi & Daratan 18, Hutan & Flora 18, Langit & Cuaca 15, Fauna 15, Gunung & Vulkanik 12, Elemen Alam 10) + search/filter + modal + ekspor JSON/Node.js (`module.exports`, `cari()`, `perKategori()`). Visualnya emoji, BUKAN gambar — peran: daftar referensi + modul data. Lihat `remo-4/alam-studio/CATATAN.md` |
+| Katalog barang | `remo-4/barang-studio/aset_barang.html` | Katalog 120 item (5 kategori × 24: Barang Harian, Elektronik & Gadget, Kendaraan & Transportasi, Peralatan Rumah & Dapur, Kantor & Belajar) + search/filter + modal detail (nama ID + EN + tag + spec) + favorit + ekspor JSON/CSV. Visualnya emoji, BUKAN gambar — peran: daftar referensi properti + inventaris. Lihat `remo-4/barang-studio/CATATAN.md` |
 | Panduan master aset | `master-aset/README.md`, `master-aset/PANDUAN.md` | Indeks + cara pakai + daftar gap yang jujur |
 
 ### Aturan pakai
@@ -899,6 +901,14 @@ ekspresi), bukan tokoh yang sama sekali berbeda.
    atlas anatomi organ (data organ hanya ada di harimau; overlay rangka
    generik tidak sejajar). JANGAN pakai gambar hewan sebagai karakter hero
    tampil besar — untuk hero pakai render 3D atau karakter SVG manusia.
+7. **Katalog alam + katalog barang = daftar referensi properti, BUKAN sumber gambar.**
+   Keduanya ber-visual emoji — JANGAN tempel emoji ke dalam video. Pakai sebagai daftar
+   nama/kategori/tag saat merancang adegan dan latar (alam: elemen laut/gunung/hutan/langit;
+   barang: properti harian/elektronik/kendaraan/dapur/kantor), lalu gambar propertinya sebagai
+   SVG mengikuti entri katalog. Spesifikasi barang adalah teks template generik — JANGAN dikutip
+   sebagai fakta di narasi/kartu sumber tanpa verifikasi independen (contoh yang dilarang:
+   "sisir cendana meminimalkan kerontokan rambut", "tumbler tahan panas 12 jam"). Untuk topik
+   fauna, pakai fauna-studio (bukan kategori Fauna di katalog alam yang hanya 15 nama emoji).
 
 ---
 

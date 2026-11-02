@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog Aset & Inventaris Terpadu (100+ Aset)</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #334155;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-full flex flex-col font-sans transition-colors duration-200 antialiased">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Header Section -->
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        <!-- Logo & Title -->
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i data-lucide="boxes" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white">AsetHub Explorer</h1>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
+                120 Items
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Katalog barang harian, elektronik, kendaraan, dan perlengkapan serbaguna</p>
+          </div>
+        </div>
+
+        <!-- Action Tools: Dark mode, Export, Favorite Filter -->
+        <div class="flex items-center gap-2">
+          <!-- Favorite Only Toggle -->
+          <button id="favorite-filter-btn" onclick="toggleFavoritesOnly()" title="Tampilkan Hanya Favorit" class="p-2 sm:px-3 sm:py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 text-sm font-medium">
+            <i data-lucide="bookmark" id="favorite-filter-icon" class="w-4 h-4 text-amber-500"></i>
+            <span class="hidden md:inline">Favorit</span>
+            <span id="fav-badge-count" class="px-1.5 py-0.2 rounded-full text-xs bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-400">0</span>
+          </button>
+
+          <!-- Export Dropdown -->
+          <div class="relative inline-block text-left" id="export-dropdown-wrapper">
+            <button onclick="toggleExportMenu()" class="p-2 sm:px-3 sm:py-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center gap-2 text-sm font-medium">
+              <i data-lucide="download" class="w-4 h-4 text-emerald-500"></i>
+              <span class="hidden md:inline">Export</span>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </button>
+            <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 py-1.5 z-50">
+              <button onclick="exportData('json')" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <i data-lucide="file-json" class="w-4 h-4 text-blue-500"></i> Download JSON
+              </button>
+              <button onclick="exportData('csv')" class="w-full text-left px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-500"></i> Download CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Dark Mode Toggle -->
+          <button onclick="toggleDarkMode()" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Ganti Tema">
+            <i data-lucide="moon" class="w-4 h-4 hidden dark:block text-amber-400"></i>
+            <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-orange-500"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Search & Quick Filters Bar -->
+    <div class="flex flex-col lg:flex-row gap-4 mb-6">
+      <!-- Search Input -->
+      <div class="relative flex-grow">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+          <i data-lucide="search" class="w-4 h-4"></i>
+        </div>
+        <input 
+          type="text" 
+          id="search-input"
+          oninput="handleSearch(this.value)"
+          placeholder="Cari aset nama, bahasa inggris, tags, atau spesifikasi..." 
+          class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-sm transition"
+        >
+        <button 
+          id="clear-search-btn" 
+          onclick="clearSearch()"
+          class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Sorting & Layout Controls -->
+      <div class="flex items-center gap-2 justify-between lg:justify-end">
+        <!-- Sort Select -->
+        <div class="relative">
+          <select 
+            id="sort-select" 
+            onchange="handleSort(this.value)"
+            class="appearance-none pl-3 pr-8 py-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer">
+            <option value="id-asc">Urutan Default</option>
+            <option value="name-asc">Nama A-Z</option>
+            <option value="name-desc">Nama Z-A</option>
+            <option value="category">Berdasarkan Kategori</option>
+          </select>
+          <div class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="arrow-up-down" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+
+        <!-- View Mode: Grid or Compact List -->
+        <div class="flex items-center p-1 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+          <button id="view-grid-btn" onclick="setViewMode('grid')" class="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition" title="Tampilan Grid">
+            <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          </button>
+          <button id="view-list-btn" onclick="setViewMode('list')" class="p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition" title="Tampilan List">
+            <i data-lucide="list" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Pills Tabs -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none mb-6">
+      <button onclick="setCategory('all')" data-cat="all" class="cat-pill active flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white shadow-sm">
+        <span>Semua Aset</span>
+        <span id="count-all" class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">120</span>
+      </button>
+      <button onclick="setCategory('harian')" data-cat="harian" class="cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+        <span>👜 Barang Harian</span>
+        <span id="count-harian" class="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500">24</span>
+      </button>
+      <button onclick="setCategory('elektronik')" data-cat="elektronik" class="cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+        <span>⚡ Elektronik & Gadget</span>
+        <span id="count-elektronik" class="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500">24</span>
+      </button>
+      <button onclick="setCategory('kendaraan')" data-cat="kendaraan" class="cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+        <span>🚗 Kendaraan & Transportasi</span>
+        <span id="count-kendaraan" class="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500">24</span>
+      </button>
+      <button onclick="setCategory('dapur')" data-cat="dapur" class="cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+        <span>🍳 Rumah & Dapur</span>
+        <span id="count-dapur" class="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500">24</span>
+      </button>
+      <button onclick="setCategory('kantor')" data-cat="kantor" class="cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800">
+        <span>📎 Kantor & Belajar</span>
+        <span id="count-kantor" class="px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500">24</span>
+      </button>
+    </div>
+
+    <!-- Status & Count Info -->
+    <div class="flex items-center justify-between text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-5 px-1">
+      <div>
+        Menampilkan <span id="filtered-count" class="font-bold text-slate-800 dark:text-white">120</span> dari total <span id="total-count" class="font-bold">120</span> aset
+      </div>
+      <div id="active-tag-info" class="hidden text-blue-600 dark:text-blue-400 font-medium cursor-pointer" onclick="resetFilters()">
+        Reset filter &times;
+      </div>
+    </div>
+
+    <!-- Asset Grid / List Display -->
+    <div id="assets-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <!-- Injected dynamically via JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-16 px-4">
+      <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4 text-slate-400">
+        <i data-lucide="package-search" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-base font-semibold text-slate-800 dark:text-white mb-1">Tidak ada aset ditemukan</h3>
+      <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto">Coba gunakan kata kunci pencarian yang lain atau ubah kategori filter.</p>
+      <button onclick="resetFilters()" class="mt-4 px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+        Reset Pencarian
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div id="modal-icon-badge" class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center text-2xl">
+            📦
+          </div>
+          <div>
+            <h3 id="modal-title" class="text-lg font-bold text-slate-900 dark:text-white">Nama Aset</h3>
+            <p id="modal-title-en" class="text-xs text-slate-400 italic">English Name</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm">
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+          <div class="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-1">Kategori</div>
+          <div id="modal-category" class="font-medium text-slate-800 dark:text-slate-200">-</div>
+        </div>
+
+        <div>
+          <div class="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-1.5">Deskripsi / Spesifikasi Khas</div>
+          <p id="modal-spec" class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm bg-slate-50 dark:bg-slate-800/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">-</p>
+        </div>
+
+        <div>
+          <div class="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-2">Tag & Kata Kunci</div>
+          <div id="modal-tags" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <div>
+          <div class="text-xs text-slate-400 uppercase font-semibold tracking-wider mb-1.5">Format JSON</div>
+          <pre id="modal-json" class="bg-slate-950 text-slate-300 p-3 rounded-xl text-xs overflow-x-auto font-mono"></pre>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2 justify-end">
+        <button id="modal-copy-json-btn" onclick="copyModalJson()" class="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 transition">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i> Salin JSON
+        </button>
+        <button id="modal-copy-name-btn" onclick="copyModalName()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 transition">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Salin Nama
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p>&copy; 2026 AsetHub. Katalog Aset Standalone Single-File.</p>
+      <div class="flex items-center gap-4">
+        <span>120+ Aset Terverifikasi</span>
+        <span>•</span>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-blue-500 hover:underline">Ke Atas &uarr;</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DATA & JAVASCRIPT LOGIC -->
+  <script>
+    // 120 Comprehensive Assets spanning 5 categories (24 items each)
+    const ASSETS = [
+      // KATEGORI 1: BARANG HARIAN (24 Items)
+      { id: 1, name: "Dompet Kulit Pria", nameEn: "Leather Wallet", category: "harian", icon: "👛", emoji: "👛", tags: ["kulit", "uang", "kartu", "saku"], spec: "Dompet lipat dua berbahan kulit sintetis premium dengan 6 slot kartu." },
+      { id: 2, name: "Kacamata Hitam Polarized", nameEn: "Polarized Sunglasses", category: "harian", icon: "🕶️", emoji: "🕶️", tags: ["kacamata", "uv protection", "fashion", "aksesori"], spec: "Lensa anti pantulan sinar UV400 dengan frame ringan polikarbonat." },
+      { id: 3, name: "Jam Tangan Analog Minimalis", nameEn: "Minimalist Analog Watch", category: "harian", icon: "⌚", emoji: "⌚", tags: ["jam", "aksesori", "water resistant", "waktu"], spec: "Movement quartz Jepang dengan water resistance 30m dan strap kulit." },
+      { id: 4, name: "Payung Lipat Otomatis", nameEn: "Automatic Folding Umbrella", category: "harian", icon: "☂️", emoji: "☂️", tags: ["hujan", "portabel", "otomatis", "cuaca"], spec: "Mekanisme buka-tutup otomatis 1 tombol dengan rangka baja 8 jari." },
+      { id: 5, name: "Botol Minum Tumbler Vacuum", nameEn: "Insulated Stainless Tumbler", category: "harian", icon: "🧴", emoji: "🧴", tags: ["tumbler", "minum", "stainless", "eco-friendly"], spec: "Stainless steel 304 tahan panas hingga 12 jam dan dingin 24 jam kapasitas 500ml." },
+      { id: 6, name: "Gantungan Kunci Pintar Karabin", nameEn: "Carabiner Keychain", category: "harian", icon: "🔑", emoji: "🔑", tags: ["kunci", "karabin", "logam", "keamanan"], spec: "Pengait paduan seng ultra-kuat dengan ring ganda anti-karat." },
+      { id: 7, name: "Sisir Rambut Kayu Anti Statis", nameEn: "Anti-Static Wooden Comb", category: "harian", icon: "🪮", emoji: "🪮", tags: ["sisir", "perawatan", "kayu", "rambut"], spec: "Kayu cendana alami yang meminimalkan kerontokan rambut dan kusut." },
+      { id: 8, name: "Masker Medis 4-Ply", nameEn: "4-Ply Surgical Mask", category: "harian", icon: "😷", emoji: "😷", tags: ["masker", "kesehatan", "higienis", "bakteri"], spec: "Efisiensi filtrasi bakteri (BFE) 99% dengan kawat hidung empuk." },
+      { id: 9, name: "Hand Sanitizer Spray 60ml", nameEn: "Hand Sanitizer Spray", category: "harian", icon: "🧴", emoji: "🧴", tags: ["sanitizer", "kebersihan", "antiseptik", "kesehatan"], spec: "Kandungan alkohol 75% dilengkapi aloe vera untuk kelembaban kulit tangan." },
+      { id: 10, name: "Ransel Punggung Tahan Air", nameEn: "Waterproof Everyday Backpack", category: "harian", icon: "🎒", emoji: "🎒", tags: ["tas", "ransel", "laptop", "komuter"], spec: "Kapasitas 20 liter dengan kompartemen laptop 15.6 inch dan bahan Oxford tahan air." },
+      { id: 11, name: "Tas Selempang Sling Bag", nameEn: "Compact Sling Bag", category: "harian", icon: "👝", emoji: "👝", tags: ["tas", "sling", "kasual", "organizer"], spec: "Desain ramping dengan 3 kompartemen ritsleting YKK untuk gadget harian." },
+      { id: 12, name: "Topi Baseball Katun", nameEn: "Cotton Baseball Cap", category: "harian", icon: "🧢", emoji: "🧢", tags: ["topi", "aksesori", "matahari", "kasual"], spec: "Bahan katun twill 100% dengan pengatur strap kuningan di bagian belakang." },
+      { id: 13, name: "Ikat Pinggang Kulit Reversible", nameEn: "Reversible Leather Belt", category: "harian", icon: "🪢", emoji: "🪢", tags: ["sabuk", "kulit", "formal", "aksesori"], spec: "Gesper putar dua warna (Hitam dan Cokelat tua) dari kulit sapi asli." },
+      { id: 14, name: "Sepatu Sneaker Kasual", nameEn: "Casual Running Sneakers", category: "harian", icon: "👟", emoji: "👟", tags: ["sepatu", "sneaker", "olahraga", "jalan"], spec: "Sol luar EVA peredam kejut dengan upper mesh berongga sirkulasi udara baik." },
+      { id: 15, name: "Sandal Slop Ergonomis", nameEn: "Ergonomic Slide Sandals", category: "harian", icon: "🩴", emoji: "🩴", tags: ["sandal", "santai", "eva", "rumah"], spec: "Busa bantalan memory foam anti selip cocok untuk area kering dan basah." },
+      { id: 16, name: "Kaos Polos Heavyweight Cotton", nameEn: "Heavyweight Cotton T-Shirt", category: "harian", icon: "👕", emoji: "👕", tags: ["pakaian", "kaos", "katun", "busana"], spec: "Bahan 100% combed cotton 24s gramasi tebal yang adem dan tidak menerawang." },
+      { id: 17, name: "Jaket Hoodie Fleece", nameEn: "Zip-up Fleece Hoodie", category: "harian", icon: "🧥", emoji: "🧥", tags: ["jaket", "hoodie", "hangat", "busana"], spec: "Lapisan dalam fleece katun tebal dengan kantong kanguru ganda." },
+      { id: 18, name: "Jas Hujan Poncho Portable", nameEn: "Portable Raincoat Poncho", category: "harian", icon: "🌧️", emoji: "🌧️", tags: ["jas hujan", "hujan", "motor", "cuaca"], spec: "Bahan PVC parasut tebal anti-rembes dengan strip reflektif malam hari." },
+      { id: 19, name: "Parfum Eau de Parfum 50ml", nameEn: "Fresh Citrus EDP Perfume", category: "harian", icon: "✨", emoji: "✨", tags: ["parfum", "wewangian", "aroma", "lifestyle"], spec: "Ketahanan aroma hingga 8 jam dengan sentuhan aroma bergamot dan cedarwood." },
+      { id: 20, name: "Lip Balm Pelembap Bibir", nameEn: "Moisturizing Lip Balm", category: "harian", icon: "💄", emoji: "💄", tags: ["perawatan", "bibir", "skincare", "spf"], spec: "Kaya kandungan shea butter dan vitamin E dilengkapi SPF 15." },
+      { id: 21, name: "Deodorant Roll-On 50ml", nameEn: "Invisible Fresh Deodorant", category: "harian", icon: "🫧", emoji: "🫧", tags: ["kebersihan", "tubuh", "wangi", "harian"], spec: "Formula anti noda kuning dengan proteksi kering hingga 48 jam." },
+      { id: 22, name: "Handuk Microfiber Cepat Kering", nameEn: "Quick-Dry Microfiber Towel", category: "harian", icon: "🧖", emoji: "🧖", tags: ["handuk", "microfiber", "gym", "travel"], spec: "Menyerap air 4x beratnya dan kering 3x lebih cepat dari handuk katun." },
+      { id: 23, name: "Kotak Bekal Makan Lunchbox", nameEn: "Bento Box Lunch Container", category: "harian", icon: "🍱", emoji: "🍱", tags: ["makan", "bekal", "bpa free", "dapur"], spec: "3 sekat terpisah, kedap udara (leak-proof) dan aman untuk microwave (BPA Free)." },
+      { id: 24, name: "Koper Trolley Kabin 20 Inch", nameEn: "Cabin Hardshell Suitcase", category: "harian", icon: "🧳", emoji: "🧳", tags: ["koper", "travel", "kabin", "roda"], spec: "Koper polikarbonat tahan benturan dengan kunci TSA dan 4 roda berputar 360 derajat." },
+
+      // KATEGORI 2: ELEKTRONIK & GADGET (24 Items)
+      { id: 25, name: "Smartphone Flagship 5G", nameEn: "5G Flagship Smartphone", category: "elektronik", icon: "📱", emoji: "📱", tags: ["hp", "smartphone", "5g", "oled"], spec: "Layar AMOLED 120Hz, chipset 4nm, RAM 12GB dan kamera telefoto periskop." },
+      { id: 26, name: "Laptop Ultrabook 14 Inch", nameEn: "Slim Laptop Ultrabook", category: "elektronik", icon: "💻", emoji: "💻", tags: ["laptop", "komputer", "kerja", "portabel"], spec: "Bobot 1.2kg dengan prosesor 8-core, SSD NVMe 1TB, dan baterai tahan 14 jam." },
+      { id: 27, name: "Tablet Grafis & Stylus", nameEn: "Graphic Drawing Tablet", category: "elektronik", icon: "📲", emoji: "📲", tags: ["tablet", "stylus", "gambar", "kreatif"], spec: "Layar 11 inch 2.8K dengan pena stylus sensitivitas 4096 pressure level." },
+      { id: 28, name: "Smartwatch Pelacak Kebugaran", nameEn: "Fitness Tracking Smartwatch", category: "elektronik", icon: "⌚", emoji: "⌚", tags: ["smartwatch", "kebugaran", "sensor", "oled"], spec: "Sensor detak jantung optik, SpO2, GPS internal mandiri, dan tahan air 5ATM." },
+      { id: 29, name: "TWS Earbuds ANC", nameEn: "Noise Cancelling TWS Earbuds", category: "elektronik", icon: "🎧", emoji: "🎧", tags: ["audio", "earbuds", "bluetooth", "anc"], spec: "Active Noise Cancellation hingga 42dB dengan Bluetooth 5.3 dan driver 11mm." },
+      { id: 30, name: "Headphone Over-Ear Studio", nameEn: "Studio Monitor Headphones", category: "elektronik", icon: "🎧", emoji: "🎧", tags: ["headphone", "audio", "studio", "bass"], spec: "Driver neodymium 45mm rentang frekuensi 15Hz-28kHz dengan bantalan telinga empuk." },
+      { id: 31, name: "Power Bank 20.000mAh PD 65W", nameEn: "Fast-Charging Power Bank", category: "elektronik", icon: "🔋", emoji: "🔋", tags: ["powerbank", "baterai", "charger", "fast charge"], spec: "Pengisian daya cepat Power Delivery 65W bisa mengisi baterai laptop dan smartphone." },
+      { id: 32, name: "Kamera Mirrorless 4K", nameEn: "4K Mirrorless Camera", category: "elektronik", icon: "📷", emoji: "📷", tags: ["kamera", "fotografi", "video", "lensa"], spec: "Sensor APS-C 24.2MP dengan perekaman video 4K 60fps dan stabilisasi gambar 5-axis." },
+      { id: 33, name: "Keyboard Mekanikal Wireless", nameEn: "Wireless Mechanical Keyboard", category: "elektronik", icon: "⌨️", emoji: "⌨️", tags: ["keyboard", "mekanikal", "rgb", "pc"], spec: "Layout 75% hot-swappable dengan switch linier dan konektivitas tri-mode (2.4G/BT/Kabel)." },
+      { id: 34, name: "Mouse Ergonomis Vertikal", nameEn: "Ergonomic Vertical Mouse", category: "elektronik", icon: "🖱️", emoji: "🖱️", tags: ["mouse", "ergonomis", "wireless", "kantor"], spec: "Sudut genggam 57 derajat untuk mencegah carpal tunnel syndrome dengan sensor optik 4000 DPI." },
+      { id: 35, name: "Monitor 27 Inch 4K HDR", nameEn: "27-inch 4K HDR Monitor", category: "elektronik", icon: "🖥️", emoji: "🖥️", tags: ["monitor", "layar", "4k", "desain"], spec: "Panel IPS akurasi warna 100% sRGB dengan input USB-C 90W PD." },
+      { id: 36, name: "Speaker Bluetooth Portabel", nameEn: "Rugged Portable Speaker", category: "elektronik", icon: "🔊", emoji: "🔊", tags: ["speaker", "suara", "bluetooth", "tahan air"], spec: "Ketahanan air IPX7 dengan output 20W dan baterai hingga 16 jam putar nonstop." },
+      { id: 37, name: "Smart TV 55 Inch 4K UHD", nameEn: "55-inch 4K Smart TV", category: "elektronik", icon: "📺", emoji: "📺", tags: ["tv", "hiburan", "netflix", "4k"], spec: "Sistem operasi Google TV dengan Dolby Vision Atmos dan kontrol suara hands-free." },
+      { id: 38, name: "Konsol Game Handheld", nameEn: "Portable Gaming Console", category: "elektronik", icon: "🎮", emoji: "🎮", tags: ["game", "konsol", "gaming", "hiburan"], spec: "Layar sentuh OLED 7 inch dengan storage NVMe 512GB dan analog stick anti-drift." },
+      { id: 39, name: "Drone Mini Lipat 4K", nameEn: "Compact 4K Camera Drone", category: "elektronik", icon: "🛸", emoji: "🛸", tags: ["drone", "udara", "kamera", "remote"], spec: "Bobot di bawah 249 gram dengan gimbal kamera 3-axis dan transmisi video 10km." },
+      { id: 40, name: "Router Wi-Fi 6 Gigabit", nameEn: "Wi-Fi 6 Mesh Router", category: "elektronik", icon: "📡", emoji: "📡", tags: ["router", "wifi", "internet", "jaringan"], spec: "Kecepatan gabungan hingga 3000 Mbps dengan 4 antena high-gain dan teknologi OFDMA." },
+      { id: 41, name: "Webcam Full HD 1080p", nameEn: "Full HD Pro Webcam", category: "elektronik", icon: "📹", emoji: "📹", tags: ["webcam", "video call", "zoom", "kamera"], spec: "Resolusi 1080p 60fps dengan mikrofon ganda peredam bising dan autofocus cepat." },
+      { id: 42, name: "Mikrofon Kondensor USB", nameEn: "USB Condenser Microphone", category: "elektronik", icon: "🎙️", emoji: "🎙️", tags: ["mikrofon", "podcast", "streaming", "audio"], spec: "Pola pickup cardioid 24-bit/96kHz dilengkapi tombol tap-to-mute dan zero-latency jack." },
+      { id: 43, name: "SSD Eksternal Portable 1TB", nameEn: "1TB Portable External SSD", category: "elektronik", icon: "💾", emoji: "💾", tags: ["storage", "ssd", "backup", "data"], spec: "Kecepatan transfer data hingga 1050 MB/s via konektor USB 3.2 Gen 2 Type-C." },
+      { id: 44, name: "Lampu Cerdas Smart Bulb RGB", nameEn: "Smart RGB LED Bulb", category: "elektronik", icon: "💡", emoji: "💡", tags: ["lampu", "smart home", "iot", "rgb"], spec: "16 juta warna dengan kontrol suara via asisten virtual dan jadwal otomatis." },
+      { id: 45, name: "Air Purifier Cerdas Ruangan", nameEn: "Smart Room Air Purifier", category: "elektronik", icon: "💨", emoji: "💨", tags: ["purifier", "udara", "hepa", "kesehatan"], spec: "Filter HEPA H13 menyaring 99.97% partikel polusi PM2.5 dengan sensor kualitas udara real-time." },
+      { id: 46, name: "Adaptor Charger GaN 65W", nameEn: "65W GaN Fast Charger", category: "elektronik", icon: "🔌", emoji: "🔌", tags: ["charger", "adaptor", "gan", "fast charging"], spec: "Teknologi Gallium Nitride kompak dengan 2 port USB-C dan 1 port USB-A." },
+      { id: 47, name: "Kunci Pintu Pintar (Smart Lock)", nameEn: "Biometric Smart Door Lock", category: "elektronik", icon: "🔐", emoji: "🔐", tags: ["smart lock", "pintu", "sidik jari", "keamanan"], spec: "Akses 5 cara: Sidik jari 3D, PIN sandi, kartu RFID, kunci mekanis, dan aplikasi ponsel." },
+      { id: 48, name: "Headset Realitas Virtual (VR)", nameEn: "All-in-One VR Headset", category: "elektronik", icon: "🥽", emoji: "🥽", tags: ["vr", "virtual reality", "gaming", "3d"], spec: "Resolusi 4K+ per mata dengan pelacakan pergerakan 6DoF tanpa kabel komputer." },
+
+      // KATEGORI 3: KENDARAAN & TRANSPORTASI (24 Items)
+      { id: 49, name: "Sepeda Motor Matic 150cc", nameEn: "150cc Scooter", category: "kendaraan", icon: "🛵", emoji: "🛵", tags: ["motor", "matic", "komuter", "roda dua"], spec: "Mesin 150cc 4-katup berpendingin cairan dengan rem ABS dan smart key." },
+      { id: 50, name: "Sepeda Motor Bebek", nameEn: "Underbone Motorcycle", category: "kendaraan", icon: "🏍️", emoji: "🏍️", tags: ["motor", "bebek", "irit", "roda dua"], spec: "Mesin 110cc injeksi bahan bakar ultra irit dengan transmisi semi-otomatis 4 percepatan." },
+      { id: 51, name: "Sepeda Motor Sport 250cc", nameEn: "250cc Sport Motorcycle", category: "kendaraan", icon: "🏍️", emoji: "🏍️", tags: ["motor", "sport", "kecepatan", "kopling"], spec: "Mesin 2-silinder bertenaga tinggi dengan suspensi depan upside-down dan slipper clutch." },
+      { id: 52, name: "Motor Listrik Urban", nameEn: "Urban Electric Scooter", category: "kendaraan", icon: "🛵", emoji: "🛵", tags: ["motor listrik", "ev", "baterai", "ramah lingkungan"], spec: "Motor listrik 3kW dengan baterai lithium swap jarak tempuh 70km per pengisian." },
+      { id: 53, name: "Mobil City Car Hatchback", nameEn: "City Hatchback Car", category: "kendaraan", icon: "🚗", emoji: "🚗", tags: ["mobil", "hatchback", "kota", "bensin"], spec: "Mobil 5 penumpang kompak bensin 1200cc hemat bahan bakar dan radius putar kecil." },
+      { id: 54, name: "Mobil SUV Keluarga 7-Seater", nameEn: "7-Seater Family SUV", category: "kendaraan", icon: "🚙", emoji: "🚙", tags: ["mobil", "suv", "keluarga", "tangguh"], spec: "Ground clearance tinggi 215mm dengan fitur keselamatan aktif ADAS dan kabin lega." },
+      { id: 55, name: "Mobil Sedan Mewah", nameEn: "Executive Luxury Sedan", category: "kendaraan", icon: "🚘", emoji: "🚘", tags: ["mobil", "sedan", "eksekutif", "kenyamanan"], spec: "Kenyamanan suspensi adaptif dengan kabin senyap dan jok kulit berventilasi." },
+      { id: 56, name: "Mobil Listrik Murni (EV)", nameEn: "All-Electric Vehicle (EV)", category: "kendaraan", icon: "⚡", emoji: "⚡", tags: ["mobil", "ev", "listrik", "zero emission"], spec: "Baterai 64kWh dengan jarak jelajah hingga 450km dan akselerasi instan 0-100km/j dalam 6 detik." },
+      { id: 57, name: "Sepeda Lipat (Folding Bike)", nameEn: "Compact Folding Bike", category: "kendaraan", icon: "🚲", emoji: "🚲", tags: ["sepeda", "sepeda lipat", "gowes", "portabel"], spec: "Roda 20 inch dengan rangka alloy ringan yang bisa dilipat dalam 15 detik." },
+      { id: 58, name: "Sepeda Balap (Road Bike)", nameEn: "Lightweight Road Bike", category: "kendaraan", icon: "🚴", emoji: "🚴", tags: ["sepeda", "road bike", "balap", "aerodinamis"], spec: "Rangka karbon ringan dengan groupset 2x11 speed dan ban slick berkecepatan tinggi." },
+      { id: 59, name: "Sepeda Gunung (MTB)", nameEn: "Mountain Bike (MTB)", category: "kendaraan", icon: "🚵", emoji: "🚵", tags: ["sepeda", "gunung", "offroad", "suspensi"], spec: "Suspensi depan travel 120mm dengan rem cakram hidrolik dan ban bertapak kasar 27.5 inch." },
+      { id: 60, name: "Skuter Listrik (E-Scooter)", nameEn: "Kick Electric Scooter", category: "kendaraan", icon: "🛴", emoji: "🛴", tags: ["skuter", "listrik", "mikromobilitas", "komuter"], spec: "Kecepatan maksimal 25km/jam dengan jarak tempuh 30km dan rem regeneratif elektrik." },
+      { id: 61, name: "Papan Luncur Skateboard", nameEn: "Canadian Maple Skateboard", category: "kendaraan", icon: "🛹", emoji: "🛹", tags: ["skateboard", "papan", "olahraga", "hobi"], spec: "Deck 7-lapis kayu maple Kanada dengan roda polyurethane 54mm dan bearing ABEC-9." },
+      { id: 62, name: "Mobil Pikap Angkut Barang", nameEn: "Cargo Pickup Truck", category: "kendaraan", icon: "🛻", emoji: "🛻", tags: ["pikap", "niaga", "angkut", "kargo"], spec: "Bak kargo muatan hingga 1.5 ton dengan mesin diesel turbo tangguh dan hemat." },
+      { id: 63, name: "Truk Box Logistik", nameEn: "Commercial Box Truck", category: "kendaraan", icon: "🚚", emoji: "🚚", tags: ["truk", "logistik", "kargo", "ekspedisi"], spec: "Truk 6-roda dengan volume kargo tertutup 18 meter kubik untuk ekspedisi antarkota." },
+      { id: 64, name: "Bus Pariwisata Eksekutif", nameEn: "Executive Touring Bus", category: "kendaraan", icon: "🚌", emoji: "🚌", tags: ["bus", "transportasi umum", "wisata", "penumpang"], spec: "Kapasitas 45 kursi recliner dengan toilet dalam bus, pendingin AC dingin, dan hiburan audio video." },
+      { id: 65, name: "Kereta Cepat Komuter", nameEn: "High-Speed Commuter Train", category: "kendaraan", icon: "🚆", emoji: "🚆", tags: ["kereta", "kereta cepat", "rel", "mass transit"], spec: "Kereta listrik berkecepatan jelajah 350 km/jam dengan daya tampung ribuan penumpang." },
+      { id: 66, name: "Skuter Klasik Retro", nameEn: "Vintage Classic Scooter", category: "kendaraan", icon: "🛵", emoji: "🛵", tags: ["skuter", "klasik", "retro", "koleksi"], spec: "Bodi monocoque pelat baja klasik dengan transmisi manual tongkol dan lampu bulat ikonik." },
+      { id: 67, name: "Mobil Van Travel Penumpang", nameEn: "Passenger Travel Van", category: "kendaraan", icon: "🚐", emoji: "🚐", tags: ["van", "travel", "penumpang", "minibus"], spec: "Kabin lega 12 penumpang dengan pintu geser otomatis dan sandaran kursi empuk." },
+      { id: 68, name: "Perahu Motor Cepat (Speedboat)", nameEn: "Twin-Engine Speedboat", category: "kendaraan", icon: "🚤", emoji: "🚤", tags: ["perahu", "kapal", "laut", "air"], spec: "Lambung fiberglass dengan dua mesin tempel 200HP untuk transportasi antar pulau." },
+      { id: 69, name: "Jetski Olahraga Air", nameEn: "Personal Watercraft (Jetski)", category: "kendaraan", icon: "🌊", emoji: "🌊", tags: ["jetski", "olahraga air", "pantai", "kecepatan"], spec: "Mesin jet pump 1500cc dengan stabilitas tinggi saat bermanuver di ombak laut." },
+      { id: 70, name: "Sepeda Fixed Gear (Fixie)", nameEn: "Urban Fixed Gear Bike", category: "kendaraan", icon: "🚲", emoji: "🚲", tags: ["sepeda", "fixie", "minimalis", "kota"], spec: "Desain minimalis tanpa kabel rem rumit dengan gear tetap direct-drive." },
+      { id: 71, name: "Becak Motor Angkutan", nameEn: "Motorized Rickshaw", category: "kendaraan", icon: "🛺", emoji: "🛺", tags: ["becak", "angkutan lokal", "roda tiga", "tradisional"], spec: "Kendaraan roda tiga dengan kabin penumpang tertutup untuk rute jarak pendek lingkungan." },
+      { id: 72, name: "Traktor Pertanian Multifungsi", nameEn: "Agricultural Field Tractor", category: "kendaraan", icon: "🚜", emoji: "🚜", tags: ["traktor", "tani", "alat berat", "lahan"], spec: "Penggerak roda 4WD dengan mesin diesel torsi raksasa untuk membajak sawah dan perkebunan." },
+
+      // KATEGORI 4: PERALATAN RUMAH & DAPUR (24 Items)
+      { id: 73, name: "Kulkas 2 Pintu Inverter", nameEn: "Inverter Refrigerator", category: "dapur", icon: "🧊", emoji: "🧊", tags: ["kulkas", "dapur", "dingin", "hemat listrik"], spec: "Teknologi inverter hemat daya kapasitas 320 liter dengan kompartemen sayur segar lembap." },
+      { id: 74, name: "Mesin Cuci Front Loading", nameEn: "Front Loading Washing Machine", category: "dapur", icon: "🫧", emoji: "🫧", tags: ["mesin cuci", "laundry", "pakaian", "elektronik"], spec: "Kapasitas 10.5kg dengan fungsi uap antibakteri dan hemat air hingga 40%." },
+      { id: 75, name: "Microwave Oven Digital", nameEn: "Digital Microwave Oven", category: "dapur", icon: "🍲", emoji: "🍲", tags: ["microwave", "dapur", "masak", "hangat"], spec: "Daya 800W dengan 10 program otomatis pemanas makanan dan defrost cepat." },
+      { id: 76, name: "Blender Multifungsi Tabung Kaca", nameEn: "Heavy-Duty Glass Blender", category: "dapur", icon: "🥤", emoji: "🥤", tags: ["blender", "jus", "dapur", "pisau"], spec: "Tabung kaca borosilikat 1.5L dengan 6 bilah pisau penghancur es batu 600W." },
+      { id: 77, name: "Rice Cooker Digital Smart", nameEn: "Digital Smart Rice Cooker", category: "dapur", icon: "🍚", emoji: "🍚", tags: ["rice cooker", "nasi", "dapur", "masak"], spec: "Panci tebal lapisan keramik non-stick dengan 8 opsi memasak bubur, sup, dan nasi merah." },
+      { id: 78, name: "Air Fryer Serbaguna 4.5L", nameEn: "Oil-Free Air Fryer", category: "dapur", icon: "🍟", emoji: "🍟", tags: ["air fryer", "goreng", "sehat", "dapur"], spec: "Teknologi sirkulasi udara panas 360 derajat menggoreng renyah tanpa minyak." },
+      { id: 79, name: "Kompor Induksi Portabel", nameEn: "Portable Induction Cooktop", category: "dapur", icon: "🍳", emoji: "🍳", tags: ["kompor", "induksi", "masak", "dapur"], spec: "Permukaan kaca kristal datar dengan pengatur suhu presisi dan sensor proteksi panas berlebih." },
+      { id: 80, name: "Dispenser Air Galon Bawah", nameEn: "Bottom-Loading Water Dispenser", category: "dapur", icon: "🚰", emoji: "🚰", tags: ["dispenser", "air minum", "panas dingin", "dapur"], spec: "Pemasangan galon tanpa perlu diangkat dengan 3 keran (Panas, Normal, dan Dingin)." },
+      { id: 81, name: "Pisau Koki Chef Knife 8 Inch", nameEn: "8-Inch Damascus Chef Knife", category: "dapur", icon: "🔪", emoji: "🔪", tags: ["pisau", "chef", "potong", "dapur"], spec: "Baja Damaskus tempa berkualitas tinggi dengan sudut asahan razor-sharp 15 derajat." },
+      { id: 82, name: "Wajan Teflon Granit Anti Lengket", nameEn: "Granite Non-Stick Frying Pan", category: "dapur", icon: "🍳", emoji: "🍳", tags: ["wajan", "masak", "granit", "anti lengket"], spec: "Diameter 28cm lapisan granit Jerman bebas zat PFOA dan kompatibel dengan kompor induksi." },
+      { id: 83, name: "Teko Listrik Leher Angsa (Gooseneck)", nameEn: "Gooseneck Electric Kettle", category: "dapur", icon: "☕", emoji: "☕", tags: ["teko", "kopi", "air panas", "dapur"], spec: "Kapasitas 800ml dengan corong leher angsa presisi untuk menyeduh pour-over coffee." },
+      { id: 84, name: "Vacuum Cleaner Nirkabel Handheld", nameEn: "Cordless Stick Vacuum", category: "dapur", icon: "🧹", emoji: "🧹", tags: ["vacuum", "kebersihan", "debu", "rumah"], spec: "Daya hisap 25.000Pa dengan baterai lithium lepas-pasang dan filter HEPA pencuci." },
+      { id: 85, name: "Set Cangkir Keramik Estetik", nameEn: "Ceramic Mug Set", category: "dapur", icon: "🍵", emoji: "🍵", tags: ["cangkir", "keramik", "teh", "kopi"], spec: "Set 4 cangkir stoneware glasir doff kapasitas 350ml tahan panas tinggi." },
+      { id: 86, name: "Rak Piring Wastafel Stainless", nameEn: "Stainless Steel Dish Drying Rack", category: "dapur", icon: "🍽️", emoji: "🍽️", tags: ["rak piring", "wastafel", "organizer", "dapur"], spec: "Baja tahan karat SUS304 dengan drainase otomatis langsung ke bak wastafel." },
+      { id: 87, name: "Panci Presto Tekanan Tinggi", nameEn: "Stainless Steel Pressure Cooker", category: "dapur", icon: "🍲", emoji: "🍲", tags: ["panci", "presto", "daging", "masak"], spec: "Kapasitas 6 liter mengempukkan daging 70% lebih cepat dengan katup pengaman ganda." },
+      { id: 88, name: "Sofa Minimalis 3-Seater", nameEn: "3-Seater Minimalist Sofa", category: "dapur", icon: "🛋️", emoji: "🛋️", tags: ["sofa", "furnitur", "ruang tamu", "santai"], spec: "Busa density tinggi berbalut kain woven linen adem dengan rangka kayu solid kokoh." },
+      { id: 89, name: "Meja Makan Kayu Solid", nameEn: "Solid Wood Dining Table", category: "dapur", icon: "🪑", emoji: "🪑", tags: ["meja", "makan", "kayu", "furnitur"], spec: "Ukuran 160x80cm dari kayu jati perhutani dengan finishing pelindung gores alami." },
+      { id: 90, name: "Lampu Meja Hias LED Dimmer", nameEn: "Dimmable Ambient Table Lamp", category: "dapur", icon: "🏮", emoji: "🏮", tags: ["lampu", "dekorasi", "kamar", "pencahayaan"], spec: "Kontrol sentuh dengan 3 tingkat kecerahan cahaya hangat (warm white 2700K)." },
+      { id: 91, name: "Kipas Angin Dinding Remote", nameEn: "Wall Fan with Remote", category: "dapur", icon: "💨", emoji: "💨", tags: ["kipas angin", "sejuk", "remote", "dinding"], spec: "Baling-baling 16 inch motor bertenaga hembusan angin kencang dengan timer mati otomatis." },
+      { id: 92, name: "Set Alat Pel Lantai Putar", nameEn: "Spin Mop Bucket System", category: "dapur", icon: "🪣", emoji: "🪣", tags: ["pel", "kebersihan", "lantai", "rumah"], spec: "Ember pemeras putar 360 derajat berbahan stainless steel dengan kepala pel microfiber tebal." },
+      { id: 93, name: "Kotak P3K Dinding Lengkap", nameEn: "Wall-Mount First Aid Box", category: "dapur", icon: "🩹", emoji: "🩹", tags: ["p3k", "kesehatan", "obat", "darurat"], spec: "Kotak mika tahan debu terisi kasa steril, perban, antiseptik, plester, dan gunting medis." },
+      { id: 94, name: "Pemanggang Roti (Toaster)", nameEn: "2-Slice Bread Toaster", category: "dapur", icon: "🍞", emoji: "🍞", tags: ["toaster", "sarapan", "roti", "dapur"], spec: "Slot lebar ganda dengan 6 tingkat kematangan dan baki remah yang bisa dicuci." },
+      { id: 95, name: "Timbangan Dapur Digital Presisi", nameEn: "Precision Digital Kitchen Scale", category: "dapur", icon: "⚖️", emoji: "⚖️", tags: ["timbangan", "baking", "presisi", "dapur"], spec: "Akurasi 0.1 gram hingga kapasitas 3kg dengan fungsi Tare otomatis dan layar backlit LCD." },
+      { id: 96, name: "Penggiling Kopi Manual (Hand Grinder)", nameEn: "Manual Ceramic Burr Grinder", category: "dapur", icon: "☕", emoji: "☕", tags: ["kopi", "grinder", "manual", "dapur"], spec: "Mata burr keramik kerucut dengan pengaturan kekasaran gilingan untuk espresso hingga French press." },
+
+      // KATEGORI 5: KANTOR & BELAJAR (24 Items)
+      { id: 97, name: "Kursi Kerja Ergonomis Mesh", nameEn: "Ergonomic Mesh Office Chair", category: "kantor", icon: "🪑", emoji: "🪑", tags: ["kursi", "kantor", "ergonomis", "duduk"], spec: "Penopang pinggang 2D yang dapat diatur ketinggiannya dengan sandaran mesh bernapas." },
+      { id: 98, name: "Meja Belajar Standing Desk Hidrolik", nameEn: "Hydraulic Standing Desk", category: "kantor", icon: "🖥️", emoji: "🖥️", tags: ["meja", "standing desk", "kerja", "kantor"], spec: "Ketinggian dapat diatur elektrik dari 70cm hingga 118cm dengan 4 memori memposisikan meja." },
+      { id: 99, name: "Lampu Meja Arsitek LED", nameEn: "Architect Swing Arm Desk Lamp", category: "kantor", icon: "💡", emoji: "💡", tags: ["lampu meja", "belajar", "arsitek", "kantor"], spec: "Lengan putar fleksibel berengsel ganda dengan clamp meja kuat dan pencahayaan tanpa kedip (flicker-free)." },
+      { id: 100, name: "Buku Catatan Hardcover A5", nameEn: "A5 Hardcover Dotted Journal", category: "kantor", icon: "📓", emoji: "📓", tags: ["buku", "catatan", "notebook", "kertas"], spec: "Kertas tebal 100gsm tidak tembus tinta pulpen dengan 192 halaman bergaris titik (dot grid)." },
+      { id: 101, name: "Pena Gel Tinta Hitam 0.5mm", nameEn: "0.5mm Smooth Gel Pen", category: "kantor", icon: "🖊️", emoji: "🖊️", tags: ["pena", "pulpen", "tulis", "kantor"], spec: "Tinta pigmen tahan air cepat kering dengan pegangan karet empuk anti lelah." },
+      { id: 102, name: "Set Highlighter Warna Pastel", nameEn: "Pastel Highlighter Markers", category: "kantor", icon: "🖍️", emoji: "🖍️", tags: ["stabilo", "highlighter", "belajar", "warna"], spec: "Set 6 warna pastel lembut di mata dengan ujung ganda pahat fleksibel." },
+      { id: 103, name: "Tempat Pensil Organizer Meja", nameEn: "Desk Pen Holder Organizer", category: "kantor", icon: "🗄️", emoji: "🗄️", tags: ["organizer", "pensil", "meja", "kantor"], spec: "Desain bersekat miring 4 kompartemen akrilik tebal untuk alat tulis dan kuas." },
+      { id: 104, name: "Kalkulator Saintifik Ilmiah", nameEn: "Scientific Engineering Calculator", category: "kantor", icon: "🧮", emoji: "🧮", tags: ["kalkulator", "matematika", "hitung", "belajar"], spec: "Mendukung 417 fungsi perhitungan matematika, matriks, vektor, dan statistik ilmiah." },
+      { id: 105, name: "Map Dokumen Accordion 12 Sekat", nameEn: "Expanding Accordion File Folder", category: "kantor", icon: "📁", emoji: "📁", tags: ["map", "arsip", "dokumen", "kantor"], spec: "Bahan polipropilen tahan air dengan label indeks warna-warni untuk berkas A4." },
+      { id: 106, name: "Stapler Heavy Duty Kertas", nameEn: "Heavy-Duty Desktop Stapler", category: "kantor", icon: "📎", emoji: "📎", tags: ["stapler", "kantor", "kertas", "jilid"], spec: "Mampu membundel hingga 50 lembar kertas sekaligus tanpa macet berkat bodi besi utuh." },
+      { id: 107, name: "Pemotong Kertas Rotary Trimmer", nameEn: "Rotary Paper Trimmer", category: "kantor", icon: "✂️", emoji: "✂️", tags: ["pemotong", "kertas", "presisi", "kantor"], spec: "Pisau putar baja tajam dengan kisi ukur metrik dan inci untuk memotong dokumen A4 rapi." },
+      { id: 108, name: "Papan Tulis Whiteboard Magnetik", nameEn: "Magnetic Dry-Erase Whiteboard", category: "kantor", icon: "📋", emoji: "📋", tags: ["papan tulis", "whiteboard", "rapat", "kantor"], spec: "Ukuran 60x90cm dengan permukaan anti noda bayangan (ghosting) dan bingkai aluminium." },
+      { id: 109, name: "Sticky Notes Warna-Warni", nameEn: "Self-Adhesive Sticky Notes", category: "kantor", icon: "📝", emoji: "📝", tags: ["sticky notes", "memo", "catatan", "kantor"], spec: "Perekat super rekat yang bisa dilepas-pasang tanpa meninggalkan bekas di buku atau monitor." },
+      { id: 110, name: "Klip Kertas & Binder Clip Set", nameEn: "Assorted Binder Clips Set", category: "kantor", icon: "📎", emoji: "📎", tags: ["klip", "penjepit", "kertas", "arsip"], spec: "Kombinasi berbagai ukuran jepitan logam baja pegas anti karat dalam toples wadah." },
+      { id: 111, name: "Flashdisk Dual Drive USB-C 128GB", nameEn: "Dual USB-C 128GB Flash Drive", category: "kantor", icon: "💾", emoji: "💾", tags: ["flashdisk", "data", "storage", "usb-c"], spec: "Konektor ganda USB-C dan USB-A kecepatan baca 150MB/s untuk transfer antar perangkat." },
+      { id: 112, name: "Pointer Presentasi Wireless", nameEn: "Wireless Presentation Clicker", category: "kantor", icon: "🎯", emoji: "🎯", tags: ["presentasi", "clicker", "laser", "kantor"], spec: "Jangkauan frekuensi 2.4GHz hingga 30 meter dengan sinar laser penunjuk merah jelas." },
+      { id: 113, name: "Tas Jinjing Laptop Sleek 15 Inch", nameEn: "Sleek Laptop Briefcase", category: "kantor", icon: "💼", emoji: "💼", tags: ["tas laptop", "kantor", "bisnis", "pelindung"], spec: "Bantalan busa anti guncangan 360 derajat di sekeliling sudut dengan pegangan kulit sintetik." },
+      { id: 114, name: "Gunting Kantor Stainless Steel", nameEn: "Stainless Steel Office Scissors", category: "kantor", icon: "✂️", emoji: "✂️", tags: ["gunting", "alat tulis", "potong", "kantor"], spec: "Bilah stainless steel setebal 2.5mm dengan lapisan titanium anti karat dan pegangan nyaman." },
+      { id: 115, name: "Dudukan Laptop Aluminium Lipat", nameEn: "Foldable Aluminum Laptop Stand", category: "kantor", icon: "💻", emoji: "💻", tags: ["stand laptop", "ergonomis", "aluminium", "meja"], spec: "6 sudut ketinggian ergonomis dengan bantalan silikon anti lecet pada perangkat." },
+      { id: 116, name: "Mesin Laminating A4 Panas Dingin", nameEn: "A4 Thermal Laminator Machine", category: "kantor", icon: "🖨️", emoji: "🖨️", tags: ["laminating", "arsip", "dokumen", "kantor"], spec: "Waktu pemanasan cepat 3 menit dengan sistem dua rol silikon anti gelembung udara." },
+      { id: 117, name: "Mesin Penghancur Kertas Dokumen", nameEn: "Cross-Cut Paper Shredder", category: "kantor", icon: "🗑️", emoji: "🗑️", tags: ["shredder", "keamanan", "dokumen", "kantor"], spec: "Pemotong jenis cross-cut tingkat keamanan DIN P-4 menghancurkan hingga 8 lembar kertas sekaligus." },
+      { id: 118, name: "Agenda Planner Mingguan", nameEn: "Weekly Productivity Planner", category: "kantor", icon: "📅", emoji: "📅", tags: ["planner", "jadwal", "agenda", "produktivitas"], spec: "Format undated bebas tanggal dengan kolom target mingguan dan pelacak kebiasaan (habit tracker)." },
+      { id: 119, name: "Penggaris Logam Stainless 30cm", nameEn: "30cm Stainless Steel Ruler", category: "kantor", icon: "📏", emoji: "📏", tags: ["penggaris", "mistar", "ukur", "arsitek"], spec: "Skala milimeter terukir permanen tahan luntur dengan konversi tabel inci di bagian belakang." },
+      { id: 120, name: "Stopmap Portofolio Berkas", nameEn: "Document Presentation Binder", category: "kantor", icon: "📑", emoji: "📑", tags: ["portofolio", "stopmap", "berkas", "presentasi"], spec: "Memiliki 40 lembar kantong plastik transparan bening anti silau untuk menyimpan sertifikat dan ijazah." }
+    ];
+
+    // Category Label Mapping
+    const CATEGORY_MAP = {
+      harian: { label: "Barang Harian", color: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800" },
+      elektronik: { label: "Elektronik & Gadget", color: "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800" },
+      kendaraan: { label: "Kendaraan & Transportasi", color: "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800" },
+      dapur: { label: "Rumah & Dapur", color: "bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800" },
+      kantor: { label: "Kantor & Belajar", color: "bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800" }
+    };
+
+    // State Variables
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let sortMode = 'id-asc';
+    let viewMode = 'grid'; // 'grid' | 'list'
+    let favoritesOnly = false;
+    let selectedModalAsset = null;
+    let favorites = JSON.parse(localStorage.getItem('asethub_favorites') || '[]');
+
+    // Initialize App
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check system theme or stored theme
+      if (localStorage.getItem('asethub_theme') === 'dark' || 
+          (!('asethub_theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+
+      updateCategoryBadges();
+      updateFavoriteCountBadge();
+      renderAssets();
+      if (window.lucide) lucide.createIcons();
+    });
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('asethub_theme', isDark ? 'dark' : 'light');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Toggle Dropdown
+    function toggleExportMenu() {
+      const menu = document.getElementById('export-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('export-dropdown-wrapper');
+      const menu = document.getElementById('export-menu');
+      if (wrapper && !wrapper.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    // Update Category Badges Count
+    function updateCategoryBadges() {
+      document.getElementById('total-count').textContent = ASSETS.length;
+      document.getElementById('count-all').textContent = ASSETS.length;
+      document.getElementById('count-harian').textContent = ASSETS.filter(a => a.category === 'harian').length;
+      document.getElementById('count-elektronik').textContent = ASSETS.filter(a => a.category === 'elektronik').length;
+      document.getElementById('count-kendaraan').textContent = ASSETS.filter(a => a.category === 'kendaraan').length;
+      document.getElementById('count-dapur').textContent = ASSETS.filter(a => a.category === 'dapur').length;
+      document.getElementById('count-kantor').textContent = ASSETS.filter(a => a.category === 'kantor').length;
+    }
+
+    // Update Favorites Counter Badge
+    function updateFavoriteCountBadge() {
+      document.getElementById('fav-badge-count').textContent = favorites.length;
+    }
+
+    // Toggle Favorites Only Filter
+    function toggleFavoritesOnly() {
+      favoritesOnly = !favoritesOnly;
+      const btn = document.getElementById('favorite-filter-btn');
+      if (favoritesOnly) {
+        btn.classList.add('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-300', 'dark:border-amber-700');
+        showToast('Menampilkan aset favorit saja');
+      } else {
+        btn.classList.remove('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-300', 'dark:border-amber-700');
+      }
+      renderAssets();
+    }
+
+    // Toggle Favorite Item
+    function toggleFavoriteItem(e, id) {
+      e.stopPropagation();
+      const idx = favorites.indexOf(id);
+      if (idx > -1) {
+        favorites.splice(idx, 1);
+        showToast('Dihapus dari favorit');
+      } else {
+        favorites.push(id);
+        showToast('Ditambahkan ke favorit');
+      }
+      localStorage.setItem('asethub_favorites', JSON.stringify(favorites));
+      updateFavoriteCountBadge();
+      renderAssets();
+    }
+
+    // Set Active Category
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        if (pill.getAttribute('data-cat') === cat) {
+          pill.className = "cat-pill active flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-blue-600 text-white shadow-sm";
+          const badge = pill.querySelector('span:last-child');
+          if (badge) badge.className = "px-1.5 py-0.5 rounded-full text-[10px] bg-white/20";
+        } else {
+          pill.className = "cat-pill flex-shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition flex items-center gap-2 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800";
+          const badge = pill.querySelector('span:last-child');
+          if (badge) badge.className = "px-1.5 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500";
+        }
+      });
+      renderAssets();
+    }
+
+    // Handle Search
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (searchQuery.length > 0) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+      renderAssets();
+    }
+
+    // Clear Search Field
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      searchQuery = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      renderAssets();
+    }
+
+    // Handle Sort
+    function handleSort(val) {
+      sortMode = val;
+      renderAssets();
+    }
+
+    // Set View Mode (Grid / List)
+    function setViewMode(mode) {
+      viewMode = mode;
+      const gridBtn = document.getElementById('view-grid-btn');
+      const listBtn = document.getElementById('view-list-btn');
+
+      if (mode === 'grid') {
+        gridBtn.className = "p-2 rounded-lg bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition";
+        listBtn.className = "p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition";
+      } else {
+        listBtn.className = "p-2 rounded-lg bg-blue-50 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition";
+        gridBtn.className = "p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition";
+      }
+      renderAssets();
+    }
+
+    // Reset All Filters
+    function resetFilters() {
+      clearSearch();
+      setCategory('all');
+      favoritesOnly = false;
+      document.getElementById('favorite-filter-btn').classList.remove('bg-amber-50', 'dark:bg-amber-950/40', 'border-amber-300', 'dark:border-amber-700');
+      renderAssets();
+    }
+
+    // Filter & Sort Assets
+    function getFilteredAssets() {
+      let result = ASSETS.filter(item => {
+        // Category filter
+        const matchCategory = (currentCategory === 'all' || item.category === currentCategory);
+        
+        // Favorite filter
+        const matchFavorite = (!favoritesOnly || favorites.includes(item.id));
+
+        // Search query filter
+        const matchSearch = (!searchQuery || 
+          item.name.toLowerCase().includes(searchQuery) ||
+          item.nameEn.toLowerCase().includes(searchQuery) ||
+          item.spec.toLowerCase().includes(searchQuery) ||
+          item.tags.some(t => t.toLowerCase().includes(searchQuery))
+        );
+
+        return matchCategory && matchFavorite && matchSearch;
+      });
+
+      // Sorting logic
+      result.sort((a, b) => {
+        if (sortMode === 'name-asc') return a.name.localeCompare(b.name);
+        if (sortMode === 'name-desc') return b.name.localeCompare(a.name);
+        if (sortMode === 'category') return a.category.localeCompare(b.category) || a.name.localeCompare(b.name);
+        return a.id - b.id; // default id-asc
+      });
+
+      return result;
+    }
+
+    // Render Assets to Container
+    function renderAssets() {
+      const filtered = getFilteredAssets();
+      const container = document.getElementById('assets-container');
+      const emptyState = document.getElementById('empty-state');
+      const filteredCountEl = document.getElementById('filtered-count');
+      const resetLink = document.getElementById('active-tag-info');
+
+      filteredCountEl.textContent = filtered.length;
+
+      // Show/Hide reset tag link
+      if (searchQuery || currentCategory !== 'all' || favoritesOnly) {
+        resetLink.classList.remove('hidden');
+      } else {
+        resetLink.classList.add('hidden');
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      if (viewMode === 'grid') {
+        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4";
+        container.innerHTML = filtered.map(item => {
+          const isFav = favorites.includes(item.id);
+          const catInfo = CATEGORY_MAP[item.category] || { label: item.category, color: "bg-slate-100 text-slate-700" };
+          
+          return `
+            <div onclick="openModal(${item.id})" class="group relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-5 hover:shadow-xl hover:border-blue-400 dark:hover:border-blue-500/50 transition-all duration-200 cursor-pointer flex flex-col justify-between">
+              
+              <!-- Top Row: Icon, Category Badge, Favorite Button -->
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-3">
+                  <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800/80 group-hover:scale-105 flex items-center justify-center text-2xl transition shadow-inner">
+                    ${item.emoji}
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${catInfo.color}">
+                      ${catInfo.label}
+                    </span>
+                    <button onclick="toggleFavoriteItem(event, ${item.id})" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                      <i data-lucide="bookmark" class="w-4 h-4 ${isFav ? 'fill-amber-500 text-amber-500' : ''}"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Titles -->
+                <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition line-clamp-1">
+                  ${item.name}
+                </h3>
+                <p class="text-xs text-slate-400 dark:text-slate-500 italic mb-2.5">
+                  ${item.nameEn}
+                </p>
+
+                <!-- Short Spec -->
+                <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed mb-3">
+                  ${item.spec}
+                </p>
+              </div>
+
+              <!-- Bottom Tags & Quick Action -->
+              <div>
+                <div class="flex flex-wrap gap-1 mb-3.5">
+                  ${item.tags.slice(0, 3).map(tag => `
+                    <span class="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                      #${tag}
+                    </span>
+                  `).join('')}
+                  ${item.tags.length > 3 ? `<span class="text-[10px] text-slate-400">+${item.tags.length - 3}</span>` : ''}
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
+                  <span class="font-mono text-[11px] text-slate-400">ID: #${String(item.id).padStart(3, '0')}</span>
+                  <div class="flex items-center gap-1">
+                    <button onclick="copyAssetName(event, '${item.name}')" class="px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition flex items-center gap-1" title="Salin Nama">
+                      <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                      <span class="text-[11px]">Nama</span>
+                    </button>
+                    <button onclick="copyAssetJson(event, ${item.id})" class="px-2 py-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-blue-600 dark:text-blue-400 transition flex items-center gap-1" title="Salin JSON">
+                      <i data-lucide="code" class="w-3.5 h-3.5"></i>
+                      <span class="text-[11px]">JSON</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          `;
+        }).join('');
+      } else {
+        // List View Mode
+        container.className = "flex flex-col gap-2.5";
+        container.innerHTML = filtered.map(item => {
+          const isFav = favorites.includes(item.id);
+          const catInfo = CATEGORY_MAP[item.category] || { label: item.category, color: "bg-slate-100 text-slate-700" };
+
+          return `
+            <div onclick="openModal(${item.id})" class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:px-4 flex items-center justify-between gap-4 hover:border-blue-400 dark:hover:border-blue-500/50 hover:shadow-md transition cursor-pointer">
+              <div class="flex items-center gap-3.5 min-w-0">
+                <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-xl">
+                  ${item.emoji}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                      ${item.name}
+                    </h3>
+                    <span class="text-xs text-slate-400 italic hidden sm:inline">(${item.nameEn})</span>
+                  </div>
+                  <p class="text-xs text-slate-500 truncate hidden md:block max-w-xl">
+                    ${item.spec}
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <span class="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${catInfo.color}">
+                  ${catInfo.label}
+                </span>
+                <button onclick="toggleFavoriteItem(event, ${item.id})" class="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                  <i data-lucide="bookmark" class="w-4 h-4 ${isFav ? 'fill-amber-500 text-amber-500' : ''}"></i>
+                </button>
+                <button onclick="copyAssetName(event, '${item.name}')" class="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Salin Nama">
+                  <i data-lucide="copy" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    // Modal Operations
+    function openModal(id) {
+      const item = ASSETS.find(a => a.id === id);
+      if (!item) return;
+      selectedModalAsset = item;
+
+      document.getElementById('modal-icon-badge').textContent = item.emoji;
+      document.getElementById('modal-title').textContent = item.name;
+      document.getElementById('modal-title-en').textContent = item.nameEn;
+      
+      const catInfo = CATEGORY_MAP[item.category] || { label: item.category };
+      document.getElementById('modal-category').textContent = catInfo.label;
+      document.getElementById('modal-spec').textContent = item.spec;
+
+      const tagsContainer = document.getElementById('modal-tags');
+      tagsContainer.innerHTML = item.tags.map(t => `
+        <span class="px-2.5 py-1 rounded-lg text-xs bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">#${t}</span>
+      `).join('');
+
+      document.getElementById('modal-json').textContent = JSON.stringify(item, null, 2);
+
+      const modal = document.getElementById('detail-modal');
+      modal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+      selectedModalAsset = null;
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Copy to Clipboard (Fallback safe for iframes)
+    function copyTextToClipboard(text, successMsg) {
+      try {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast(successMsg || 'Tersalin ke clipboard!');
+      } catch (err) {
+        showToast('Gagal menyalin teks');
+      }
+    }
+
+    function copyAssetName(e, name) {
+      if (e) e.stopPropagation();
+      copyTextToClipboard(name, `Nama "${name}" tersalin!`);
+    }
+
+    function copyAssetJson(e, id) {
+      if (e) e.stopPropagation();
+      const item = ASSETS.find(a => a.id === id);
+      if (item) {
+        copyTextToClipboard(JSON.stringify(item, null, 2), `JSON ${item.name} tersalin!`);
+      }
+    }
+
+    function copyModalName() {
+      if (selectedModalAsset) {
+        copyTextToClipboard(selectedModalAsset.name, `Nama "${selectedModalAsset.name}" tersalin!`);
+      }
+    }
+
+    function copyModalJson() {
+      if (selectedModalAsset) {
+        copyTextToClipboard(JSON.stringify(selectedModalAsset, null, 2), `JSON ${selectedModalAsset.name} tersalin!`);
+      }
+    }
+
+    // Export Data (JSON & CSV)
+    function exportData(type) {
+      const filtered = getFilteredAssets();
+      document.getElementById('export-menu').classList.add('hidden');
+
+      if (filtered.length === 0) {
+        showToast('Tidak ada data yang dapat diekspor!');
+        return;
+      }
+
+      if (type === 'json') {
+        const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(filtered, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", jsonStr);
+        downloadAnchor.setAttribute("download", `asethub_export_${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast(`${filtered.length} aset diekspor ke JSON`);
+      } else if (type === 'csv') {
+        const headers = ["ID", "Nama", "Nama Inggris", "Kategori", "Tags", "Spesifikasi"];
+        const rows = filtered.map(item => [
+          item.id,
+          `"${item.name.replace(/"/g, '""')}"`,
+          `"${item.nameEn.replace(/"/g, '""')}"`,
+          `"${item.category}"`,
+          `"${item.tags.join('; ')}"`,
+          `"${item.spec.replace(/"/g, '""')}"`
+        ]);
+        const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", encodedUri);
+        downloadAnchor.setAttribute("download", `asethub_export_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast(`${filtered.length} aset diekspor ke CSV`);
+      }
+    }
+
+    // Toast Notification System
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "pointer-events-auto flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 text-sm font-medium shadow-2xl transition-all duration-300 transform translate-y-3 opacity-0";
+      toast.innerHTML = `
+        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 dark:text-emerald-600 flex-shrink-0"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      if (window.lucide) lucide.createIcons();
+
+      // Animate In
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-3', 'opacity-0');
+      });
+
+      // Auto dismiss after 3 seconds
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

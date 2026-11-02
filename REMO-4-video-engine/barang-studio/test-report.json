@@ -1,0 +1,87 @@
+{
+  "console": [
+    "warning: cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation"
+  ],
+  "pageerrors": [],
+  "failed_requests": [],
+  "requests": [],
+  "initial": {
+    "cards": 120,
+    "totalCount": "120",
+    "countAll": "120",
+    "counts": {
+      "harian": "24",
+      "elektronik": "24",
+      "kendaraan": "24",
+      "dapur": "24",
+      "kantor": "24"
+    },
+    "lucideIcons": 377,
+    "fenceLeak": "```html\nAsetHub Explorer\n120 I",
+    "firstCardText": "\n              \n              \n              \n                \n                 "
+  },
+  "filter_elektronik": {
+    "cards": 24,
+    "filtered": "24"
+  },
+  "search_tumbler": {
+    "cards": 1,
+    "filtered": "1",
+    "names": [
+      "🧴\n                  \n                  \n                   "
+    ]
+  },
+  "search_empty": {
+    "cards": 0,
+    "emptyVisible": true
+  },
+  "modal": {
+    "modalVisible": true,
+    "title": "Dompet Kulit Pria",
+    "titleEn": "Leather Wallet",
+    "category": "Barang Harian",
+    "spec": "Dompet lipat dua berbahan kulit sintetis premium dengan 6 slot kartu.",
+    "hasJson": true
+  },
+  "favorite": {
+    "found": true,
+    "badge": "1",
+    "badgeAfter": "1"
+  },
+  "favorites_only": {
+    "cards": 1
+  },
+  "export_json": {
+    "file": "export-asethub_export_2026-11-02.json",
+    "size": 42735,
+    "items": 120,
+    "firstKeys": [
+      "id",
+      "name",
+      "nameEn",
+      "category",
+      "icon",
+      "emoji",
+      "tags",
+      "spec"
+    ]
+  },
+  "export_csv": {
+    "file": "export-asethub_export_2026-11-02.csv",
+    "size": 22404,
+    "rows": 121,
+    "header": "﻿ID,Nama,Nama Inggris,Kategori,Tags,Spesifikasi"
+  },
+  "lucide_blocked": {
+    "pageerrors": [],
+    "console": [
+      "error: Failed to load resource: net::ERR_FAILED",
+      "warning: cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation"
+    ],
+    "renders": {
+      "cards": 120,
+      "lucideDefined": false,
+      "iconsRendered": 0
+    }
+  }
+}

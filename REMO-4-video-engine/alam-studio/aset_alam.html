@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aset Alam — 135 Aset (Single HTML + Node.js)</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#05070d;
+    --card:rgba(255,255,255,.045);
+    --line:rgba(255,255,255,.09);
+    --txt:#e8eefc;
+    --dim:#8ea0c0;
+  }
+  body{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    background:
+      radial-gradient(900px 500px at 15% -10%, #14315c 0%, transparent 60%),
+      radial-gradient(800px 500px at 90% 0%, #1b2a4a 0%, transparent 55%),
+      radial-gradient(700px 600px at 50% 110%, #0b2b2a 0%, transparent 60%),
+      var(--bg);
+    color:var(--txt);
+    min-height:100vh;
+    padding:34px 18px 90px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* ---------- HEADER ---------- */
+  header{text-align:center;margin-bottom:28px}
+  .badge{
+    display:inline-block;font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    padding:6px 14px;border-radius:999px;margin-bottom:14px;
+    background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.35);color:#7dd3fc;
+  }
+  h1{
+    font-size:clamp(26px,4.4vw,42px);font-weight:800;letter-spacing:-.5px;line-height:1.15;
+    background:linear-gradient(100deg,#7dd3fc,#a78bfa 40%,#4ade80 75%,#fbbf24);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{color:var(--dim);font-size:14.5px;margin-top:10px}
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;
+    margin:26px 0 16px;
+  }
+  .search{
+    position:relative;flex:1 1 300px;max-width:420px;
+  }
+  .search input{
+    width:100%;padding:12px 16px 12px 42px;border-radius:12px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);
+    color:var(--txt);font-size:14px;outline:none;transition:.2s;
+  }
+  .search input:focus{border-color:#38bdf8;background:rgba(56,189,248,.08);box-shadow:0 0 0 4px rgba(56,189,248,.1)}
+  .search input::placeholder{color:#61748f}
+  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.55}
+
+  .btn{
+    padding:11px 16px;border-radius:12px;cursor:pointer;font-size:13.5px;font-weight:600;
+    border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--txt);
+    transition:.2s;display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn:hover{background:rgba(255,255,255,.11);transform:translateY(-1px)}
+  .btn.primary{background:linear-gradient(135deg,#0ea5e9,#6366f1);border:none;box-shadow:0 8px 22px -8px #6366f1}
+  .btn.primary:hover{box-shadow:0 12px 28px -8px #6366f1}
+  .btn.green{background:linear-gradient(135deg,#22c55e,#0d9488);border:none;box-shadow:0 8px 22px -8px #22c55e}
+
+  /* ---------- CHIPS ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:24px}
+  .chip{
+    padding:7px 14px;border-radius:999px;font-size:12.5px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--dim);
+    transition:.18s;white-space:nowrap;
+  }
+  .chip:hover{color:#fff;background:rgba(255,255,255,.09)}
+  .chip.active{background:var(--c,#38bdf8);border-color:transparent;color:#05070d;box-shadow:0 6px 18px -6px var(--c,#38bdf8)}
+
+  /* ---------- STATS ---------- */
+  .stats{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12.5px;color:var(--dim);margin-bottom:14px;padding:0 4px;flex-wrap:wrap;gap:8px;
+  }
+  .stats b{color:#7dd3fc}
+
+  /* ---------- GRID ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:13px;
+  }
+  .card{
+    position:relative;overflow:hidden;text-align:center;cursor:pointer;
+    padding:18px 10px 13px;border-radius:16px;
+    background:var(--card);border:1px solid var(--line);
+    transition:transform .22s cubic-bezier(.2,.7,.3,1.4),background .22s,border-color .22s,box-shadow .22s;
+    animation:pop .35s backwards;
+  }
+  @keyframes pop{from{opacity:0;transform:scale(.94) translateY(6px)}to{opacity:1;transform:none}}
+  .card::before{
+    content:'';position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 50% -20%, var(--c), transparent 68%);
+    opacity:.14;transition:.25s;
+  }
+  .card:hover{
+    transform:translateY(-5px);background:rgba(255,255,255,.085);
+    border-color:var(--c);box-shadow:0 16px 34px -16px var(--c);
+  }
+  .card:hover::before{opacity:.28}
+  .card .ico{
+    font-size:36px;line-height:1;margin-bottom:10px;display:block;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));
+    transition:transform .25s;
+  }
+  .card:hover .ico{transform:scale(1.18) rotate(-4deg)}
+  .card .nm{font-size:12.5px;font-weight:700;letter-spacing:.1px;margin-bottom:4px}
+  .card .kt{
+    font-size:9px;text-transform:uppercase;letter-spacing:.7px;font-weight:700;
+    color:var(--c);opacity:.85;
+  }
+  .card .no{
+    position:absolute;top:7px;left:9px;font-size:9px;font-weight:700;
+    color:rgba(255,255,255,.22);
+  }
+
+  /* ---------- EMPTY ---------- */
+  .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--dim)}
+  .empty span{font-size:44px;display:block;margin-bottom:12px}
+
+  /* ---------- MODAL ---------- */
+  .modal{
+    position:fixed;inset:0;display:none;place-items:center;padding:20px;z-index:99;
+    background:rgba(3,6,12,.78);backdrop-filter:blur(8px);
+  }
+  .modal.on{display:grid;animation:fade .2s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .modal-box{
+    width:min(460px,100%);border-radius:22px;padding:26px;
+    background:linear-gradient(180deg,#131b2c,#0a0f1a);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 30px 70px -20px #000;
+    animation:up .28s cubic-bezier(.2,.8,.3,1.3);
+  }
+  @keyframes up{from{transform:translateY(20px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+  .modal-ico{
+    font-size:64px;text-align:center;margin-bottom:12px;
+    filter:drop-shadow(0 8px 20px var(--c));
+  }
+  .modal-box h2{font-size:22px;text-align:center;margin-bottom:6px}
+  .modal-cat{
+    display:block;text-align:center;font-size:11px;font-weight:700;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--c);margin-bottom:18px;
+  }
+  .modal-box pre{
+    background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;padding:14px;font-size:11.5px;line-height:1.6;
+    color:#8fe6b0;overflow:auto;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .modal-actions{display:flex;gap:9px;margin-top:16px}
+  .modal-actions .btn{flex:1;justify-content:center}
+
+  footer{
+    text-align:center;color:#4a5a75;font-size:12px;margin-top:50px;line-height:1.8;
+  }
+  footer code{color:#7dd3fc;background:rgba(56,189,248,.1);padding:2px 7px;border-radius:6px}
+
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translate(-50%,80px);
+    background:#22c55e;color:#04120a;font-weight:700;font-size:13.5px;
+    padding:12px 22px;border-radius:12px;opacity:0;transition:.3s;z-index:200;
+    box-shadow:0 14px 34px -10px #22c55e;
+  }
+  .toast.on{transform:translate(-50%,0);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="badge">Single HTML · 135 Aset · Siap Ekspor Node.js</div>
+    <h1>Aset Alam Nusantara</h1>
+    <p>Bumi · Laut · Sungai · Gunung · Hutan · Cuaca · Fauna · Elemen Alam</p>
+  </header>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <input id="q" type="text" placeholder="Cari aset… (contoh: gunung, laut, sungai)">
+    </div>
+    <button class="btn primary" id="dlJson">⬇ Unduh JSON</button>
+    <button class="btn green" id="dlNode">⬇ Unduh Node.js</button>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="stats">
+    <span id="count"></span>
+    <span>Klik kartu untuk detail &amp; salin</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    Dibuat sebagai <code>single HTML file</code> — data aset tersimpan dalam array <code>ASSETS</code>.<br>
+    Tombol <b>Unduh Node.js</b> menghasilkan file <code>assets.js</code> berisi <code>module.exports</code>.
+  </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-ico" id="mIco"></div>
+    <h2 id="mNama"></h2>
+    <span class="modal-cat" id="mKat"></span>
+    <pre id="mJson"></pre>
+    <div class="modal-actions">
+      <button class="btn" id="mCopy">📋 Salin JSON</button>
+      <button class="btn primary" id="mClose">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Tersalin ✓</div>
+
+<script>
+/* =====================================================================
+   DATA ASET — 135 item
+   Struktur: { id, nama, kat, emoji }
+   ===================================================================== */
+const ASSETS = [
+  /* ---------- BUMI & DARATAN (18) ---------- */
+  { id:1,  nama:"Bumi",            kat:"Bumi & Daratan",    emoji:"🌍" },
+  { id:2,  nama:"Bola Dunia",      kat:"Bumi & Daratan",    emoji:"🌎" },
+  { id:3,  nama:"Benua",           kat:"Bumi & Daratan",    emoji:"🗺️" },
+  { id:4,  nama:"Pulau",           kat:"Bumi & Daratan",    emoji:"🏝️" },
+  { id:5,  nama:"Delta",           kat:"Bumi & Daratan",    emoji:"🏞️" },
+  { id:6,  nama:"Gurun",           kat:"Bumi & Daratan",    emoji:"🏜️" },
+  { id:7,  nama:"Padang Rumput",   kat:"Bumi & Daratan",    emoji:"🌾" },
+  { id:8,  nama:"Savana",          kat:"Bumi & Daratan",    emoji:"🦒" },
+  { id:9,  nama:"Tundra",          kat:"Bumi & Daratan",    emoji:"🧊" },
+  { id:10, nama:"Lembah",          kat:"Bumi & Daratan",    emoji:"🌄" },
+  { id:11, nama:"Dataran Tinggi",  kat:"Bumi & Daratan",    emoji:"⛰️" },
+  { id:12, nama:"Bukit",           kat:"Bumi & Daratan",    emoji:"🌄" },
+  { id:13, nama:"Tanah",           kat:"Bumi & Daratan",    emoji:"🟫" },
+  { id:14, nama:"Batu",            kat:"Bumi & Daratan",    emoji:"🪨" },
+  { id:15, nama:"Pasir",           kat:"Bumi & Daratan",    emoji:"⌛" },
+  { id:16, nama:"Lumpur",          kat:"Bumi & Daratan",    emoji:"🟤" },
+  { id:17, nama:"Gua",             kat:"Bumi & Daratan",    emoji:"🕳️" },
+  { id:18, nama:"Jurang",          kat:"Bumi & Daratan",    emoji:"🕳️" },
+
+  /* ---------- GUNUNG & VULKANIK (12) ---------- */
+  { id:19, nama:"Gunung",          kat:"Gunung & Vulkanik", emoji:"⛰️" },
+  { id:20, nama:"Gunung Berapi",   kat:"Gunung & Vulkanik", emoji:"🌋" },
+  { id:21, nama:"Pegunungan",      kat:"Gunung & Vulkanik", emoji:"🏔️" },
+  { id:22, nama:"Puncak",          kat:"Gunung & Vulkanik", emoji:"🗻" },
+  { id:23, nama:"Lereng",          kat:"Gunung & Vulkanik", emoji:"🏔️" },
+  { id:24, nama:"Kawah",           kat:"Gunung & Vulkanik", emoji:"🌋" },
+  { id:25, nama:"Lava",            kat:"Gunung & Vulkanik", emoji:"🔥" },
+  { id:26, nama:"Abu Vulkanik",    kat:"Gunung & Vulkanik", emoji:"🌫️" },
+  { id:27, nama:"Gletser",         kat:"Gunung & Vulkanik", emoji:"🧊" },
+  { id:28, nama:"Salju Abadi",     kat:"Gunung & Vulkanik", emoji:"❄️" },
+  { id:29, nama:"Batuan Beku",     kat:"Gunung & Vulkanik", emoji:"🪨" },
+  { id:30, nama:"Geyser",          kat:"Gunung & Vulkanik", emoji:"💨" },
+
+  /* ---------- LAUT & SAMUDRA (28) ---------- */
+  { id:31, nama:"Laut",            kat:"Laut & Samudra",    emoji:"🌊" },
+  { id:32, nama:"Samudra",         kat:"Laut & Samudra",    emoji:"🌊" },
+  { id:33, nama:"Pantai",          kat:"Laut & Samudra",    emoji:"🏖️" },
+  { id:34, nama:"Ombak",           kat:"Laut & Samudra",    emoji:"🏄" },
+  { id:35, nama:"Pasang Surut",    kat:"Laut & Samudra",    emoji:"🌊" },
+  { id:36, nama:"Terumbu Karang",  kat:"Laut & Samudra",    emoji:"🪸" },
+  { id:37, nama:"Palung Laut",     kat:"Laut & Samudra",    emoji:"🕳️" },
+  { id:38, nama:"Selat",           kat:"Laut & Samudra",    emoji:"🌊" },
+  { id:39, nama:"Teluk",           kat:"Laut & Samudra",    emoji:"⚓" },
+  { id:40, nama:"Tanjung",         kat:"Laut & Samudra",    emoji:"🏝️" },
+  { id:41, nama:"Dermaga",         kat:"Laut & Samudra",    emoji:"⚓" },
+  { id:42, nama:"Pelabuhan",       kat:"Laut & Samudra",    emoji:"🚢" },
+  { id:43, nama:"Kapal",           kat:"Laut & Samudra",    emoji:"⛵" },
+  { id:44, nama:"Perahu",          kat:"Laut & Samudra",    emoji:"🛶" },
+  { id:45, nama:"Ikan",            kat:"Laut & Samudra",    emoji:"🐟" },
+  { id:46, nama:"Hiu",             kat:"Laut & Samudra",    emoji:"🦈" },
+  { id:47, nama:"Paus",            kat:"Laut & Samudra",    emoji:"🐋" },
+  { id:48, nama:"Gurita",          kat:"Laut & Samudra",    emoji:"🐙" },
+  { id:49, nama:"Kepiting",        kat:"Laut & Samudra",    emoji:"🦀" },
+  { id:50, nama:"Udang",           kat:"Laut & Samudra",    emoji:"🦐" },
+  { id:51, nama:"Kerang",          kat:"Laut & Samudra",    emoji:"🐚" },
+  { id:52, nama:"Ubur-ubur",       kat:"Laut & Samudra",    emoji:"🪼" },
+  { id:53, nama:"Bintang Laut",    kat:"Laut & Samudra",    emoji:"⭐" },
+  { id:54, nama:"Penyu",           kat:"Laut & Samudra",    emoji:"🐢" },
+  { id:55, nama:"Lumba-lumba",     kat:"Laut & Samudra",    emoji:"🐬" },
+  { id:56, nama:"Rumput Laut",     kat:"Laut & Samudra",    emoji:"🌿" },
+  { id:57, nama:"Air Asin",        kat:"Laut & Samudra",    emoji:"🧂" },
+  { id:58, nama:"Mercusuar",       kat:"Laut & Samudra",    emoji:"🗼" },
+
+  /* ---------- SUNGAI & DANAU (19) ---------- */
+  { id:59, nama:"Sungai",          kat:"Sungai & Danau",    emoji:"🏞️" },
+  { id:60, nama:"Hulu Sungai",     kat:"Sungai & Danau",    emoji:"⛰️" },
+  { id:61, nama:"Hilir Sungai",    kat:"Sungai & Danau",    emoji:"🌊" },
+  { id:62, nama:"Muara",           kat:"Sungai & Danau",    emoji:"🌊" },
+  { id:63, nama:"Air Terjun",      kat:"Sungai & Danau",    emoji:"💦" },
+  { id:64, nama:"Danau",           kat:"Sungai & Danau",    emoji:"🏞️" },
+  { id:65, nama:"Rawa",            kat:"Sungai & Danau",    emoji:"🌿" },
+  { id:66, nama:"Mata Air",        kat:"Sungai & Danau",    emoji:"💧" },
+  { id:67, nama:"Aliran Sungai",   kat:"Sungai & Danau",    emoji:"〰️" },
+  { id:68, nama:"Jembatan",        kat:"Sungai & Danau",    emoji:"🌉" },
+  { id:69, nama:"Bendungan",       kat:"Sungai & Danau",    emoji:"🏗️" },
+  { id:70, nama:"Irigasi",         kat:"Sungai & Danau",    emoji:"🚰" },
+  { id:71, nama:"Banjir",          kat:"Sungai & Danau",    emoji:"🌊" },
+  { id:72, nama:"Kerikil",         kat:"Sungai & Danau",    emoji:"⚪" },
+  { id:73, nama:"Ikan Air Tawar",  kat:"Sungai & Danau",    emoji:"🐠" },
+  { id:74, nama:"Katak",           kat:"Sungai & Danau",    emoji:"🐸" },
+  { id:75, nama:"Buaya",           kat:"Sungai & Danau",    emoji:"🐊" },
+  { id:76, nama:"Capung",          kat:"Sungai & Danau",    emoji:"🦗" },
+  { id:77, nama:"Kincir Air",      kat:"Sungai & Danau",    emoji:"🎡" },
+
+  /* ---------- HUTAN & FLORA (18) ---------- */
+  { id:78, nama:"Hutan",           kat:"Hutan & Flora",    emoji:"🌲" },
+  { id:79, nama:"Pohon",           kat:"Hutan & Flora",    emoji:"🌳" },
+  { id:80, nama:"Pohon Kelapa",    kat:"Hutan & Flora",    emoji:"🌴" },
+  { id:81, nama:"Kaktus",          kat:"Hutan & Flora",    emoji:"🌵" },
+  { id:82, nama:"Bunga",           kat:"Hutan & Flora",    emoji:"🌸" },
+  { id:83, nama:"Bunga Matahari",  kat:"Hutan & Flora",    emoji:"🌻" },
+  { id:84, nama:"Rumput",          kat:"Hutan & Flora",    emoji:"🌿" },
+  { id:85, nama:"Daun",            kat:"Hutan & Flora",    emoji:"🍃" },
+  { id:86, nama:"Jamur",           kat:"Hutan & Flora",    emoji:"🍄" },
+  { id:87, nama:"Bakau",           kat:"Hutan & Flora",    emoji:"🌴" },
+  { id:88, nama:"Bambu",           kat:"Hutan & Flora",    emoji:"🎋" },
+  { id:89, nama:"Padi",            kat:"Hutan & Flora",    emoji:"🌾" },
+  { id:90, nama:"Kopi",            kat:"Hutan & Flora",    emoji:"☕" },
+  { id:91, nama:"Teh",             kat:"Hutan & Flora",    emoji:"🍵" },
+  { id:92, nama:"Pakis",           kat:"Hutan & Flora",    emoji:"🌿" },
+  { id:93, nama:"Anggrek",         kat:"Hutan & Flora",    emoji:"🌺" },
+  { id:94, nama:"Tumbuhan Rambat", kat:"Hutan & Flora",    emoji:"🌱" },
+  { id:95, nama:"Bonsai",          kat:"Hutan & Flora",    emoji:"🌳" },
+
+  /* ---------- LANGIT & CUACA (15) ---------- */
+  { id:96,  nama:"Langit",         kat:"Langit & Cuaca",   emoji:"🌌" },
+  { id:97,  nama:"Awan",           kat:"Langit & Cuaca",   emoji:"☁️" },
+  { id:98,  nama:"Matahari",       kat:"Langit & Cuaca",   emoji:"☀️" },
+  { id:99,  nama:"Bulan",          kat:"Langit & Cuaca",   emoji:"🌙" },
+  { id:100, nama:"Bintang",        kat:"Langit & Cuaca",   emoji:"⭐" },
+  { id:101, nama:"Pelangi",        kat:"Langit & Cuaca",   emoji:"🌈" },
+  { id:102, nama:"Hujan",          kat:"Langit & Cuaca",   emoji:"🌧️" },
+  { id:103, nama:"Petir",          kat:"Langit & Cuaca",   emoji:"⚡" },
+  { id:104, nama:"Salju",          kat:"Langit & Cuaca",   emoji:"🌨️" },
+  { id:105, nama:"Kabut",          kat:"Langit & Cuaca",   emoji:"🌫️" },
+  { id:106, nama:"Angin",          kat:"Langit & Cuaca",   emoji:"💨" },
+  { id:107, nama:"Badai",          kat:"Langit & Cuaca",   emoji:"🌪️" },
+  { id:108, nama:"Embun",          kat:"Langit & Cuaca",   emoji:"💧" },
+  { id:109, nama:"Gerhana",        kat:"Langit & Cuaca",   emoji:"🌑" },
+  { id:110, nama:"Aurora",         kat:"Langit & Cuaca",   emoji:"🌌" },
+
+  /* ---------- FAUNA (15) ---------- */
+  { id:111, nama:"Harimau",        kat:"Fauna",            emoji:"🐅" },
+  { id:112, nama:"Gajah",          kat:"Fauna",            emoji:"🐘" },
+  { id:113, nama:"Monyet",         kat:"Fauna",            emoji:"🐒" },
+  { id:114, nama:"Burung",         kat:"Fauna",            emoji:"🐦" },
+  { id:115, nama:"Rusa",           kat:"Fauna",            emoji:"🦌" },
+  { id:116, nama:"Ular",           kat:"Fauna",            emoji:"🐍" },
+  { id:117, nama:"Kupu-kupu",      kat:"Fauna",            emoji:"🦋" },
+  { id:118, nama:"Lebah",          kat:"Fauna",            emoji:"🐝" },
+  { id:119, nama:"Semut",          kat:"Fauna",            emoji:"🐜" },
+  { id:120, nama:"Beruang",        kat:"Fauna",            emoji:"🐻" },
+  { id:121, nama:"Badak",          kat:"Fauna",            emoji:"🦏" },
+  { id:122, nama:"Orangutan",      kat:"Fauna",            emoji:"🦧" },
+  { id:123, nama:"Elang",          kat:"Fauna",            emoji:"🦅" },
+  { id:124, nama:"Kambing",        kat:"Fauna",            emoji:"🐐" },
+  { id:125, nama:"Sapi",           kat:"Fauna",            emoji:"🐄" },
+
+  /* ---------- ELEMEN ALAM (10) ---------- */
+  { id:126, nama:"Api",            kat:"Elemen Alam",      emoji:"🔥" },
+  { id:127, nama:"Air",            kat:"Elemen Alam",      emoji:"💧" },
+  { id:128, nama:"Udara",          kat:"Elemen Alam",      emoji:"💨" },
+  { id:129, nama:"Tanah",          kat:"Elemen Alam",      emoji:"🟫" },
+  { id:130, nama:"Es",             kat:"Elemen Alam",      emoji:"🧊" },
+  { id:131, nama:"Batu",           kat:"Elemen Alam",      emoji:"🪨" },
+  { id:132, nama:"Cahaya",         kat:"Elemen Alam",      emoji:"✨" },
+  { id:133, nama:"Kegelapan",      kat:"Elemen Alam",      emoji:"🌑" },
+  { id:134, nama:"Logam",          kat:"Elemen Alam",      emoji:"⚙️" },
+  { id:135, nama:"Kayu",           kat:"Elemen Alam",      emoji:"🪵" }
+];
+
+/* ===================== WARNA PER KATEGORI ===================== */
+const WARNA = {
+  "Bumi & Daratan"    : "#c084fc",
+  "Gunung & Vulkanik" : "#f87171",
+  "Laut & Samudra"    : "#38bdf8",
+  "Sungai & Danau"    : "#22d3ee",
+  "Hutan & Flora"     : "#4ade80",
+  "Langit & Cuaca"    : "#a78bfa",
+  "Fauna"             : "#fbbf24",
+  "Elemen Alam"       : "#fb7185"
+};
+
+/* ===================== STATE ===================== */
+let kategoriAktif = "Semua";
+let kataKunci     = "";
+
+/* ===================== ELEMEN DOM ===================== */
+const grid    = document.getElementById("grid");
+const chipsEl = document.getElementById("chips");
+const countEl = document.getElementById("count");
+const qEl     = document.getElementById("q");
+const modal   = document.getElementById("modal");
+const toast   = document.getElementById("toast");
+
+/* ===================== BUAT CHIP KATEGORI ===================== */
+function buatChips() {
+  const semua = ["Semua", ...Object.keys(WARNA)];
+  chipsEl.innerHTML = semua.map(k => {
+    const c = k === "Semua" ? "#7dd3fc" : WARNA[k];
+    const n = k === "Semua" ? ASSETS.length : ASSETS.filter(a => a.kat === k).length;
+    return `<button class="chip ${k === kategoriAktif ? "active" : ""}"
+              style="--c:${c}" data-kat="${k}">${k} <small style="opacity:.65">(${n})</small></button>`;
+  }).join("");
+}
+
+chipsEl.addEventListener("click", e => {
+  const btn = e.target.closest(".chip");
+  if (!btn) return;
+  kategoriAktif = btn.dataset.kat;
+  buatChips();
+  render();
+});
+
+/* ===================== RENDER GRID ===================== */
+function render() {
+  const q = kataKunci.trim().toLowerCase();
+  const list = ASSETS.filter(a =>
+    (kategoriAktif === "Semua" || a.kat === kategoriAktif) &&
+    (!q || a.nama.toLowerCase().includes(q) || a.kat.toLowerCase().includes(q))
+  );
+
+  countEl.innerHTML = `Menampilkan <b>${list.length}</b> dari <b>${ASSETS.length}</b> aset`;
+
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty"><span>🔍</span>Tidak ada aset yang cocok dengan pencarian.</div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map((a, i) => `
+    <div class="card" style="--c:${WARNA[a.kat]};animation-delay:${Math.min(i * 12, 400)}ms"
+         data-id="${a.id}" title="${a.nama}">
+      <span class="no">#${String(a.id).padStart(3, "0")}</span>
+      <span class="ico">${a.emoji}</span>
+      <div class="nm">${a.nama}</div>
+      <div class="kt">${a.kat}</div>
+    </div>
+  `).join("");
+}
+
+/* ===================== PENCARIAN ===================== */
+qEl.addEventListener("input", e => {
+  kataKunci = e.target.value;
+  render();
+});
+
+/* ===================== MODAL DETAIL ===================== */
+grid.addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if (!card) return;
+  const aset = ASSETS.find(a => a.id === Number(card.dataset.id));
+  if (!aset) return;
+
+  const warna = WARNA[aset.kat];
+  document.getElementById("modalBox").style.setProperty("--c", warna);
+  document.getElementById("mIco").textContent = aset.emoji;
+  document.getElementById("mNama").textContent = aset.nama;
+  document.getElementById("mKat").textContent = aset.kat;
+  document.getElementById("mKat").style.color = warna;
+  document.getElementById("mJson").textContent =
+    JSON.stringify({ id: aset.id, nama: aset.nama, kat: aset.kat, emoji: aset.emoji }, null, 2);
+
+  document.getElementById("mCopy").onclick = () => {
+    salin(JSON.stringify(aset));
+  };
+
+  modal.classList.add("on");
+});
+
+document.getElementById("mClose").onclick = () => modal.classList.remove("on");
+modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("on"); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") modal.classList.remove("on"); });
+
+/* ===================== UTIL ===================== */
+function salin(teks) {
+  navigator.clipboard.writeText(teks).then(() => {
+    toast.textContent = "Tersalin ✓";
+    toast.classList.add("on");
+    setTimeout(() => toast.classList.remove("on"), 1600);
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = teks; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); ta.remove();
+    toast.textContent = "Tersalin ✓";
+    toast.classList.add("on");
+    setTimeout(() => toast.classList.remove("on"), 1600);
+  });
+}
+
+function unduh(namaFile, isi, tipe = "text/plain") {
+  const blob = new Blob([isi], { type: tipe + ";charset=utf-8" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href = url; a.download = namaFile;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+
+  toast.textContent = "Berhasil diunduh: " + namaFile;
+  toast.classList.add("on");
+  setTimeout(() => toast.classList.remove("on"), 2200);
+}
+
+/* ===================== EKSPOR ===================== */
+document.getElementById("dlJson").onclick = () => {
+  const data = {
+    total: ASSETS.length,
+    kategori: Object.keys(WARNA),
+    aset: ASSETS
+  };
+  unduh("aset-alam.json", JSON.stringify(data, null, 2), "application/json");
+};
+
+document.getElementById("dlNode").onclick = () => {
+  const isi =
+`/* =========================================================
+   aset-alam.js — ${ASSETS.length} aset alam
+   Dibuat otomatis dari single HTML
+   Pemakaian:
+     const { ASSETS, WARNA, cari, perKategori } = require('./aset-alam');
+   ========================================================= */
+
+const WARNA = ${JSON.stringify(WARNA, null, 2)};
+
+const ASSETS = ${JSON.stringify(ASSETS, null, 2)};
+
+/** Cari aset berdasarkan nama (sebagian, case-insensitive) */
+function cari(kata) {
+  const q = String(kata).toLowerCase();
+  return ASSETS.filter(a =>
+    a.nama.toLowerCase().includes(q) || a.kat.toLowerCase().includes(q)
+  );
+}
+
+/** Ambil aset per kategori */
+function perKategori(kat) {
+  return ASSETS.filter(a => a.kat === kat);
+}
+
+/** Ambil aset berdasarkan id */
+function byId(id) {
+  return ASSETS.find(a => a.id === Number(id)) || null;
+}
+
+/** Statistik jumlah aset per kategori */
+function statistik() {
+  return ASSETS.reduce((acc, a) => {
+    acc[a.kat] = (acc[a.kat] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+module.exports = { ASSETS, WARNA, cari, perKategori, byId, statistik, total: ASSETS.length };
+`;
+  unduh("aset-alam.js", isi, "application/javascript");
+};
+
+/* ===================== INISIALISASI ===================== */
+buatChips();
+render();
+</script>
+</body>
+</html>

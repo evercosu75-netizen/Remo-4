@@ -41,6 +41,12 @@ REMO-4-video-engine/
 ├── fauna-studio/                 # Studio Ensiklopedia & Anatomi 50+ Fauna
 │   ├── aset_50_hewan.html        # 52 kartu hewan Nusantara & dunia, search/filter
 │   └── CATATAN.md                # batasan jujur (gambar sederhana, 48 hewan belum dicek faktual)
+├── alam-studio/                  # Katalog Aset Alam — 135 entri (emoji, bukan gambar)
+│   ├── aset_alam.html            # 8 kategori alam, search/filter, ekspor JSON/Node.js
+│   └── CATATAN.md                # katalog referensi + modul data, bukan sumber gambar
+├── barang-studio/                # Katalog Aset & Inventaris — 120 item (emoji, bukan gambar)
+│   ├── aset_barang.html          # 5 kategori × 24, search/filter, favorit, ekspor JSON/CSV
+│   └── CATATAN.md                # daftar referensi properti; spesifikasi bukan fakta terverifikasi
 └── master-aset/                  # paket aset yang dipakai ulang di semua video
     ├── README.md / PANDUAN.md / template-referensi.md
     ├── karakter-3d/              # pipeline render Three.js + 11 PNG kostum (lihat catatan biner)
@@ -57,6 +63,10 @@ REMO-4-video-engine/
    singkat, pilih karakter dari `master-aset/` (3D untuk manusia berkostum,
    SVG untuk host ekspresif), pakai pose dari `pose-studio/` bila butuh pose
    atau latar, dan data/ilustrasi hewan dari `fauna-studio/` untuk topik fauna.
+   Untuk daftar properti/latar, cek `alam-studio/` (elemen alam) dan
+   `barang-studio/` (properti harian/elektronik/kendaraan/dapur/kantor) —
+   keduanya katalog referensi ber-emoji: jangan tempel emoji ke video, dan
+   jangan kutip spesifikasi barang sebagai fakta tanpa verifikasi.
 3. Jangan gambar karakter baru dari nol tanpa alasan — pakai master aset dulu.
 
 ## Catatan tentang file biner
