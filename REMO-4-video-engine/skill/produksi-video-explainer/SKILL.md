@@ -256,7 +256,7 @@ Sebelum mengedit animasi, lakukan analisis:
 9. Bagaimana transisi yang paling cocok?
 10. Bagaimana membuat opening yang menarik?
 
-Dari analisis tersebut, buat dokumen VISUAL ART DIRECTION.
+Dari analisis tersebut, buat dokumen VISUAL ART DIRECTION. Sebelum menentukan elemen visual apa pun dalam dokumen itu, ikuti ALUR WAJIB di bagian 13: cek aset yang tertaut dulu — kalau tidak ada yang cocok, baru bikin sendiri (dan simpan aset baru itu kembali ke folder aset).
 
 Dokumen ini harus mencakup:
 
@@ -855,6 +855,18 @@ lokal dan WAJIB dipakai sebagai sumber karakter/visual/audio yang konsisten.
 Jangan menggambar karakter baru dari nol tanpa alasan yang jelas; kalau topik
 butuh tokoh/kostum baru, buat sebagai VARIASI dari aset ini (kostum, pose,
 ekspresi), bukan tokoh yang sama sekali berbeda.
+
+### ALUR WAJIB: cek aset dulu, baru bikin sendiri
+
+Aturan ini berlaku untuk SETIAP elemen visual yang dibutuhkan video (karakter, kostum, pose, hewan, latar, properti, komponen):
+
+1. **CEK DULU aset yang tertaut di tabel di bawah** (master-aset + studio remo-4). Cari yang cocok — nama, kategori, bentuk, dan gaya.
+2. **Kalau ADA yang cocok, PAKAI itu.** Jangan bikin baru. Sesuaikan hanya yang perlu (ukuran, warna, kostum, pose) dan patuhi batasan tiap aset di "Aturan pakai" di bawah.
+3. **Kalau TIDAK ADA yang cocok, BARU bikin sendiri** (gambar SVG, render 3D, atau generate gambar). Aset baru itu WAJIB disimpan kembali ke folder aset yang sesuai (`master-aset/` atau studio remo-4 yang relevan) dan dicatat di `CATATAN.md`-nya — supaya video berikutnya bisa pakai, bukan jadi file sekali pakai yang hilang di folder proyek.
+4. **"Cocok" berarti bentuknya benar-benar mirip, bukan sekadar namanya ada.** Contoh: kalau fauna-studio hanya punya template generik kadal untuk penyu/gurita/ubur-ubur, itu TIDAK COCOK — jangan pakai kadal dan mengklaimnya penyu. Bikin sendiri gambar penyu/gurita/ubur-ubur yang benar, lalu simpan sebagai aset baru.
+5. **Laporkan di akhir produksi:** aset apa yang dipakai dari mana, aset apa yang dibuat baru (dan di mana disimpannya), dan aset apa yang dicari tapi tidak ada. Jangan diam-diam mengganti elemen yang tidak ketemu dengan gambar generik.
+
+Untuk katalog alam + katalog barang (visualnya emoji, bukan gambar): "cek" berarti cek daftar nama/kategori/tag-nya sebagai referensi, lalu gambar propertinya sebagai SVG mengikuti entri katalog (lihat aturan pakai 7).
 
 ### Lokasi aset (path relatif terhadap `~/workspace/`)
 
