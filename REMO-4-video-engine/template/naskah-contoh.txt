@@ -1,11 +1,16 @@
-Kok bisa, asap karhutla bikin tiga ratus ribu lebih orang kena ISPA?
+CONTOH — ganti total tiap produksi. Naskah generik ini hanya menunjukkan
+struktur (hook, konteks, tiga poin, kesimpulan "Jadi intinya...", pertanyaan
+penonton) dan cocok dengan words.js placeholder (60 kata) serta
+animatic.html template bersih.
 
-Data Kemenkes sampai dua puluh satu Oktober: tiga ratus tiga puluh tiga ribu kasus ISPA di wilayah terdampak. Tujuh puluh lima ribu di antaranya balita.
+Kenapa hal sederhana ini bisa mengubah cara kita melihat dunia?
 
-Satu. Biang keroknya PM dua koma lima. Partikel yang jauh lebih kecil dari rambut. Kata WHO, ia bisa masuk ke paru-paru, bahkan ke aliran darah.
+Jawabannya ada pada satu fakta utama yang jarang dibahas.
 
-Dua. Batas harian dari WHO lima belas mikrogram. Di Palangka Raya, dua puluh tujuh Oktober sore, tercatat seratus tujuh koma lima. Tujuh kali lipat.
+Pertama, perhatikan bagaimana bagian ini bekerja dari awal sampai akhir.
 
-Tiga. Kemenkes mengimbau: pantau kualitas udara, kurangi aktivitas di luar, pakai masker, dan ke faskes kalau sesak.
+Kedua, bandingkan dengan contoh lain yang mudah kita amati.
 
-Jadi intinya, asap bukan cuma bikin pandangan kabur. Ia masuk ke napas kita. Di daerahmu, udaranya sudah lega belum?
+Ketiga, lihat apa yang berubah ketika bagian kecil itu diganti.
+
+Jadi intinya, hal kecil bisa berdampak besar. Menurutmu, mana yang paling menarik?

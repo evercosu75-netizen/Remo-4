@@ -1,0 +1,37 @@
+# .gitattributes -- REMO 4
+# Aturan Git LFS untuk aset biner.
+# PENTING: LFS hanya berlaku bila file di-upload via git LFS di command line
+# (`git lfs install` + `git add` + `git push`). Konektor teks Muse TIDAK
+# bisa meng-upload biner / LFS -- file biner tetap harus di-upload manual
+# (git LFS, web github.com, atau GitHub Releases). Lihat
+# REMO-4-video-engine/master-aset/MANIFEST-ASET-BINER.md.
+
+# Aset biner master-aset (karakter 3D, contoh gaya flat, outro)
+REMO-4-video-engine/master-aset/**/*.png filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/master-aset/**/*.webp filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/master-aset/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/master-aset/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/master-aset/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/master-aset/**/*.gif filter=lfs diff=lfs merge=lfs -text
+
+# Aset biner studio (screenshot pengujian + contoh ekspor)
+REMO-4-video-engine/pose-studio/**/*.png filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/fauna-studio/**/*.png filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/alam-studio/**/*.png filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/barang-studio/**/*.png filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/pose-studio/**/*.webp filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/fauna-studio/**/*.webp filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/alam-studio/**/*.webp filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/barang-studio/**/*.webp filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/pose-studio/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/fauna-studio/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/alam-studio/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+REMO-4-video-engine/barang-studio/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+
+# Pola umum (menangkap biner di lokasi lain dalam repo bila ada)
+*.png filter=lfs diff=lfs merge=lfs -text
+*.webp filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.gif filter=lfs diff=lfs merge=lfs -text

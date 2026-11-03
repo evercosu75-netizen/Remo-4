@@ -1,4 +1,4 @@
-// Generator SVG karakter untuk REMO 3.
+// Generator SVG karakter untuk REMO 4 (diwarisi dari REMO 3, MIT — Weyeni.id).
 (function () {
   const LOOKS = {
     host: { skin: '#C2805A', shade: '#A86A47', top: '#D9483B', shirt: '#FFF6EC', seam: '#B8382D', bottom: '#2E3A5C' },

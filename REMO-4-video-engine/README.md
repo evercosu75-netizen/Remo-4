@@ -21,9 +21,9 @@ REMO-4-video-engine/
 │   └── produksi-video-explainer/
 │       ├── SKILL.md              # skill Remo 4 (panggil /remo 4)
 │       └── skill.yaml
-├── template/                     # engine produksi (disalin dari Remo 3, isi tidak diubah)
+├── template/                     # template bersih Remo-4 (isi placeholder, wajib diganti total tiap produksi)
 │   ├── animatic.html             # adegan, animasi, transisi, subtitle, timing
-│   ├── karakter.js               # generator karakter SVG (5 tokoh remo-3)
+│   ├── karakter.js               # generator karakter SVG (5 tokoh, diwarisi dari remo-3)
 │   ├── words.js                  # timestamp kata narasi
 │   ├── frames.py                 # pemeriksaan frame
 │   ├── render.py                 # rendering MP4
@@ -50,7 +50,7 @@ REMO-4-video-engine/
 └── master-aset/                  # paket aset yang dipakai ulang di semua video
     ├── README.md / PANDUAN.md / template-referensi.md
     ├── karakter-3d/              # pipeline render Three.js + 11 PNG kostum (lihat catatan biner)
-    ├── karakter-svg/             # karakter.js — 5 tokoh remo-3
+    ├── karakter-svg/             # karakter.js — 5 tokoh (diwarisi dari remo-3)
     ├── brand/                    # palet, gaya label/popup/stempel
     ├── visual/                   # komponen.css + contoh art direction
     └── audio/                    # sfx.py + contoh.srt
@@ -71,13 +71,18 @@ REMO-4-video-engine/
 
 ## Catatan tentang file biner
 
-Repo ini hanya berisi file teks. File biner master aset — render PNG karakter
-3D (`master-aset/karakter-3d/renders/`), contoh gaya flat WebP
-(`master-aset/visual/contoh-gaya-flat/`), video referensi outro
-(`master-aset/brand/outro-referensi-ayraku-3detik.mp4`), serta screenshot
-pengujian pose/fauna studio — **tidak ikut ter-push** karena konektor GitHub
-yang dipakai hanya mendukung file teks (UTF-8). File-file itu tetap tersimpan
-di salinan lokal workspace dan tetap menjadi bagian dari master aset Remo 4.
+File biner master aset — 29 file: render PNG karakter 3D
+(`master-aset/karakter-3d/renders/` + `renders/raw/` + contact sheet),
+contoh gaya flat WebP (`master-aset/visual/contoh-gaya-flat/`), dan video
+referensi outro (`master-aset/brand/outro-referensi-ayraku-3detik.mp4`) —
+**sudah ada di GitHub sejak 3 Nov 2026**, di-upload lewat website github.com
+(konektor GitHub hanya mendukung file teks UTF-8, jadi biner tidak bisa
+di-push lewat konektor). Screenshot pengujian pose/fauna studio (37 file)
+tetap **lokal saja** — itu bukti pengujian, bukan bahan produksi.
+Daftar lengkap + md5 ada di `master-aset/MANIFEST-ASET-BINER.md` — periksa
+manifest itu sebelum memakai aset apa pun, dan laporkan kalau ada file yang
+hilang. `.gitattributes` di root repo berisi aturan LFS untuk biner bila
+nanti dipakai.
 
 ## Prinsip utama
 

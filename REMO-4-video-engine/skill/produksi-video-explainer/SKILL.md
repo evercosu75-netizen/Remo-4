@@ -101,6 +101,34 @@ Pertahankan perubahan pengguna yang sudah ada.
 
 Kode template menggunakan MIT License. Pertahankan pemberitahuan copyright dan lisensi pada distribusi kode turunannya.
 
+### ATURAN INPUT AUDIO & WORD TIMING (mengikat)
+
+Aturan ini mengikat di setiap produksi. Kalau bertentangan dengan
+dokumen lain, aturan ini yang menang.
+
+a. **VO diterima WAV maupun MP3.** Simpan file VO apa adanya dengan nama
+   aslinya. Jangan konversi diam-diam (misalnya WAV ke MP3 atau
+   sebaliknya) tanpa mencatatnya di laporan produksi.
+b. **Durasi video mengikuti durasi VO aktual.** Target 45–60 detik di
+   skill ini adalah target, bukan pemaksaan. JANGAN percepat/perlambat
+   VO untuk memaksa durasi 45–60 detik, kecuali Manggala minta eksplisit.
+c. **JANGAN PERNAH pakai `words.js` dari proyek sebelumnya.** Tiap
+   produksi wajib menulis `words.js` baru — dari transkripsi aktual
+   audio itu, atau dari estimasi yang dilabeli ESTIMASI (lihat butir d).
+   Template `words.js` berisi placeholder dan wajib diganti total.
+d. **Bedakan jelas timing transkripsi aktual vs timing estimasi.**
+   Timing estimasi (±0,3 detik) harus dilabeli ESTIMASI di mana pun ia
+   dipakai dan dilaporkan. Jangan pernah mengklaim estimasi sebagai
+   hasil transkripsi layanan.
+e. **Periksa keberadaan setiap aset sebelum render penuh.** Kalau ada
+   aset yang dipakai tapi filenya hilang/tidak bisa dibaca, LAPORKAN
+   ke Manggala. Jangan diam-diam mengganti dengan gambar generik,
+   template generik, atau emoji.
+f. **Sebelum render penuh harus ada bukti frame check.** Simpan file
+   JPG hasil frame check di folder `cek/` proyek dan LIHAT gambarnya
+   secara langsung. Jangan lanjut render penuh hanya bermodal log
+   program tanpa melihat frame.
+
 ---
 
 ## 2. IDENTITAS CHANNEL
@@ -851,10 +879,16 @@ JANGAN MEMBUAT 10 VIDEO DENGAN WAJAH YANG SAMA. BUAT 10 VIDEO DENGAN IDENTITAS V
 ## 13. MASTER ASET REMO 4 (dipakai di semua video — jangan bikin dari nol)
 
 REMO 4 = REMO 3 + master aset. Semua aset di bawah ini sudah ada di workspace
-lokal dan WAJIB dipakai sebagai sumber karakter/visual/audio yang konsisten.
+lokal DAN di repo GitHub Remo-4 (29 file biner master sudah di GitHub sejak
+3 Nov 2026) dan WAJIB dipakai sebagai sumber karakter/visual/audio yang konsisten.
 Jangan menggambar karakter baru dari nol tanpa alasan yang jelas; kalau topik
 butuh tokoh/kostum baru, buat sebagai VARIASI dari aset ini (kostum, pose,
 ekspresi), bukan tokoh yang sama sekali berbeda.
+
+Sumber template resmi adalah repo Remo-4
+(`https://github.com/evercosu75-netizen/Remo-4`), bukan Remo-3. Kalau ada
+dokumen lain yang menunjuk Remo-3 sebagai sumber kerja, ikuti dokumen ini
+(SKILL.md Remo-4).
 
 ### ALUR WAJIB: cek aset dulu, baru bikin sendiri
 
@@ -873,7 +907,7 @@ Untuk katalog alam + katalog barang (visualnya emoji, bukan gambar): "cek" berar
 | Aset | Path | Isi |
 |---|---|---|
 | Karakter 3D + kostum | `master-aset/karakter-3d/` | 11 render PNG transparan berkostum (penyelam, perenang, nelayan, penambang, orang daratan) + pipeline render (`render.html`, `render_chars.py`, `trim.py`, Three.js lokal di `vendor/`). Lihat `master-aset/karakter-3d/README.md` |
-| Karakter SVG remo-3 | `master-aset/karakter-svg/karakter.js` | 5 tokoh ekspresif siap pakai (host, nur, yohana, togar, lina) + `CATATAN.md` |
+| Karakter SVG (diwarisi dari remo-3) | `master-aset/karakter-svg/karakter.js` | 5 tokoh ekspresif siap pakai (host, nur, yohana, togar, lina) + `CATATAN.md` |
 | Brand channel | `master-aset/brand/` | `palet.md` (palet per topik), `gaya.md` (label `// NN`, popup, stempel, kartu sumber), outro referensi Ayraku |
 | Komponen visual | `master-aset/visual/komponen.css` | CSS komponen pakai ulang (label, popup, stempel, gelembung, sinar) + contoh art direction + contoh gaya flat Hari |
 | Audio | `master-aset/audio/sfx.py` | SFX sintetis bebas hak cipta + `contoh.srt` (format SRT yang benar) + `CATATAN.md` (aturan audio, patokan loudness) |

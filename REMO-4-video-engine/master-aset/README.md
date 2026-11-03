@@ -14,18 +14,19 @@ jangan ubah file di folder ini tanpa catat di README.**
 | Subfolder / file | Isi | Sumber asal | Dipakai di |
 |---|---|---|---|
 | `karakter-3d/` | Pipeline render karakter 3D + 11 PNG kostum transparan + contact sheet | `bernafas-air-v4-karakter3d/char3d/` + aset asli `user/files/cw_cwo_3d_1_fns0.html` | v4 bernafas-air |
-| `karakter-svg/` | `karakter.js` — generator SVG 5 tokoh remo-3 (host, nur, yohana, togar, lina) | `bernafas-air-combined/template/karakter.js` | template remo-3 |
+| `karakter-svg/` | `karakter.js` — generator SVG 5 tokoh (diwarisi dari remo-3, dipakai di Remo-4) (host, nur, yohana, togar, lina) | `bernafas-air-combined/template/karakter.js` | template Remo-4 |
 | `brand/` | Palet, font, gaya label/popup/stempel, outro referensi | animatic v3, build Hari-style, video CTA Ayraku | v3, v4, CTA |
 | `visual/` | `komponen.css` (label/popup/caption/stempel reusable) + 4 contoh gaya flat Hari + 2 contoh dokumen art direction | animatic v3, `bernafas-air-hari-style/` | v3, tes Hari |
 | `audio/` | `sfx.py` (SFX sintetis) + `contoh.srt` (format SRT yang benar) + catatan loudness | `bernafas-air-combined/template/sfx.py`, `out/bernafas-air-combined.srt` | v3, v4 |
 | `PANDUAN.md` | Cara pakai master aset untuk video baru + checklist QA + daftar kekurangan (gap) | — | — |
-| `template-referensi.md` | Template/engine mana yang dipakai, TANPA menyalin skill remo-3 | — | — |
+| `template-referensi.md` | Template/engine mana yang dipakai, TANPA menyalin skill remo-4 | — | — |
 
 ## Yang TIDAK ada di sini (sengaja)
 
-- **Skill remo-3** (`custom-skills/remo-3/`) — tidak disalin, hanya dirujuk di
-  `template-referensi.md`. Template kerja tetap diambil dari repo
-  `evercosu75-netizen/Remo-3` / salinan lokal `workspace/remo-3-github/`.
+- **Skill remo-4** (`custom-skills/remo-4/`) — tidak disalin ke master-aset,
+  hanya dirujuk di `template-referensi.md`. Template kerja tetap diambil
+  dari repo `evercosu75-netizen/Remo-4` / salinan lokal
+  `workspace/remo-4-github/`.
 - **VO per topik** (bakso, Soekarno, urine, dll.) — bukan aset master.
   VO baru disimpan di `workspace/user/files/` per video.
 - **Foto produk user** (tumbler, crown cap) — aset per topik, bukan master.
@@ -48,8 +49,10 @@ jangan ubah file di folder ini tanpa catat di README.**
 
 ## Lisensi / catatan
 
-- Template remo-3 dan `karakter.js`: MIT License (Weyeni.id / repo Remo-3).
-  Pertahankan pemberitahuan copyright pada distribusi turunannya.
+- Template Remo-4 dan `karakter.js` (diwarisi dari Remo-3): MIT License
+  (Weyeni.id / repo Remo-3 sebagai asal engine). Distribusi saat ini
+  adalah Remo-4. Pertahankan pemberitahuan copyright pada distribusi
+  turunannya.
 - Three.js `vendor/three.module.js`: MIT License.
 - SFX sintetis (`sfx.py`): bebas hak cipta (dibangkitkan dengan numpy/scipy).
 - Ilustrasi flat contoh (`visual/contoh-gaya-flat/`): dibuat dengan

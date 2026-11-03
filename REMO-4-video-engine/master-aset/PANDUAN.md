@@ -5,7 +5,7 @@
 1. **Terima VO dari Manggala.** Simpan di `workspace/user/files/`.
    Cek durasi + md5 (kalau VO sama dengan video lama, jangan bikin ulang
    tanpa alasan — cek dulu folder proyek lama).
-2. **Salin template kerja** dari repo remo-3 (lihat `template-referensi.md`).
+2. **Salin template kerja** dari repo Remo-4 (lihat `template-referensi.md`).
    Kerja di folder proyek BARU (`workspace/<topik>-explainer/`), jangan
    pernah edit template sumber atau proyek video lama.
 3. **Tulis art direction singkat** (ikuti contoh di
@@ -26,9 +26,16 @@
 6. **Isi popup INFO TAMBAHAN hanya dengan fakta terverifikasi + sumber.**
    Jangan invent angka. Kalau belum terverifikasi, beri label
    "konon/legenda" atau jangan masukkan.
-7. **Word timing**: estimasi dari silence detection + alokasi proporsional
-   per kalimat. Nyatakan selalu bahwa timing adalah ESTIMASI, bukan hasil
-   transkripsi layanan (±0,3 dtk).
+7. **Word timing + aturan input audio**: VO diterima WAV maupun MP3 —
+   simpan apa adanya, jangan konversi diam-diam tanpa catat. Durasi video
+   mengikuti durasi VO aktual (target 45–60 detik di SKILL.md adalah
+   target, bukan pemaksaan percepat/perlambat VO — JANGAN percepat/
+   perlambat VO kecuali Manggala minta eksplisit). Timing estimasi dari
+   silence detection + alokasi proporsional per kalimat harus dilabeli
+   ESTIMASI ±0,3 detik dan dibedakan jelas dari timing hasil transkripsi
+   aktual — jangan klaim estimasi sebagai hasil transkripsi. JANGAN
+   PERNAH pakai `words.js` dari proyek sebelumnya; tiap produksi wajib
+   tulis `words.js` baru.
 8. **Frame check SEBELUM render penuh**: 4–7 detik terpadat + titik
    transisi + satu frame tiap popup + satu frame tiap kostum. LIHAT
    gambarnya, perbaiki teks terpotong / elemen bertabrakan / karakter
@@ -51,7 +58,7 @@
 - [ ] File `.srt`: 1 cue per kalimat, maks 2 baris/cue, tanpa overlap,
       format waktu `HH:MM:SS,mmm` benar
 - [ ] Karakter tidak terpotong / tidak melayang tanpa alasan / kostum terbaca
-- [ ] Skill remo-3 dan file asli tidak berubah
+- [ ] Skill remo-3 dan remo-4 asli tidak berubah; template sumber tidak diedit, kerja di folder proyek baru
 
 ## DAFTAR KEKURANGAN (gap) — jujur, belum lengkap
 

@@ -1,7 +1,7 @@
 {
-  "name": "remo-3-video-engine",
+  "name": "remo-4-video-engine",
   "private": true,
-  "description": "Font untuk REMO 3 video explainer 9:16",
+  "description": "Font untuk REMO 4 video explainer 9:16",
   "dependencies": {
     "@fontsource/anton": "^5.0.0",
     "@fontsource/baloo-2": "^5.0.0",

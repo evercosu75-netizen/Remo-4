@@ -1,3 +1,7 @@
 playwright
 numpy
 scipy
+Pillow
+# Pillow dipakai oleh master-aset/karakter-3d/trim.py (from PIL import Image).
+# playwright dipakai frames.py / render.py / sfx.py / render_chars.py.
+# numpy + scipy dipakai sfx.py (sintesis SFX).
