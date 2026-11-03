@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420"> <g id="hair" fill="#241F1E" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M80 133 Q72 85 102 62 Q125 43 153 49 Q183 43 204 66 Q229 91 220 135 L205 119 Q190 108 179 94 Q155 107 126 96 Q104 111 83 135 Z"/> <path d="M112 64 Q108 43 126 38 Q133 34 139 44 Q149 26 160 38 Q166 29 174 41 Q186 41 184 58 Q167 51 157 61 Q140 51 128 66 Z"/> </g>
+
+<g id="head"> <circle cx="150" cy="140" r="72" fill="#C2805A" stroke="#241F1E" stroke-width="4"/> <path d="M80 112 Q79 79 105 62 Q126 48 151 53 Q185 45 207 75 Q218 91 220 116 Q200 97 183 89 Q157 103 126 94 Q103 108 80 112 Z" fill="#241F1E" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"/> <path d="M79 142 Q68 138 70 153 Q72 165 84 163" fill="#C2805A" stroke="#241F1E" stroke-width="3"/> <path d="M221 142 Q232 138 230 153 Q228 165 216 163" fill="#C2805A" stroke="#241F1E" stroke-width="3"/> </g>
+
+<g id="eyes" fill="#FFFFFF" stroke="#241F1E" stroke-width="3"> <ellipse cx="124" cy="140" rx="9" ry="12"/> <ellipse cx="176" cy="140" rx="9" ry="12"/> <ellipse cx="125" cy="142" rx="4.5" ry="7" fill="#241F1E" stroke="none"/> <ellipse cx="177" cy="142" rx="4.5" ry="7" fill="#241F1E" stroke="none"/> <circle cx="126.5" cy="139" r="2" fill="#FFFFFF" stroke="none"/> <circle cx="178.5" cy="139" r="2" fill="#FFFFFF" stroke="none"/> </g>
+
+<g id="brows" fill="none" stroke="#241F1E" stroke-width="3" stroke-linecap="round"> <path d="M112 122 Q124 115 135 122"/> <path d="M165 122 Q177 115 188 122"/> </g>
+
+<g id="mouth" fill="none" stroke="#241F1E" stroke-width="3" stroke-linecap="round"> <path d="M137 170 Q150 182 163 170"/> </g>
+
+<g id="body" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M126 205 L110 214 L100 274 L200 274 L190 214 L174 205 Z" fill="#FFF6EC"/> <path d="M117 207 Q103 211 98 226 L89 292 L108 302 L123 248 L128 228 Z" fill="#D9483B"/> <path d="M183 207 Q197 211 202 226 L211 292 L192 302 L177 248 L172 228 Z" fill="#D9483B"/> <path d="M126 205 Q150 225 174 205 L190 215 L199 292 L101 292 L110 215 Z" fill="#D9483B"/> <path d="M132 211 Q150 230 168 211 L163 239 L150 249 L137 239 Z" fill="#FFF6EC"/> <path d="M101 283 L199 283 L204 309 L96 309 Z" fill="#2E3A5C"/> </g>
+
+<g id="arm-left" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M101 221 Q91 225 88 241 L77 294 Q73 309 81 313 Q89 317 95 303 L111 253 L115 232 Z" fill="#D9483B"/> <path d="M77 294 Q69 309 77 322 Q83 329 91 320 L96 306 Q89 313 81 313 Z" fill="#C2805A"/> </g>
+
+<g id="arm-right" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M199 221 Q209 225 212 241 L223 294 Q227 309 219 313 Q211 317 205 303 L189 253 L185 232 Z" fill="#D9483B"/> <path d="M223 294 Q231 309 223 322 Q217 329 209 320 L204 306 Q211 313 219 313 Z" fill="#C2805A"/> </g>
+
+<g id="legs" fill="#2E3A5C" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M99 304 L150 304 L148 376 L143 397 L113 397 L110 376 Z"/> <path d="M150 304 L201 304 L190 376 L187 397 L157 397 L152 376 Z"/> <path d="M150 309 L150 376" fill="none"/> </g>
+
+<g id="shoes" fill="#1F2433" stroke="#241F1E" stroke-width="4" stroke-linejoin="round"> <path d="M113 383 L143 383 L147 396 Q155 402 151 409 L103 409 Q99 405 104 397 Z"/> <path d="M157 383 L187 383 L196 397 Q201 405 196 409 L149 409 Q145 402 153 396 Z"/> <path d="M104 403 Q126 406 151 403" fill="none" stroke-width="2.5"/> <path d="M150 403 Q174 406 196 403" fill="none" stroke-width="2.5"/> </g> </svg>

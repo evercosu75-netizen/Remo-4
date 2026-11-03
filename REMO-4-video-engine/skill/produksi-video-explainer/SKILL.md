@@ -907,7 +907,7 @@ Untuk katalog alam + katalog barang (visualnya emoji, bukan gambar): "cek" berar
 | Aset | Path | Isi |
 |---|---|---|
 | Karakter 3D + kostum | `master-aset/karakter-3d/` | 11 render PNG transparan berkostum (penyelam, perenang, nelayan, penambang, orang daratan) + pipeline render (`render.html`, `render_chars.py`, `trim.py`, Three.js lokal di `vendor/`). Lihat `master-aset/karakter-3d/README.md` |
-| Karakter SVG (diwarisi dari remo-3) | `master-aset/karakter-svg/karakter.js` | 5 tokoh ekspresif siap pakai (host, nur, yohana, togar, lina) + `CATATAN.md` |
+| Karakter SVG (tokoh utama baru dari GPT) | `master-aset/karakter-svg/karakter.js` | 5 tokoh ekspresif siap pakai: host = cowok dewasa baru, lina = cewek dewasa baru (artwork GPT 3 Nov 2026, file sumber di `master-aset/karakter-svg/baru/`); nur, yohana, togar tetap sebagai alternatif (generator lama) + `CATATAN.md` |
 | Brand channel | `master-aset/brand/` | `palet.md` (palet per topik), `gaya.md` (label `// NN`, popup, stempel, kartu sumber), outro referensi Ayraku |
 | Komponen visual | `master-aset/visual/komponen.css` | CSS komponen pakai ulang (label, popup, stempel, gelembung, sinar) + contoh art direction + contoh gaya flat Hari |
 | Audio | `master-aset/audio/sfx.py` | SFX sintetis bebas hak cipta + `contoh.srt` (format SRT yang benar) + `CATATAN.md` (aturan audio, patokan loudness) |
@@ -916,6 +916,15 @@ Untuk katalog alam + katalog barang (visualnya emoji, bukan gambar): "cek" berar
 | Katalog alam | `remo-4/alam-studio/aset_alam.html` | Katalog 135 entri alam (Laut & Samudra 28, Sungai & Danau 19, Bumi & Daratan 18, Hutan & Flora 18, Langit & Cuaca 15, Fauna 15, Gunung & Vulkanik 12, Elemen Alam 10) + search/filter + modal + ekspor JSON/Node.js (`module.exports`, `cari()`, `perKategori()`). Visualnya emoji, BUKAN gambar — peran: daftar referensi + modul data. Lihat `remo-4/alam-studio/CATATAN.md` |
 | Katalog barang | `remo-4/barang-studio/aset_barang.html` | Katalog 120 item (5 kategori × 24: Barang Harian, Elektronik & Gadget, Kendaraan & Transportasi, Peralatan Rumah & Dapur, Kantor & Belajar) + search/filter + modal detail (nama ID + EN + tag + spec) + favorit + ekspor JSON/CSV. Visualnya emoji, BUKAN gambar — peran: daftar referensi properti + inventaris. Lihat `remo-4/barang-studio/CATATAN.md` |
 | Panduan master aset | `master-aset/README.md`, `master-aset/PANDUAN.md` | Indeks + cara pakai + daftar gap yang jujur |
+
+### ATURAN MENGIKAT: gender avatar HARUS cocok dengan gender suara VO
+
+(Pelajaran dari video medan magnet 3 Nov 2026: VO cewek, avatar host cowok — Manggala komplain dan video harus di-render ulang jadi v2.)
+
+- **VO cewek → tokoh cewek** (`lina`, atau `nur`/`yohana` kalau videonya butuh alternatif). **VO cowok → tokoh cowok** (`host`, atau `togar`).
+- Tentukan gender VO dari audionya (dicek saat verifikasi VO), BUKAN dari tebakan nama file atau naskah.
+- **Kalau gender VO tidak jelas** dari audio/naskah, TANYAKAN ke Manggala sebelum render penuh — jangan menebak.
+- Aturan ini mengikat untuk SEMUA video baru. Tokoh default `host` (cowok) TIDAK BOLEH dipakai untuk VO cewek.
 
 ### Aturan pakai
 

@@ -14,7 +14,7 @@ jangan ubah file di folder ini tanpa catat di README.**
 | Subfolder / file | Isi | Sumber asal | Dipakai di |
 |---|---|---|---|
 | `karakter-3d/` | Pipeline render karakter 3D + 11 PNG kostum transparan + contact sheet | `bernafas-air-v4-karakter3d/char3d/` + aset asli `user/files/cw_cwo_3d_1_fns0.html` | v4 bernafas-air |
-| `karakter-svg/` | `karakter.js` — generator SVG 5 tokoh (diwarisi dari remo-3, dipakai di Remo-4) (host, nur, yohana, togar, lina) | `bernafas-air-combined/template/karakter.js` | template Remo-4 |
+| `karakter-svg/` | `karakter.js` — generator SVG 5 tokoh (host + lina = artwork baru dari GPT 3 Nov 2026; nur, yohana, togar diwarisi dari remo-3) (host, nur, yohana, togar, lina) | `bernafas-air-combined/template/karakter.js` | template Remo-4 |
 | `brand/` | Palet, font, gaya label/popup/stempel, outro referensi | animatic v3, build Hari-style, video CTA Ayraku | v3, v4, CTA |
 | `visual/` | `komponen.css` (label/popup/caption/stempel reusable) + 4 contoh gaya flat Hari + 2 contoh dokumen art direction | animatic v3, `bernafas-air-hari-style/` | v3, tes Hari |
 | `audio/` | `sfx.py` (SFX sintetis) + `contoh.srt` (format SRT yang benar) + catatan loudness | `bernafas-air-combined/template/sfx.py`, `out/bernafas-air-combined.srt` | v3, v4 |

@@ -8,11 +8,29 @@ pose, mulut, kedip})`, menghasilkan SVG `viewBox="0 0 300 420"`.
 
 | Tokoh | Kulit | Atasan | Ciri |
 |---|---|---|---|
-| `host` | #C2805A | merah #D9483B | pembawa acara utama, rambut hitam |
+| `host` | #C2805A | merah #D9483B | pembawa acara utama — cowok dewasa BARU dari GPT (3 Nov 2026), rambut pendek + jambul |
 | `nur` | #C98B62 | kuning #E9A23B | pakai rok, bukan celana |
 | `yohana` | #7A4A30 | biru #4A6FA5 | — |
 | `togar` | #B07650 | biru muda #A9C2DA | — |
-| `lina` | #E2B48C | ungu #7B5EA7 | rambut hitam panjang menutupi bahu |
+| `lina` | #E2B48C | ungu #7B5EA7 | cewek dewasa BARU dari GPT (3 Nov 2026), rambut hitam panjang menutupi bahu |
+
+## Tokoh baru dari GPT (3 Nov 2026)
+
+- `host` (cowok) dan `lina` (cewek) diganti total ke artwork baru dari GPT,
+  atas persetujuan Manggala. File sumber: `baru/cowok-dewasa.svg` dan
+  `baru/cewek-dewasa.svg` (viewBox 300x420, grup ber-id). `nur`, `yohana`,
+  `togar` TIDAK berubah (masih generator lama).
+- API-nya sama persis (`{tokoh, ekspresi, pose, mulut, kedip}`): mulut
+  bicara/kaget/berpikir dan alis diganti per ekspresi, kedip via scaleY
+  grup mata, pose via rotasi lengan (berpikir = tangan ke dagu, pegang-hp =
+  HP di tangan kanan, kaget = kedua lengan ke atas, menunjuk = lengan
+  kanan ke atas-luar). Dites visual 3 Nov 2026: semua pose x ekspresi
+  (host + lina) + kedip bersih, tanpa tangan hilang/lengan putus.
+- **ATURAN MENGIKAT (SKILL.md remo-4 bag. 13): gender avatar HARUS cocok
+  dengan gender suara VO** — VO cewek → `lina` (atau `nur`/`yohana`),
+  VO cowok → `host` (atau `togar`). Kalau gender VO tidak jelas, tanyakan
+  ke Manggala sebelum render penuh. Pelajaran dari video medan magnet
+  (VO cewek, avatar cowok → revisi v2).
 
 ## Ekspresi & pose
 

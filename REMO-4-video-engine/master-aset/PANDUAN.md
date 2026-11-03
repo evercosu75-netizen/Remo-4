@@ -18,7 +18,8 @@
      kostum/pose baru dengan `karakter-3d/render_chars.py`).
    - Butuh pembawa acara 2D dengan ekspresi (senyum/kaget/berpikir) dan
      pose tangan (santai/menunjuk/pegang-hp) → karakter SVG
-     (`karakter-svg/karakter.js`: host, nur, yohana, togar, lina).
+     (`karakter-svg/karakter.js`: host + lina = tokoh baru dari GPT 3 Nov 2026;
+     nur, yohana, togar alternatif).
    - Jangan pakai keduanya sekaligus dalam satu video kecuali ada alasan.
 5. **Terapkan komponen visual dari `visual/komponen.css`**: label
    `// NN · …`, caption `#cap`, kartu `.card`, popup `.popup`,
